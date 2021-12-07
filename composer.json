@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "spatie/laravel-auto-discoverer",
+    "description": "Automatically discover classes within your Laravel app",
     "keywords": [
-        ":vendor_name",
+        "LaravelAutoDiscoverer",
         "laravel",
-        ":package_slug"
+        "laravel-auto-discoverer"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/laravelautodiscoverer/laravel-auto-discoverer",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Ruben Van Assche",
+            "email": "ruben@spatie.be",
             "role": "Developer"
         }
     ],
@@ -30,13 +30,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "Spatie\\LaravelAutoDiscoverer\\": "src",
+            "Spatie\\LaravelAutoDiscoverer\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "Spatie\\LaravelAutoDiscoverer\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -49,11 +49,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
-            ],
-            "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
-            }
+                "Spatie\\LaravelAutoDiscoverer\\LaravelAutoDiscovererServiceProvider"
+            ]
         }
     },
     "minimum-stability": "dev",

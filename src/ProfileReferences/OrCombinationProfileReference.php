@@ -20,7 +20,7 @@ class OrCombinationProfileReference extends ProfileReference
 
     public function satisfies(ReflectionClass $reflectionClass): bool
     {
-        if(empty($this->references)){
+        if (empty($this->references)) {
             return true;
         }
 

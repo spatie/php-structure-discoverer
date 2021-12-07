@@ -20,6 +20,6 @@ class LaravelAutoDiscovererServiceProvider extends PackageServiceProvider
             ->hasCommand(CacheDiscoveredClasses::class)
             ->hasCommand(ClearDiscoveredClassesCache::class);
 
-        Event::listen('bootstrapped: ' . BootProviders::class, fn() => Discoverer::run());
+        Event::listen('bootstrapped: ' . BootProviders::class, fn () => Discoverer::run());
     }
 }

@@ -15,8 +15,7 @@ class ClassDiscoverer
         public string $basePath = '',
         public  string $rootNamespace = '',
         public array $ignoredFiles = [],
-    )
-    {
+    ) {
     }
 
     public function discover(): Collection
@@ -28,9 +27,9 @@ class ClassDiscoverer
         $files = (new Finder())->files()->in($this->directories);
 
         return collect($files)
-            ->reject(fn(SplFileInfo $file) => in_array($file->getPathname(), $this->ignoredFiles))
-            ->map(fn(SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($file))
-            ->map(fn(string $class) => new ReflectionClass($class));
+            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $this->ignoredFiles))
+            ->map(fn (SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($file))
+            ->map(fn (string $class) => new ReflectionClass($class));
     }
 
     protected function fullQualifiedClassNameFromFile(SplFileInfo $file): string

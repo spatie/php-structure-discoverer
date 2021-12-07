@@ -12,7 +12,7 @@ abstract class ProfileReference
     public static function implementing(string ...$interfaces): ProfileReference
     {
         return new OrCombinationProfileReference(...array_map(
-            fn(string $interface) => new ImplementsProfileReference($interface),
+            fn (string $interface) => new ImplementsProfileReference($interface),
             $interfaces
         ));
     }
@@ -20,7 +20,7 @@ abstract class ProfileReference
     public static function extending(string ...$classes): ProfileReference
     {
         return new OrCombinationProfileReference(...array_map(
-            fn(string $class) => new ExtendsProfileReference($class),
+            fn (string $class) => new ExtendsProfileReference($class),
             $classes
         ));
     }
@@ -28,7 +28,7 @@ abstract class ProfileReference
     public static function named(string ...$classes): ProfileReference
     {
         return new OrCombinationProfileReference(...array_map(
-            fn(string $class) => new NameProfileReference($class),
+            fn (string $class) => new NameProfileReference($class),
             $classes
         ));
     }
@@ -36,7 +36,7 @@ abstract class ProfileReference
     public static function custom(Closure ...$closures): ProfileReference
     {
         return new OrCombinationProfileReference(...array_map(
-            fn(Closure $closure) => new CustomProfileReference($closure),
+            fn (Closure $closure) => new CustomProfileReference($closure),
             $closures
         ));
     }

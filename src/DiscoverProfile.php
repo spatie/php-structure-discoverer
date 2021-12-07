@@ -3,11 +3,6 @@
 namespace Spatie\LaravelAutoDiscoverer;
 
 use Closure;
-use Spatie\LaravelAutoDiscoverer\ProfileReferences\AndCombinationProfileReference;
-use Spatie\LaravelAutoDiscoverer\ProfileReferences\CustomProfileReference;
-use Spatie\LaravelAutoDiscoverer\ProfileReferences\ExtendsProfileReference;
-use Spatie\LaravelAutoDiscoverer\ProfileReferences\ImplementsProfileReference;
-use Spatie\LaravelAutoDiscoverer\ProfileReferences\NameProfileReference;
 use Spatie\LaravelAutoDiscoverer\ProfileReferences\OrCombinationProfileReference;
 use Spatie\LaravelAutoDiscoverer\ProfileReferences\ProfileReference;
 
@@ -40,7 +35,7 @@ class DiscoverProfile
     public function within(string ...$directories): static
     {
         $this->directories = array_merge($this->directories, array_map(
-            fn(string $directory) => realpath($directory),
+            fn (string $directory) => realpath($directory),
             $directories
         ));
 

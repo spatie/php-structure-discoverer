@@ -2,7 +2,6 @@
 
 namespace Spatie\LaravelAutoDiscoverer;
 
-use Illuminate\Foundation\Events\DiscoverEvents;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -28,14 +27,14 @@ class Discoverer
         /** @var \Illuminate\Support\Collection<\Spatie\LaravelAutoDiscoverer\DiscoverProfile> $cachedProfiles */
         /** @var \Illuminate\Support\Collection<\Spatie\LaravelAutoDiscoverer\DiscoverProfile> $profilesToDiscover */
         [$cachedProfiles, $profilesToDiscover] = collect(self::$profiles)->partition(
-            fn(DiscoverProfile $profile) => Cache::has(self::resolveProfileCacheKey($profile))
+            fn (DiscoverProfile $profile) => Cache::has(self::resolveProfileCacheKey($profile))
         );
 
         $cachedDiscoveredClasses = $cachedProfiles->map(function (DiscoverProfile $profile) {
             $discovered = collect(Cache::get(self::resolveProfileCacheKey($profile)));
 
             if ($profile->returnReflection) {
-                $discovered = $discovered->map(fn(string $class) => new ReflectionClass($class));
+                $discovered = $discovered->map(fn (string $class) => new ReflectionClass($class));
             }
 
             return [$profile, $discovered];
@@ -43,7 +42,7 @@ class Discoverer
 
         $discoveredClasses = self::discoverClassesForProfiles(...$profilesToDiscover)->mapSpread(function (DiscoverProfile $profile, Collection $discovered) {
             if ($profile->returnReflection === false) {
-                $discovered = $discovered->map(fn(ReflectionClass $reflectionClass) => $reflectionClass->name);
+                $discovered = $discovered->map(fn (ReflectionClass $reflectionClass) => $reflectionClass->name);
             }
 
             return [$profile, $discovered];
@@ -62,17 +61,17 @@ class Discoverer
             ->eachSpread(function (DiscoverProfile $profile, Collection $discovered) {
                 Cache::set(
                     self::resolveProfileCacheKey($profile),
-                    $discovered->map(fn(ReflectionClass $class) => $class->name)->all()
+                    $discovered->map(fn (ReflectionClass $class) => $class->name)->all()
                 );
             })
-            ->mapSpread(fn(DiscoverProfile $profile, Collection $discovered) => $profile->identifier);
+            ->mapSpread(fn (DiscoverProfile $profile, Collection $discovered) => $profile->identifier);
     }
 
     public static function clearCache(): Collection
     {
         return collect(self::$profiles)
-            ->each(fn(DiscoverProfile $profile) => Cache::forget(self::resolveProfileCacheKey($profile)))
-            ->map(fn(DiscoverProfile $profile) => $profile->identifier);
+            ->each(fn (DiscoverProfile $profile) => Cache::forget(self::resolveProfileCacheKey($profile)))
+            ->map(fn (DiscoverProfile $profile) => $profile->identifier);
     }
 
     private static function discoverClassesForProfiles(DiscoverProfile ...$profiles): Collection
@@ -80,7 +79,7 @@ class Discoverer
         $profiles = collect($profiles);
 
         $directories = $profiles
-            ->flatMap(fn(DiscoverProfile $profile) => $profile->directories)
+            ->flatMap(fn (DiscoverProfile $profile) => $profile->directories)
             ->unique()
             ->all();
 
@@ -93,7 +92,7 @@ class Discoverer
 
         return $profiles->map(function (DiscoverProfile $profile) use ($discovered) {
             $classes = $discovered
-                ->filter(fn(ReflectionClass $reflectionClass, string $path) => self::isValidClassForProfile($reflectionClass, $path, $profile))
+                ->filter(fn (ReflectionClass $reflectionClass, string $path) => self::isValidClassForProfile($reflectionClass, $path, $profile))
                 ->values();
 
             return [$profile, $classes];
@@ -107,7 +106,7 @@ class Discoverer
     ): bool {
         $path = realpath(dirname($path));
 
-        $isSubDir = Arr::first($profile->directories, fn(string $directory) => str_starts_with(
+        $isSubDir = Arr::first($profile->directories, fn (string $directory) => str_starts_with(
             $path,
             $directory,
         ));

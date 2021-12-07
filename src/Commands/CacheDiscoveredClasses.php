@@ -15,7 +15,7 @@ class CacheDiscoveredClasses extends Command
     {
         $identifiers = Discoverer::cache();
 
-        if($identifiers->isEmpty()){
+        if ($identifiers->isEmpty()) {
             $this->info('No auto discover profiles were found');
 
             return;

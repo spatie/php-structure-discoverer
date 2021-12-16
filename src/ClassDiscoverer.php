@@ -11,10 +11,10 @@ use Symfony\Component\Finder\Finder;
 class ClassDiscoverer
 {
     public function __construct(
-        public array $directories = [],
-        public string $basePath = '',
-        public  string $rootNamespace = '',
-        public array $ignoredFiles = [],
+        public array $directories,
+        public string $basePath,
+        public string $rootNamespace,
+        public array $ignoredFiles,
     ) {
     }
 

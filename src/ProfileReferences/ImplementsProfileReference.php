@@ -12,6 +12,6 @@ class ImplementsProfileReference extends ProfileReference
 
     public function satisfies(ReflectionClass $reflectionClass): bool
     {
-        return $reflectionClass->implementsInterface($this->interface);
+        return $reflectionClass->implementsInterface($this->interface) && $reflectionClass->name !== $this->interface;
     }
 }

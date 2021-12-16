@@ -2,16 +2,19 @@
 
 namespace Spatie\LaravelAutoDiscoverer;
 
+use Closure;
+use Illuminate\Foundation\Events\DiscoverEvents;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use phpDocumentor\Reflection\Types\Self_;
 use ReflectionClass;
+use Spatie\LaravelAutoDiscoverer\Exceptions\UnknownDiscoverProfile;
 
 class Discoverer
 {
+    /** @var \Spatie\LaravelAutoDiscoverer\DiscoverProfile[] */
     protected static array $profiles = [];
-
-    protected static bool $discovered = false;
 
     public static function classes(string $identifier): DiscoverProfile
     {
@@ -74,6 +77,24 @@ class Discoverer
             ->map(fn (DiscoverProfile $profile) => $profile->identifier);
     }
 
+    public static function clearProfiles(): void
+    {
+        static::$profiles = [];
+    }
+
+    public static function get(string $identifier, Closure $closure): void
+    {
+        foreach (static::$profiles as $profile){
+            if($profile->identifier === $identifier){
+                $profile->get($closure);
+
+                return;
+            }
+        }
+
+        throw UnknownDiscoverProfile::forIdentifier($identifier);
+    }
+
     private static function discoverClassesForProfiles(DiscoverProfile ...$profiles): Collection
     {
         $profiles = collect($profiles);
@@ -85,7 +106,9 @@ class Discoverer
 
         $classDiscoverer = new ClassDiscoverer(
             directories: $directories,
-            basePath: base_path()
+            basePath: config('auto-discoverer.base_path', base_path()),
+            rootNamespace: config('auto-discoverer.root_namespace', ''),
+            ignoredFiles: config('auto-discoverer.ignored_files', []),
         );
 
         $discovered = $classDiscoverer->discover();

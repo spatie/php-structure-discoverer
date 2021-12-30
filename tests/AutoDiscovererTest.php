@@ -411,3 +411,4 @@ it('can discover using a Facade', function () {
 
 // TODO: check if we van register this package earlier
 // TODO: port package to settings, morph map generator, event sourcing
+// TODO: Add Larastan

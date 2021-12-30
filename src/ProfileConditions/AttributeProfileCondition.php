@@ -4,7 +4,6 @@ namespace Spatie\LaravelAutoDiscoverer\ProfileConditions;
 
 use Closure;
 use ReflectionClass;
-use Spatie\LaravelAutoDiscoverer\Tests\Fakes\FakeClassUsingAttributeWithArguments;
 
 class AttributeProfileCondition extends ProfileCondition
 {

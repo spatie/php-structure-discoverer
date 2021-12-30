@@ -28,7 +28,7 @@ class DiscoverCache
             [$profile, $discovered] = $item;
 
             return [
-                $profile->identifier => $discovered->map(fn(ReflectionClass $class) => $class->name)->all(),
+                $profile->identifier => $discovered->map(fn (ReflectionClass $class) => $class->name)->all(),
             ];
         })->toJson();
 

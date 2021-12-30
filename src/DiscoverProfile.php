@@ -4,7 +4,6 @@ namespace Spatie\LaravelAutoDiscoverer;
 
 use Closure;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\AndCombinationProfileCondition;
-use Spatie\LaravelAutoDiscoverer\ProfileConditions\OrCombinationProfileCondition;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
 
 /** @mixin ProfileCondition */
@@ -35,7 +34,7 @@ class DiscoverProfile
     public function within(string ...$directories): static
     {
         $this->directories = array_merge($this->directories, array_map(
-            fn(string $directory) => realpath($directory),
+            fn (string $directory) => realpath($directory),
             $directories
         ));
 

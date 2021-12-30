@@ -3,7 +3,6 @@
 namespace Spatie\LaravelAutoDiscoverer\Commands;
 
 use Illuminate\Console\Command;
-use Spatie\LaravelAutoDiscoverer\DiscoverManager;
 use Spatie\LaravelAutoDiscoverer\Facades\Discover;
 
 class CacheDiscoveredClasses extends Command

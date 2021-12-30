@@ -12,9 +12,8 @@ if (! function_exists('setProfileInCache')) {
         app(DiscoverCache::class)->save(collect([
             [
                 $profile,
-                collect($classes)->map(fn(string $class) => new ReflectionClass($class)),
+                collect($classes)->map(fn (string $class) => new ReflectionClass($class)),
             ],
         ]));
     }
-
 }

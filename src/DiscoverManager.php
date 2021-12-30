@@ -32,14 +32,14 @@ class DiscoverManager
         /** @var \Illuminate\Support\Collection<\Spatie\LaravelAutoDiscoverer\DiscoverProfile> $cachedProfiles */
         /** @var \Illuminate\Support\Collection<\Spatie\LaravelAutoDiscoverer\DiscoverProfile> $profilesToDiscover */
         [$cachedProfiles, $profilesToDiscover] = collect($this->profiles)->partition(
-            fn(DiscoverProfile $profile) => $this->cache->has($profile)
+            fn (DiscoverProfile $profile) => $this->cache->has($profile)
         );
 
         $cachedDiscoveredClasses = $cachedProfiles->map(function (DiscoverProfile $profile) {
             $discovered = collect($this->cache->get($profile));
 
             if ($profile->returnReflection) {
-                $discovered = $discovered->map(fn(string $class) => new ReflectionClass($class));
+                $discovered = $discovered->map(fn (string $class) => new ReflectionClass($class));
             }
 
             return [$profile, $discovered];
@@ -47,7 +47,7 @@ class DiscoverManager
 
         $discoveredClasses = self::discoverClassesForProfiles(...$profilesToDiscover)->mapSpread(function (DiscoverProfile $profile, Collection $discovered) {
             if ($profile->returnReflection === false) {
-                $discovered = $discovered->map(fn(ReflectionClass $reflectionClass) => $reflectionClass->name);
+                $discovered = $discovered->map(fn (ReflectionClass $reflectionClass) => $reflectionClass->name);
             }
 
             return [$profile, $discovered];
@@ -63,8 +63,8 @@ class DiscoverManager
     public function cache(): Collection
     {
         return self::discoverClassesForProfiles(...$this->profiles)
-            ->tap(fn(Collection $profilesAndDiscovered) => $this->cache->save($profilesAndDiscovered))
-            ->mapSpread(fn(DiscoverProfile $profile, Collection $discovered) => $profile->identifier);
+            ->tap(fn (Collection $profilesAndDiscovered) => $this->cache->save($profilesAndDiscovered))
+            ->mapSpread(fn (DiscoverProfile $profile, Collection $discovered) => $profile->identifier);
     }
 
     public function clearCache(): void
@@ -95,7 +95,7 @@ class DiscoverManager
         $profiles = collect($profiles);
 
         $directories = $profiles
-            ->flatMap(fn(DiscoverProfile $profile) => $this->resolveDirectoriesForProfile($profile))
+            ->flatMap(fn (DiscoverProfile $profile) => $this->resolveDirectoriesForProfile($profile))
             ->unique()
             ->all();
 
@@ -110,7 +110,7 @@ class DiscoverManager
 
         return $profiles->map(function (DiscoverProfile $profile) use ($discovered) {
             $classes = $discovered
-                ->filter(fn(ReflectionClass $reflectionClass, string $path) => $this->isValidClassForProfile($reflectionClass, $path, $profile))
+                ->filter(fn (ReflectionClass $reflectionClass, string $path) => $this->isValidClassForProfile($reflectionClass, $path, $profile))
                 ->values();
 
             return [$profile, $classes];
@@ -124,7 +124,7 @@ class DiscoverManager
     ): bool {
         $path = realpath(dirname($path));
 
-        $isSubDir = Arr::first($this->resolveDirectoriesForProfile($profile), fn(string $directory) => str_starts_with(
+        $isSubDir = Arr::first($this->resolveDirectoriesForProfile($profile), fn (string $directory) => str_starts_with(
             $path,
             $directory,
         ));

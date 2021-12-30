@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelAutoDiscoverer\DiscoverCache;
-use Spatie\LaravelAutoDiscoverer\DiscoverProfile;
 use Spatie\LaravelAutoDiscoverer\Facades\Discover;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\CorruptClass;
@@ -93,7 +92,7 @@ it('can discover specific classes implementing an interface', function () {
 it('can discover specific classes based upon closure', function () {
     Discover::classes('a')
         ->within(__DIR__ . '/Fakes')
-        ->custom(fn(ReflectionClass $reflection) => $reflection->name === FakeClass::class)
+        ->custom(fn (ReflectionClass $reflection) => $reflection->name === FakeClass::class)
         ->get(function (array $classes) use (&$found) {
             $found = $classes;
         });
@@ -139,7 +138,7 @@ it('can discover specific classes based upon using an attribute with specific ar
 it('can discover specific classes based upon using an attribute by inspection via closure', function () {
     Discover::classes('a')
         ->within(__DIR__ . '/Fakes')
-        ->attribute(FakeAttribute::class, fn(FakeAttribute $fakeAttribute) => $fakeAttribute->method === 'POST')
+        ->attribute(FakeAttribute::class, fn (FakeAttribute $fakeAttribute) => $fakeAttribute->method === 'POST')
         ->get(function (array $classes) use (&$found) {
             $found = $classes;
         });
@@ -414,4 +413,3 @@ it('can discover using a Facade', function () {
 // TODO: replace the cache interface with caching to a file
 // TODO: check if we van register this package earlier
 // TODO: port package to settings, morph map generator, event sourcing
-

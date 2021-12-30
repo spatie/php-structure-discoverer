@@ -29,8 +29,8 @@ class ClassDiscoverer
         $files = (new Finder())->files()->in($this->directories);
 
         return collect($files)
-            ->reject(fn(SplFileInfo $file) => in_array($file->getPathname(), $this->ignoredFiles))
-            ->map(fn(SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($file))
+            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $this->ignoredFiles))
+            ->map(fn (SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($file))
             ->map(function (string $class) {
                 try {
                     return new  ReflectionClass($class);

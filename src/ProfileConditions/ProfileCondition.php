@@ -12,7 +12,7 @@ abstract class ProfileCondition
     public static function implementing(string ...$interfaces): ProfileCondition
     {
         return new OrCombinationProfileCondition(...array_map(
-            fn(string $interface) => new ImplementsProfileCondition($interface),
+            fn (string $interface) => new ImplementsProfileCondition($interface),
             $interfaces
         ));
     }
@@ -20,7 +20,7 @@ abstract class ProfileCondition
     public static function extending(string ...$classes): ProfileCondition
     {
         return new OrCombinationProfileCondition(...array_map(
-            fn(string $class) => new ExtendsProfileCondition($class),
+            fn (string $class) => new ExtendsProfileCondition($class),
             $classes
         ));
     }
@@ -28,7 +28,7 @@ abstract class ProfileCondition
     public static function named(string ...$classes): ProfileCondition
     {
         return new OrCombinationProfileCondition(...array_map(
-            fn(string $class) => new NameProfileCondition($class),
+            fn (string $class) => new NameProfileCondition($class),
             $classes
         ));
     }
@@ -36,7 +36,7 @@ abstract class ProfileCondition
     public static function custom(Closure ...$closures): ProfileCondition
     {
         return new OrCombinationProfileCondition(...array_map(
-            fn(Closure $closure) => new CustomProfileCondition($closure),
+            fn (Closure $closure) => new CustomProfileCondition($closure),
             $closures
         ));
     }

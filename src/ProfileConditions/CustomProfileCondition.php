@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\ProfileReferences;
+namespace Spatie\LaravelAutoDiscoverer\ProfileConditions;
 
 use Closure;
 use ReflectionClass;
 
-class CustomProfileReference extends ProfileReference
+class CustomProfileCondition extends ProfileCondition
 {
     public function __construct(protected Closure $closure)
     {

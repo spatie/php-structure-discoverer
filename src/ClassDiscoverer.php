@@ -2,6 +2,8 @@
 
 namespace Spatie\LaravelAutoDiscoverer;
 
+use Error;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -27,13 +29,21 @@ class ClassDiscoverer
         $files = (new Finder())->files()->in($this->directories);
 
         return collect($files)
-            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $this->ignoredFiles))
-            ->map(fn (SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($file))
-            ->map(fn (string $class) => new ReflectionClass($class));
+            ->reject(fn(SplFileInfo $file) => in_array($file->getPathname(), $this->ignoredFiles))
+            ->map(fn(SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($file))
+            ->map(function (string $class) {
+                try {
+                    return new  ReflectionClass($class);
+                } catch (Exception|Error) {
+                    return null;
+                }
+            })
+            ->filter();
     }
 
-    protected function fullQualifiedClassNameFromFile(SplFileInfo $file): string
-    {
+    protected function fullQualifiedClassNameFromFile(
+        SplFileInfo $file
+    ): string {
         return Str::of($file->getRealPath())
             ->replaceFirst($this->basePath, '')
             ->replaceLast('.php', '')

@@ -1,21 +1,15 @@
-# "Automatically discover classes within your Laravel app"
+# Automatically discover classes within your Laravel app
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/laravelautodiscoverer/laravel-auto-discoverer.svg?style=flat-square)](https://packagist.org/packages/laravelautodiscoverer/laravel-auto-discoverer)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/laravelautodiscoverer/laravel-auto-discoverer/run-tests?label=tests)](https://github.com/laravelautodiscoverer/laravel-auto-discoverer/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/laravelautodiscoverer/laravel-auto-discoverer/Check%20&%20fix%20styling?label=code%20style)](https://github.com/laravelautodiscoverer/laravel-auto-discoverer/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/laravelautodiscoverer/laravel-auto-discoverer.svg?style=flat-square)](https://packagist.org/packages/laravelautodiscoverer/laravel-auto-discoverer)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-auto-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-auto-discoverer)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-auto-discoverer/run-tests?label=tests)](https://github.com/spatie/laravel-auto-discoverer/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-auto-discoverer/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/laravel-auto-discoverer/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-auto-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-auto-discoverer)
 
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+With this package, you'll be able to quickly discover classes within your Laravel installation that fulfil certain conditions. For example, you could search for a class implementing an interface, extending another class or using an Attribute.
 
-1. Press the "Use template" button at the top of this repo to create a new repo with the contents of this laravel-auto-discoverer
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files
-3. Remove this block of text.
-4. Have fun creating your package.
-5. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
+On top of that, it adds a mechanism to cache these discovered classes to minimize the performance overhead of discovering classes in your production environment.
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+You can use this package within Laravels projects or other packages.
 
 ## Support us
 
@@ -30,14 +24,7 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 You can install the package via composer:
 
 ```bash
-composer require laravelautodiscoverer/laravel-auto-discoverer
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --provider="Spatie\LaravelAutoDiscoverer\LaravelAutoDiscovererServiceProvider" --tag="laravel-auto-discoverer-migrations"
-php artisan migrate
+composer require spatie/laravel-auto-discoverer
 ```
 
 You can publish the config file with:
@@ -49,14 +36,153 @@ This is the contents of the published config file:
 
 ```php
 return [
+    /*
+     *  The base path where the package (recursively) will search for classes.
+     *  By default, this will be the base path of your application.
+     */
+    'base_path' => base_path(),
+
+    /*
+     *  When you're using another root namespace, you can define it here
+     */
+    'root_namespace' => '',
+
+    /*
+     *  A list of files that should be ignored during the discovering process.
+     */
+    'ignored_files' => [],
+
+    /*
+     *  Directory where cached discover profiles are stored
+     */
+    'cache_directory' => storage_path('app/auto-discoverer/'),
 ];
 ```
 
 ## Usage
 
+You can find classes within your project by creating a discover profile. This profile should be registered within a service provider, have a unique identifier and one or more specific conditions.
+
+The discoverer will only run once when the application boots and then process all registered profiles at once, passing the discovered classes through a closure ready to be used.
+
+You can have as many profiles as you want within your codebase as long as they have a unique identifier.
+
+### Creating a discover profile
+
 ```php
-$laravel-auto-discoverer = new Spatie\LaravelAutoDiscoverer();
-echo $laravel-auto-discoverer->echoPhrase('Hello, Spatie!');
+Discoverer::classes('discover-settings')
+        ->extending(Settings::class)
+        ->get(fn (array $classes) => dump($classes));
+```
+
+When your application is booted, the `$classes` array will contain all classes extending the `Settings` class. The `discover-settings` string is the unique identifier symbolizing the profile.
+
+You can specify a specific directory where classes should be discovered:
+
+```php
+Discoverer::classes('discover-settings')
+	->within(app_path('settings'))
+        ->extending(Settings::class)
+        ->get(fn (array $classes) => dump($classes);
+```
+
+By default, the `$classes` array contains the fully qualified names of the discovered classes. It is possible to get a `ReflectionClass` instance of the discovered classes:
+
+```php
+Discoverer::classes('discover-settings')
+        ->extending(Settings::class)
+        ->returnReflection()
+        ->get(fn (array $classes) => dump($classes);
+```
+
+When you want to include a specific class, you can add the following condition:
+
+```php
+Discoverer::classes('discover-settings')
+        ->named(GeneralSettings::class)
+        ->get(fn (array $classes) => dump($classes);
+```
+
+You can discover classes implementing an interface as such:
+
+```php
+Discoverer::classes('discover-projectors')
+        ->implementing(Projector::class)
+        ->get(fn (array $classes) => dump($classes);
+```
+
+Classes using an attribute can be discovered as such:
+
+ ```php
+Discoverer::classes('discover-routes')
+        ->attribute(Route::class)
+        ->get(fn (array $classes) => dump($classes);
+```
+
+You can even check if the attribute has specific parameters:
+
+  ```php
+Discoverer::classes('discover-routes')
+        ->attribute(Route::class, ['POST'])
+        ->get(fn (array $classes) => dump($classes);
+```
+
+Or you can inspect the attribute of a class using a closure to determine if it should be discovered or not:
+
+ ```php
+Discoverer::classes('discover-routes')
+        ->attribute(Route::class, fn(Route $route) => $route->method === 'POST')
+        ->get(fn (array $classes) => dump($classes);
+```
+
+For more fine-grained control, you can use a closure that receives a `ReflectionClass` and should return `true` if the class should be included:
+
+ ```php
+Discoverer::classes('discover-settings')
+        ->custom(fn(ReflectionClass $reflection) => str_ends_with($reflection, 'Settings'))
+        ->get(fn (array $classes) => dump($classes);
+```
+
+It is possible to combine conditions. These will all be applied as an AND combination. Which means they all should be valid for the class to be discovered:
+
+  ```php
+Discoverer::classes('discover-routes')
+        ->extending(Controller::class)
+        ->attribute(Route::class)
+        ->get(fn (array $classes) => dump($classes);
+```
+
+In this case, only classes extending `Controller` with a `Route` attribute will be discovered.
+
+You can include classes that adhere to one or more conditions as such:
+
+  ```php
+Discoverer::classes('discover-routes')
+	->any(
+		ProfileCondition::extending(Controller::class),
+		ProfileCondition::attribute(Route::class)
+	)
+        ->get(fn (array $classes) => dump($classes);
+```
+
+Now classes extending `Controller` OR classes with a `Route` attribute will be discovered.
+
+You can mix and match these conditions in any way you want.
+
+### Caching
+
+The package can cache all the profiles, so they do not need to be discovered when your application runs in production. This makes the whole process a lot faster.
+
+You can cache all profiles as such:
+
+```bash
+php artisan auto-discovered:cache
+```
+
+To clear the cached profiles, you can run:
+
+ ```bash
+php artisan auto-discovered:clear
 ```
 
 ## Testing

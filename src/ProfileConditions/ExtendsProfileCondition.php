@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\ProfileReferences;
+namespace Spatie\LaravelAutoDiscoverer\ProfileConditions;
 
 use ReflectionClass;
 
-class ExtendsProfileReference extends ProfileReference
+class ExtendsProfileCondition extends ProfileCondition
 {
     public function __construct(private string $class)
     {

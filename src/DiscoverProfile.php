@@ -3,13 +3,14 @@
 namespace Spatie\LaravelAutoDiscoverer;
 
 use Closure;
-use Spatie\LaravelAutoDiscoverer\ProfileReferences\OrCombinationProfileReference;
-use Spatie\LaravelAutoDiscoverer\ProfileReferences\ProfileReference;
+use Spatie\LaravelAutoDiscoverer\ProfileConditions\AndCombinationProfileCondition;
+use Spatie\LaravelAutoDiscoverer\ProfileConditions\OrCombinationProfileCondition;
+use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
 
-/** @mixin ProfileReference */
+/** @mixin ProfileCondition */
 class DiscoverProfile
 {
-    public OrCombinationProfileReference $references;
+    public AndCombinationProfileCondition $conditions;
 
     public array $callBacks = [];
 
@@ -17,17 +18,16 @@ class DiscoverProfile
 
     public bool $returnReflection = false;
 
-    public function __construct(
-        public string $identifier
-    ) {
-        $this->references = new OrCombinationProfileReference();
+    public function __construct(public string $identifier)
+    {
+        $this->conditions = new AndCombinationProfileCondition();
     }
 
     public function __call(string $name, array $arguments): static
     {
-        $reference = ProfileReference::{$name}(...$arguments);
+        $condition = ProfileCondition::{$name}(...$arguments);
 
-        $this->references->add($reference);
+        $this->conditions->add($condition);
 
         return $this;
     }
@@ -35,7 +35,7 @@ class DiscoverProfile
     public function within(string ...$directories): static
     {
         $this->directories = array_merge($this->directories, array_map(
-            fn (string $directory) => realpath($directory),
+            fn(string $directory) => realpath($directory),
             $directories
         ));
 

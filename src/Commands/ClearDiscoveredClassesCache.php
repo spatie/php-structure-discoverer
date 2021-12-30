@@ -3,24 +3,19 @@
 namespace Spatie\LaravelAutoDiscoverer\Commands;
 
 use Illuminate\Console\Command;
-use Spatie\LaravelAutoDiscoverer\Discoverer;
+use Spatie\LaravelAutoDiscoverer\DiscoverManager;
+use Spatie\LaravelAutoDiscoverer\Facades\Discover;
 
 class ClearDiscoveredClassesCache extends Command
 {
-    public $signature = 'discover-classes:clear';
+    public $signature = 'auto-discovered:clear';
 
     public $description = 'Clear auto discovered classes cache';
 
     public function handle()
     {
-        $identifiers = Discoverer::clearCache();
+        Discover::clearCache();
 
-        if ($identifiers->isEmpty()) {
-            $this->info('No auto discover profiles were found');
-
-            return;
-        }
-
-        $this->info("Removed auto discovered classes cache for profiles: {$identifiers->join(', ', ' and ')}");
+        $this->info('Laravel auto discover cache cleared');
     }
 }

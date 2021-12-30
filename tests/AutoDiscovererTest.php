@@ -185,7 +185,7 @@ it('can discover specific classes based upon sets of conditions', function () {
 
     Discover::run();
 
-    expect($found)->toEqual([
+    expect($found)->toEqualCanonicalizing([
         FakeClass::class,
         FakeClassImplementing::class,
     ]);
@@ -409,7 +409,5 @@ it('can discover using a Facade', function () {
     expect($found)->toEqual([FakeClass::class]);
 });
 
-// TODO: add docs
-// TODO: replace the cache interface with caching to a file
 // TODO: check if we van register this package earlier
 // TODO: port package to settings, morph map generator, event sourcing

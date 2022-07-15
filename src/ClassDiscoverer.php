@@ -57,7 +57,6 @@ class ClassDiscoverer
                 [DIRECTORY_SEPARATOR, 'App\\'],
                 ['\\', app()->getNamespace()],
             )
-            ->prepend($this->rootNamespace)
-            ->toString();
+            ->prepend($this->rootNamespace);
     }
 }

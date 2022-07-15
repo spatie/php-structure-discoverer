@@ -11,7 +11,7 @@ class ClearDiscoveredClassesCache extends Command
 
     public $description = 'Clear auto discovered classes cache';
 
-    public function handle():void
+    public function handle(): void
     {
         Discover::clearCache();
 

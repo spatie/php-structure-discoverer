@@ -2,8 +2,6 @@
 
 namespace Spatie\LaravelAutoDiscoverer;
 
-use Error;
-use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ReflectionClass;

@@ -3,7 +3,7 @@
 namespace Spatie\LaravelAutoDiscoverer\Commands;
 
 use Illuminate\Console\Command;
-use Spatie\LaravelAutoDiscoverer\Facades\Discover;
+use Spatie\LaravelAutoDiscoverer\Discover;
 
 class ClearDiscoveredClassesCache extends Command
 {
@@ -11,7 +11,7 @@ class ClearDiscoveredClassesCache extends Command
 
     public $description = 'Clear auto discovered classes cache';
 
-    public function handle()
+    public function handle():void
     {
         Discover::clearCache();
 

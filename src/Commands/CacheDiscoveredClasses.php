@@ -3,7 +3,7 @@
 namespace Spatie\LaravelAutoDiscoverer\Commands;
 
 use Illuminate\Console\Command;
-use Spatie\LaravelAutoDiscoverer\Facades\Discover;
+use Spatie\LaravelAutoDiscoverer\Discover;
 
 class CacheDiscoveredClasses extends Command
 {
@@ -11,7 +11,7 @@ class CacheDiscoveredClasses extends Command
 
     public $description = 'Cache all auto discovered class';
 
-    public function handle()
+    public function handle(): void
     {
         $identifiers = Discover::cache();
 

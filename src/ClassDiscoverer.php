@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use ReflectionClass;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
+use Throwable;
 
 class ClassDiscoverer
 {
@@ -23,18 +24,23 @@ class ClassDiscoverer
     public function discover(): Collection
     {
         if (empty($this->directories)) {
-            return collect();
+            return new Collection();
         }
 
         $files = (new Finder())->files()->in($this->directories);
 
+        $ignoredFiles = array_merge(
+            $this->ignoredFiles,
+            Composer::getAutoloadedFiles(base_path('composer.json'))
+        );
+
         return collect($files)
-            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $this->ignoredFiles))
+            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles))
             ->map(fn (SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($file))
             ->map(function (string $class) {
                 try {
-                    return new  ReflectionClass($class);
-                } catch (Exception|Error) {
+                    return new ReflectionClass($class);
+                } catch (Throwable) {
                     return null;
                 }
             })
@@ -53,6 +59,7 @@ class ClassDiscoverer
                 [DIRECTORY_SEPARATOR, 'App\\'],
                 ['\\', app()->getNamespace()],
             )
-            ->prepend($this->rootNamespace);
+            ->prepend($this->rootNamespace)
+            ->toString();
     }
 }

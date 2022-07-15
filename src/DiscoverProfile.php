@@ -6,7 +6,15 @@ use Closure;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\AndCombinationProfileCondition;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
 
-/** @mixin ProfileCondition */
+/**
+ * @method DiscoverProfile implementing(string ...$interfaces)
+ * @method DiscoverProfile extending(string ...$classes)
+ * @method DiscoverProfile named(string ...$classes)
+ * @method DiscoverProfile custom(Closure ...$closures)
+ * @method DiscoverProfile attribute(string $attribute, null|Closure|array $arguments = null)
+ * @method DiscoverProfile combination(ProfileCondition ...$conditions)
+ * @method DiscoverProfile any(ProfileCondition ...$conditions)
+ */
 class DiscoverProfile
 {
     public AndCombinationProfileCondition $conditions;

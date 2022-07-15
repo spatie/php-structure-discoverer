@@ -13,9 +13,11 @@ class AndCombinationProfileCondition extends ProfileCondition
         $this->conditions = $conditions;
     }
 
-    public function add(ProfileCondition $condition)
+    public function add(ProfileCondition $condition): static
     {
-        return $this->conditions[] = $condition;
+        $this->conditions[] = $condition;
+
+        return $this;
     }
 
     public function satisfies(ReflectionClass $reflectionClass): bool

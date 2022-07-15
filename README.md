@@ -70,9 +70,9 @@ You can have as many profiles as you want within your codebase as long as they h
 ### Creating a discover profile
 
 ```php
-Discoverer::classes('discover-settings')
-        ->extending(Settings::class)
-        ->get(fn (array $classes) => dump($classes));
+Discover::classes('discover-settings')
+    ->extending(Settings::class)
+    ->get(fn (array $classes) => dump($classes));
 ```
 
 When your application is booted, the `$classes` array will contain all classes extending the `Settings` class. The `discover-settings` string is the unique identifier symbolizing the profile.
@@ -80,76 +80,76 @@ When your application is booted, the `$classes` array will contain all classes e
 You can specify a specific directory where classes should be discovered:
 
 ```php
-Discoverer::classes('discover-settings')
+Discover::classes('discover-settings')
 	->within(app_path('settings'))
-        ->extending(Settings::class)
-        ->get(fn (array $classes) => dump($classes);
+    ->extending(Settings::class)
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 By default, the `$classes` array contains the fully qualified names of the discovered classes. It is possible to get a `ReflectionClass` instance of the discovered classes:
 
 ```php
-Discoverer::classes('discover-settings')
-        ->extending(Settings::class)
-        ->returnReflection()
-        ->get(fn (array $classes) => dump($classes);
+Discover::classes('discover-settings')
+    ->extending(Settings::class)
+    ->returnReflection()
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 When you want to include a specific class, you can add the following condition:
 
 ```php
-Discoverer::classes('discover-settings')
-        ->named(GeneralSettings::class)
-        ->get(fn (array $classes) => dump($classes);
+Discover::classes('discover-settings')
+    ->named(GeneralSettings::class)
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 You can discover classes implementing an interface as such:
 
 ```php
-Discoverer::classes('discover-projectors')
-        ->implementing(Projector::class)
-        ->get(fn (array $classes) => dump($classes);
+Discover::classes('discover-projectors')
+    ->implementing(Projector::class)
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 Classes using an attribute can be discovered as such:
 
  ```php
-Discoverer::classes('discover-routes')
-        ->attribute(Route::class)
-        ->get(fn (array $classes) => dump($classes);
+Discover::classes('discover-routes')
+    ->attribute(Route::class)
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 You can even check if the attribute has specific parameters:
 
   ```php
-Discoverer::classes('discover-routes')
-        ->attribute(Route::class, ['POST'])
-        ->get(fn (array $classes) => dump($classes);
+Discover::classes('discover-routes')
+    ->attribute(Route::class, ['POST'])
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 Or you can inspect the attribute of a class using a closure to determine if it should be discovered or not:
 
  ```php
-Discoverer::classes('discover-routes')
-        ->attribute(Route::class, fn(Route $route) => $route->method === 'POST')
-        ->get(fn (array $classes) => dump($classes);
+Discover::classes('discover-routes')
+    ->attribute(Route::class, fn(Route $route) => $route->method === 'POST')
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 For more fine-grained control, you can use a closure that receives a `ReflectionClass` and should return `true` if the class should be included:
 
  ```php
-Discoverer::classes('discover-settings')
-        ->custom(fn(ReflectionClass $reflection) => str_ends_with($reflection, 'Settings'))
-        ->get(fn (array $classes) => dump($classes);
+Discover::classes('discover-settings')
+    ->custom(fn(ReflectionClass $reflection) => str_ends_with($reflection, 'Settings'))
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 It is possible to combine conditions. These will all be applied as an AND combination. Which means they all should be valid for the class to be discovered:
 
   ```php
-Discoverer::classes('discover-routes')
-        ->extending(Controller::class)
-        ->attribute(Route::class)
-        ->get(fn (array $classes) => dump($classes);
+Discover::classes('discover-routes')
+    ->extending(Controller::class)
+    ->attribute(Route::class)
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 In this case, only classes extending `Controller` with a `Route` attribute will be discovered.
@@ -157,12 +157,12 @@ In this case, only classes extending `Controller` with a `Route` attribute will 
 You can include classes that adhere to one or more conditions as such:
 
   ```php
-Discoverer::classes('discover-routes')
+Discover::classes('discover-routes')
 	->any(
 		ProfileCondition::extending(Controller::class),
 		ProfileCondition::attribute(Route::class)
 	)
-        ->get(fn (array $classes) => dump($classes);
+    ->get(fn (array $classes) => dump($classes);
 ```
 
 Now classes extending `Controller` OR classes with a `Route` attribute will be discovered.

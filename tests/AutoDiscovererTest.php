@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Cache;
+use Spatie\LaravelAutoDiscoverer\Discover;
 use Spatie\LaravelAutoDiscoverer\DiscoverCache;
-use Spatie\LaravelAutoDiscoverer\Facades\Discover;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\CorruptClass;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\FakeAsbtractClass;
@@ -23,6 +23,7 @@ beforeEach(function () {
     config()->set('auto-discoverer.cache_directory', __DIR__ . '/');
 
     app(DiscoverCache::class)->clear();
+
     Discover::clearProfiles();
 });
 
@@ -408,7 +409,3 @@ it('can discover using a Facade', function () {
 
     expect($found)->toEqual([FakeClass::class]);
 });
-
-// TODO: check if we van register this package earlier
-// TODO: port package to settings, morph map generator, event sourcing
-// TODO: Add Larastan

@@ -29,7 +29,7 @@ composer require spatie/laravel-auto-discoverer
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="Spatie\LaravelAutoDiscoverer\LaravelAutoDiscovererServiceProvider" --tag="laravel-auto-discoverer-config"
+php artisan vendor:publish --provider="Spatie\LaravelAutoDiscoverer\LaravelAutoDiscovererServiceProvider"
 ```
 
 This is the contents of the published config file:

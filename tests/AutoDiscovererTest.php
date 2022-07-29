@@ -3,8 +3,10 @@
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelAutoDiscoverer\Discover;
 use Spatie\LaravelAutoDiscoverer\DiscoverCache;
+use Spatie\LaravelAutoDiscoverer\Exceptions\CallbackRequired;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
-use Spatie\LaravelAutoDiscoverer\Tests\Fakes\CorruptClass;
+use Spatie\LaravelAutoDiscoverer\Tests\Fakes\Failing\CorruptClass;
+use Spatie\LaravelAutoDiscoverer\Tests\Fakes\Failing\FailingClass;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\FakeAsbtractClass;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\FakeAttribute;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\FakeClass;
@@ -16,6 +18,7 @@ use Spatie\LaravelAutoDiscoverer\Tests\Fakes\FakeInterface;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\FakeTrait;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\LevelUp\FakeLevelUpClass;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\OtherLevelUp\FakeOtherLevelUpClass;
+use Spatie\LaravelAutoDiscoverer\Tests\TestCase;
 
 beforeEach(function () {
     config()->set('auto-discoverer.base_path', __DIR__ . '/');
@@ -29,6 +32,8 @@ beforeEach(function () {
 
 it('can discover everything within a directory', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
+        ->basePath( __DIR__ . '/')
         ->within(__DIR__ . '/Fakes')
         ->get(function (array $classes) use (&$found) {
             $found = $classes;
@@ -37,6 +42,7 @@ it('can discover everything within a directory', function () {
     Discover::run();
 
     expect($found)->toEqualCanonicalizing([
+        FailingClass::class,
         FakeClass::class,
         FakeInterface::class,
         FakeLevelUpClass::class,
@@ -53,6 +59,7 @@ it('can discover everything within a directory', function () {
 
 it('can discover specific class names', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
         ->get(function (array $classes) use (&$found) {
@@ -66,6 +73,7 @@ it('can discover specific class names', function () {
 
 it('can discover specific classes extending another class', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->extending(FakeAsbtractClass::class)
         ->get(function (array $classes) use (&$found) {
@@ -79,6 +87,7 @@ it('can discover specific classes extending another class', function () {
 
 it('can discover specific classes implementing an interface', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->implementing(FakeInterface::class)
         ->get(function (array $classes) use (&$found) {
@@ -92,6 +101,7 @@ it('can discover specific classes implementing an interface', function () {
 
 it('can discover specific classes based upon closure', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->custom(fn (ReflectionClass $reflection) => $reflection->name === FakeClass::class)
         ->get(function (array $classes) use (&$found) {
@@ -105,6 +115,7 @@ it('can discover specific classes based upon closure', function () {
 
 it('can discover specific classes based upon using an attribute', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->attribute(FakeAttribute::class)
         ->get(function (array $classes) use (&$found) {
@@ -121,6 +132,7 @@ it('can discover specific classes based upon using an attribute', function () {
 
 it('can discover specific classes based upon using an attribute with specific arguments', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->attribute(FakeAttribute::class, [
             'POST',
@@ -138,6 +150,7 @@ it('can discover specific classes based upon using an attribute with specific ar
 
 it('can discover specific classes based upon using an attribute by inspection via closure', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->attribute(FakeAttribute::class, fn (FakeAttribute $fakeAttribute) => $fakeAttribute->method === 'POST')
         ->get(function (array $classes) use (&$found) {
@@ -153,6 +166,7 @@ it('can discover specific classes based upon using an attribute by inspection vi
 
 it('can discover specific classes based upon multiple rules', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->attribute(FakeAttribute::class)
         ->named(FakeClassUsingAttributeWithArguments::class)
@@ -169,6 +183,7 @@ it('can discover specific classes based upon multiple rules', function () {
 
 it('can discover specific classes based upon sets of conditions', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->any(
             ProfileCondition::any(
@@ -194,6 +209,7 @@ it('can discover specific classes based upon sets of conditions', function () {
 
 it('can discover specific classes with their reflection', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
         ->returnReflection()
@@ -208,6 +224,7 @@ it('can discover specific classes with their reflection', function () {
 
 it('can have multiple discover profiles', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->implementing(FakeInterface::class)
         ->get(function (array $classes) use (&$foundA) {
@@ -216,6 +233,7 @@ it('can have multiple discover profiles', function () {
 
     Discover::classes('b')
         ->within(__DIR__ . '/Fakes')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->extending(FakeAsbtractClass::class)
         ->get(function (array $classes) use (&$foundB) {
             $foundB = $classes;
@@ -229,13 +247,14 @@ it('can have multiple discover profiles', function () {
 
 it('can have multiple callbacks', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
         ->get(function (array $classes) use (&$foundOne) {
             $foundOne = $classes;
         });
 
-    Discover::get('a', function (array $classes) use (&$foundTwo) {
+    Discover::addCallback('a', function (array $classes) use (&$foundTwo) {
         $foundTwo = $classes;
     });
 
@@ -245,8 +264,29 @@ it('can have multiple callbacks', function () {
     expect($foundTwo)->toBe([FakeClass::class]);
 });
 
+it('can get the discovered classes later on in the process', function(){
+    Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
+        ->within(__DIR__ . '/Fakes')
+        ->named(FakeClass::class);
+
+    Discover::run();
+
+    expect(Discover::get('a'))->toBe([FakeClass::class]);
+});
+
+it('cannot get the discovered classes before the discoverer has ran', function(){
+    Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
+        ->within(__DIR__ . '/Fakes')
+        ->named(FakeClass::class);
+
+    expect(Discover::get('a'))->toBe([FakeClass::class]);
+})->expectException(CallbackRequired::class);
+
 it('can cache the output', function () {
     $profile = Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
         ->get(function (array $classes) use (&$found) {
@@ -269,8 +309,9 @@ it('can cache the output', function () {
 
 it('can cache the output with reflection returning', function () {
     $profile = Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
-        ->returnReflection()
+        ->returnReflectionWhenCached()
         ->named(FakeClass::class)
         ->get(function (array $classes) use (&$found) {
             $found = $classes;
@@ -292,6 +333,7 @@ it('can cache the output with reflection returning', function () {
 
 it('can use a cached and non cached profile next to each other', function () {
     $profileA = Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
         ->get(function (array $classes) use (&$foundA) {
@@ -302,6 +344,7 @@ it('can use a cached and non cached profile next to each other', function () {
 
     $profileB = Discover::classes('b')
         ->within(__DIR__ . '/Fakes')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->named(FakeClassImplementing::class)
         ->get(function (array $classes) use (&$foundB) {
             $foundB = $classes;
@@ -318,12 +361,14 @@ it('can use a cached and non cached profile next to each other', function () {
 
 it('can discover in specific directories', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes/LevelUp')
         ->get(function (array $classes) use (&$foundA) {
             $foundA = $classes;
         });
 
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes/OtherLevelUp')
         ->get(function (array $classes) use (&$foundB) {
             $foundB = $classes;
@@ -341,10 +386,9 @@ it('can discover in specific directories', function () {
 });
 
 it('can use a different base path and root namespace', function () {
-    config()->set('auto-discoverer.base_path', __DIR__ . '/Fakes/LevelUp');
-    config()->set('auto-discoverer.root_namespace', 'Spatie\LaravelAutoDiscoverer\Tests\Fakes\LevelUp\\');
-
     Discover::classes('a')
+        ->basePath(__DIR__ . '/Fakes/LevelUp')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\Fakes\LevelUp\\')
         ->within(__DIR__ . '/Fakes/LevelUp')
         ->get(function (array $classes) use (&$found) {
             $found = $classes;
@@ -361,6 +405,7 @@ it('can ignore certain files', function () {
     config()->set('auto-discoverer.ignored_files', [__DIR__ . '/Fakes/FakeClass.php']);
 
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
         ->get(function (array $classes) use (&$found) {
@@ -375,6 +420,7 @@ it('can ignore certain files', function () {
 it('ignores corrupt classes', function () {
     Discover::classes('a')
         ->within(__DIR__ . '/Fakes')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->named(FakeClass::class, CorruptClass::class)
         ->get(function (array $classes) use (&$found) {
             $found = $classes;
@@ -387,6 +433,7 @@ it('ignores corrupt classes', function () {
 
 it('can discover without specifying a directory', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->named(FakeClass::class)
         ->get(function (array $classes) use (&$found) {
             $found = $classes;
@@ -399,6 +446,7 @@ it('can discover without specifying a directory', function () {
 
 it('can discover using a Facade', function () {
     Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
         ->get(function (array $classes) use (&$found) {

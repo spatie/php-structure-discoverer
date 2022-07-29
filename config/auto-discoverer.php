@@ -7,11 +7,6 @@ return [
     'base_path' => base_path(),
 
     /*
-     *  When you're using another root namespace, you can define it here
-     */
-    'root_namespace' => '',
-
-    /*
      *  A list of files that should be ignored during the discovering process.
      */
     'ignored_files' => [],

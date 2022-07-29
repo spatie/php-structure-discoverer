@@ -2,6 +2,7 @@
 
 namespace Spatie\LaravelAutoDiscoverer;
 
+use Error;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -11,34 +12,22 @@ use Throwable;
 
 class ClassDiscoverer
 {
-    public function __construct(
-        public array $directories,
-        public string $basePath,
-        public string $rootNamespace,
-        public array $ignoredFiles,
-    ) {
-    }
-
-    public function discover(): Collection
+    public function discover(DiscoverProfile $profile): Collection
     {
-        if (empty($this->directories)) {
-            return new Collection();
-        }
-
-        $files = (new Finder())->files()->in($this->directories);
+        $files = (new Finder())->files()->in($profile->getDirectories());
 
         $ignoredFiles = array_merge(
-            $this->ignoredFiles,
+            config('auto-discoverer.ignored_files'),
             Composer::getAutoloadedFiles(base_path('composer.json'))
         );
 
         return collect($files)
-            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles))
-            ->map(fn (SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($file))
+            ->reject(fn(SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles))
+            ->map(fn(SplFileInfo $file) => $this->fullQualifiedClassNameFromFile($profile, $file))
             ->map(function (string $class) {
                 try {
                     return new ReflectionClass($class);
-                } catch (Throwable) {
+                } catch (Throwable $e) {
                     return null;
                 }
             })
@@ -46,10 +35,11 @@ class ClassDiscoverer
     }
 
     protected function fullQualifiedClassNameFromFile(
+        DiscoverProfile $profile,
         SplFileInfo $file
     ): string {
         return Str::of($file->getRealPath())
-            ->replaceFirst($this->basePath, '')
+            ->replaceFirst($profile->basePath, '')
             ->replaceLast('.php', '')
             ->trim(DIRECTORY_SEPARATOR)
             ->ucfirst()
@@ -57,6 +47,6 @@ class ClassDiscoverer
                 [DIRECTORY_SEPARATOR, 'App\\'],
                 ['\\', app()->getNamespace()],
             )
-            ->prepend($this->rootNamespace);
+            ->prepend(Str::finish($profile->rootNamespace, '\\'));
     }
 }

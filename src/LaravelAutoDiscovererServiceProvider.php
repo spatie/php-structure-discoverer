@@ -16,7 +16,6 @@ class LaravelAutoDiscovererServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-auto-discoverer')
             ->hasConfigFile()
-            ->hasViews()
             ->hasCommand(CacheDiscoveredClasses::class)
             ->hasCommand(ClearDiscoveredClassesCache::class);
 

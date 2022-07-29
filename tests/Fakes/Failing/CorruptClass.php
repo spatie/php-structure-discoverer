@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Tests\Fakes;
+namespace Spatie\LaravelAutoDiscoverer\Tests\Fakes\Failing;
 
 class CorruptClass
 {

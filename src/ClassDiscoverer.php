@@ -31,7 +31,7 @@ class ClassDiscoverer
         $files = (new Finder())->files()->in($directories->all());
 
         $ignoredFiles = array_merge(
-            config('auto-discoverer.ignored_files'),
+            config('auto-discoverer.ignored_files') ?? [],
             Composer::getAutoloadedFiles(base_path('composer.json'))
         );
 
@@ -45,7 +45,7 @@ class ClassDiscoverer
                     continue;
                 }
 
-                $class = $this->fullQualifiedClassNameFromFile($profile->config, $file);
+                $class = $this->fullQualifiedClassNameFromFile($profile, $file);
 
                 try {
                     $reflection = new ReflectionClass($class);
@@ -65,11 +65,11 @@ class ClassDiscoverer
     }
 
     protected function fullQualifiedClassNameFromFile(
-        DiscoverProfileConfig $profile,
+        DiscoverProfile $profile,
         SplFileInfo $file
     ): string {
         return Str::of($file->getRealPath())
-            ->replaceFirst($profile->basePath, '')
+            ->replaceFirst($profile->getBasePath(), '')
             ->replaceLast('.php', '')
             ->trim(DIRECTORY_SEPARATOR)
             ->ucfirst()
@@ -77,6 +77,6 @@ class ClassDiscoverer
                 [DIRECTORY_SEPARATOR, 'App\\'],
                 ['\\', app()->getNamespace()],
             )
-            ->prepend(Str::finish($profile->rootNamespace, '\\'));
+            ->prepend(Str::finish($profile->getRootNamespace(), '\\'));
     }
 }

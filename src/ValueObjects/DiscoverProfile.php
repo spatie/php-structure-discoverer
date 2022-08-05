@@ -27,6 +27,16 @@ class DiscoverProfile implements DiscoverProfileIdentifieable
         return $this->config->identifier;
     }
 
+    public function getRootNamespace(): string
+    {
+        return $this->config->rootNamespace;
+    }
+
+    public function getBasePath(): string
+    {
+        return realpath($this->config->basePath);
+    }
+
     public function getDirectories(): array
     {
         $directories = ! empty($this->config->directories)

@@ -55,17 +55,14 @@ class DiscoverProfileConfig implements DiscoverProfileIdentifieable
 
     public function within(string ...$directories): static
     {
-        $this->directories = array_merge($this->directories, array_map(
-            fn (string $directory) => realpath($directory),
-            $directories
-        ));
+        $this->directories = array_merge($this->directories, $directories);
 
         return $this;
     }
 
     public function basePath(string $basePath): static
     {
-        $this->basePath = realpath($basePath);
+        $this->basePath = $basePath;
 
         return $this;
     }

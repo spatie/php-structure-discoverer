@@ -2,14 +2,9 @@
 
 namespace Spatie\LaravelAutoDiscoverer;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use ReflectionClass;
 use Spatie\LaravelAutoDiscoverer\Contracts\DiscoverProfileIdentifieable;
 use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfile;
-use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfileConfig;
-use TypeError;
-use function Pest\Laravel\instance;
 
 class DiscoverCache
 {
@@ -28,9 +23,9 @@ class DiscoverCache
     public function save(DiscoverProfilesCollection $profiles): void
     {
         $json = $profiles
-            ->filter(fn(DiscoverProfile $profile) => $profile->isDiscovered())
+            ->filter(fn (DiscoverProfile $profile) => $profile->isDiscovered())
             ->toCollection()
-            ->mapWithKeys(fn(DiscoverProfile $profile) => [
+            ->mapWithKeys(fn (DiscoverProfile $profile) => [
                 $profile->getIdentifier() => $profile->getDiscoveredClassNames()->all(),
             ])
             ->toJson();

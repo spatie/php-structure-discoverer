@@ -4,7 +4,6 @@ namespace Spatie\LaravelAutoDiscoverer;
 
 use Closure;
 use Illuminate\Support\Collection;
-use ReflectionClass;
 use Spatie\LaravelAutoDiscoverer\Exceptions\CallbackRequired;
 use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfile;
 use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfileConfig;
@@ -63,21 +62,22 @@ class DiscoverManager
     public function run(): void
     {
         [$discoveredProfiles, $nonDiscoveredProfiles] = $this->profiles->partition(
-            fn(DiscoverProfile $profile) => $profile->isDiscovered()
+            fn (DiscoverProfile $profile) => $profile->isDiscovered()
         );
 
         [$cachedProfiles, $nonCachedProfiles] = $nonDiscoveredProfiles->partition(
-            fn(DiscoverProfile $profile) => $this->cache->has($profile)
+            fn (DiscoverProfile $profile) => $this->cache->has($profile)
         );
 
         $this->profiles = $cachedProfiles
-            ->transform(fn(DiscoverProfile $profile) => $profile
+            ->transform(
+                fn (DiscoverProfile $profile) => $profile
                 ->addDiscovered(...$this->cache->get($profile))
                 ->markDiscovered(fromCache: true)
             )
             ->merge(ClassDiscoverer::create()->discover($nonCachedProfiles))
             ->merge($discoveredProfiles)
-            ->each(fn(DiscoverProfile $profile) => $profile->runCallbacks());
+            ->each(fn (DiscoverProfile $profile) => $profile->runCallbacks());
     }
 
     public function resetDiscovered(): void

@@ -2,13 +2,8 @@
 
 namespace Spatie\LaravelAutoDiscoverer;
 
-use Dflydev\DotAccessData\Data;
-use Error;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use ReflectionClass;
-use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
 use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfile;
 use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfileConfig;
 use SplFileInfo;
@@ -25,12 +20,12 @@ class ClassDiscoverer
     public function discover(DiscoverProfilesCollection $profiles): DiscoverProfilesCollection
     {
         $directories = $profiles->toCollection()
-            ->flatMap(fn(DiscoverProfile $profile) => $profile->getDirectories())
+            ->flatMap(fn (DiscoverProfile $profile) => $profile->getDirectories())
             ->unique()
             ->values();
 
         if ($directories->isEmpty()) {
-            return $profiles->each(fn(DiscoverProfile $profile) => $profile->markDiscovered());
+            return $profiles->each(fn (DiscoverProfile $profile) => $profile->markDiscovered());
         }
 
         $files = (new Finder())->files()->in($directories->all());
@@ -66,7 +61,7 @@ class ClassDiscoverer
             }
         }
 
-        return $profiles->each(fn(DiscoverProfile $profile) => $profile->markDiscovered());
+        return $profiles->each(fn (DiscoverProfile $profile) => $profile->markDiscovered());
     }
 
     protected function fullQualifiedClassNameFromFile(

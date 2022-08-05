@@ -3,14 +3,9 @@
 namespace Spatie\LaravelAutoDiscoverer\ValueObjects;
 
 use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use ReflectionClass;
 use Spatie\LaravelAutoDiscoverer\Contracts\DiscoverProfileIdentifieable;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\AndCombinationProfileCondition;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
-use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfileCallback;
-use function Spatie\LaravelAutoDiscoverer\str_starts_with;
 
 /**
  * @method DiscoverProfileConfig implementing(string ...$interfaces)
@@ -61,7 +56,7 @@ class DiscoverProfileConfig implements DiscoverProfileIdentifieable
     public function within(string ...$directories): static
     {
         $this->directories = array_merge($this->directories, array_map(
-            fn(string $directory) => realpath($directory),
+            fn (string $directory) => realpath($directory),
             $directories
         ));
 

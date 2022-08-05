@@ -4,7 +4,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelAutoDiscoverer\Discover;
 use Spatie\LaravelAutoDiscoverer\DiscoverCache;
-use Spatie\LaravelAutoDiscoverer\DiscoverManager;
 use Spatie\LaravelAutoDiscoverer\Exceptions\CallbackRequired;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\Failing\CorruptClass;
@@ -20,7 +19,6 @@ use Spatie\LaravelAutoDiscoverer\Tests\Fakes\FakeInterface;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\FakeTrait;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\LevelUp\FakeLevelUpClass;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\OtherLevelUp\FakeOtherLevelUpClass;
-use Spatie\LaravelAutoDiscoverer\Tests\TestCase;
 
 beforeEach(function () {
     config()->set('auto-discoverer.base_path', __DIR__ . '/');
@@ -105,7 +103,7 @@ it('can discover specific classes based upon closure', function () {
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
-        ->custom(fn(ReflectionClass $reflection) => $reflection->name === FakeClass::class)
+        ->custom(fn (ReflectionClass $reflection) => $reflection->name === FakeClass::class)
         ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
@@ -154,7 +152,7 @@ it('can discover specific classes based upon using an attribute by inspection vi
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
-        ->attribute(FakeAttribute::class, fn(FakeAttribute $fakeAttribute) => $fakeAttribute->method === 'POST')
+        ->attribute(FakeAttribute::class, fn (FakeAttribute $fakeAttribute) => $fakeAttribute->method === 'POST')
         ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });

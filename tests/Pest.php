@@ -3,9 +3,9 @@
 use Spatie\LaravelAutoDiscoverer\Discover;
 use Spatie\LaravelAutoDiscoverer\DiscoverCache;
 use Spatie\LaravelAutoDiscoverer\DiscoverProfilesCollection;
+use Spatie\LaravelAutoDiscoverer\Tests\TestCase;
 use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfile;
 use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfileConfig;
-use Spatie\LaravelAutoDiscoverer\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);
 
@@ -14,14 +14,14 @@ if (! function_exists('setProfileInCache')) {
     {
         $profile = new DiscoverProfile($config);
 
-        foreach ($classes as $class){
+        foreach ($classes as $class) {
             $profile->addDiscovered($class);
         }
 
         $profile->markDiscovered();
 
         $collection = new DiscoverProfilesCollection(collect([
-            $profile
+            $profile,
         ]));
 
         app(DiscoverCache::class)->save($collection);

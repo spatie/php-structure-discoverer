@@ -34,7 +34,7 @@ class DiscoverProfile implements DiscoverProfileIdentifieable
             : [$this->config->basePath];
 
         return array_map(
-            fn(string $directory) => realpath($directory),
+            fn (string $directory) => realpath($directory),
             $directories
         );
     }
@@ -43,7 +43,7 @@ class DiscoverProfile implements DiscoverProfileIdentifieable
     {
         $path = realpath(dirname($path));
 
-        $isSubDir = Arr::first($this->getDirectories(), fn(string $directory) => str_starts_with(
+        $isSubDir = Arr::first($this->getDirectories(), fn (string $directory) => str_starts_with(
             $path,
             $directory,
         ));
@@ -94,7 +94,8 @@ class DiscoverProfile implements DiscoverProfileIdentifieable
     public function getDiscoveredReflectionClasses(): Collection
     {
         return $this->discovered
-            ->transform(fn(?ReflectionClass $reflection, string $class) => $reflection === null
+            ->transform(
+                fn (?ReflectionClass $reflection, string $class) => $reflection === null
                 ? new ReflectionClass($class)
                 : $reflection
             )

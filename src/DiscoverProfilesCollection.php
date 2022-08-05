@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Spatie\LaravelAutoDiscoverer\Exceptions\DuplicateDiscoverProfile;
 use Spatie\LaravelAutoDiscoverer\Exceptions\UnknownDiscoverProfile;
 use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfile;
-use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfileConfig;
 
 class DiscoverProfilesCollection
 {
@@ -87,7 +86,7 @@ class DiscoverProfilesCollection
 
     public function reset(): DiscoverProfilesCollection
     {
-        return $this->transform(fn(DiscoverProfile $profile) => (clone $profile)->reset());
+        return $this->transform(fn (DiscoverProfile $profile) => (clone $profile)->reset());
     }
 
     /** @return Collection<\Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfile> */

@@ -2,13 +2,6 @@
 
 namespace Spatie\LaravelAutoDiscoverer;
 
-use Closure;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use ReflectionClass;
-use Spatie\LaravelAutoDiscoverer\Exceptions\CallbackRequired;
-use Spatie\LaravelAutoDiscoverer\Exceptions\UnknownDiscoverProfile;
-
 /** @mixin \Spatie\LaravelAutoDiscoverer\DiscoverManager */
 class Discover
 {

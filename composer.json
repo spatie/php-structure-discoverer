@@ -25,7 +25,8 @@
         "nunomaduro/larastan": "^2.0|^1.0",
         "orchestra/testbench": "^7.0|^6.15",
         "pestphp/pest": "^1.18",
-        "pestphp/pest-plugin-laravel": "^1.1"
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "spatie/laravel-ray": "^1.30"
     },
     "autoload": {
         "psr-4": {

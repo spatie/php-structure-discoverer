@@ -1,22 +1,27 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer;
+namespace Spatie\LaravelAutoDiscoverer\ValueObjects;
 
 use Closure;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use ReflectionClass;
+use Spatie\LaravelAutoDiscoverer\Contracts\DiscoverProfileIdentifieable;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\AndCombinationProfileCondition;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
+use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfileCallback;
+use function Spatie\LaravelAutoDiscoverer\str_starts_with;
 
 /**
- * @method DiscoverProfile implementing(string ...$interfaces)
- * @method DiscoverProfile extending(string ...$classes)
- * @method DiscoverProfile named(string ...$classes)
- * @method DiscoverProfile custom(Closure ...$closures)
- * @method DiscoverProfile attribute(string $attribute, null|Closure|array $arguments = null)
- * @method DiscoverProfile combination(ProfileCondition ...$conditions)
- * @method DiscoverProfile any(ProfileCondition ...$conditions)
+ * @method DiscoverProfileConfig implementing(string ...$interfaces)
+ * @method DiscoverProfileConfig extending(string ...$classes)
+ * @method DiscoverProfileConfig named(string ...$classes)
+ * @method DiscoverProfileConfig custom(Closure ...$closures)
+ * @method DiscoverProfileConfig attribute(string $attribute, null|Closure|array $arguments = null)
+ * @method DiscoverProfileConfig combination(ProfileCondition ...$conditions)
+ * @method DiscoverProfileConfig any(ProfileCondition ...$conditions)
  */
-class DiscoverProfile
+class DiscoverProfileConfig implements DiscoverProfileIdentifieable
 {
     public AndCombinationProfileCondition $conditions;
 
@@ -24,6 +29,7 @@ class DiscoverProfile
 
     public string $rootNamespace;
 
+    /** @var array<Closure> */
     public array $callBacks = [];
 
     public array $directories = [];
@@ -31,8 +37,6 @@ class DiscoverProfile
     public bool $returnReflection = false;
 
     public bool $returnReflectionWhenCached = false;
-
-    public array $discovered;
 
     public function __construct(
         public string $identifier,
@@ -99,15 +103,8 @@ class DiscoverProfile
         return $this;
     }
 
-    public function getDirectories(): array
+    public function getIdentifier(): string
     {
-        $directories = ! empty($this->directories)
-            ? $this->directories
-            : [$this->basePath];
-
-        return array_map(
-            fn(string $directory) => realpath($directory),
-            $directories
-        );
+        return $this->identifier;
     }
 }

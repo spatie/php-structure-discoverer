@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Spatie\LaravelAutoDiscoverer\Discover;
 use Spatie\LaravelAutoDiscoverer\DiscoverCache;
+use Spatie\LaravelAutoDiscoverer\DiscoverManager;
 use Spatie\LaravelAutoDiscoverer\Exceptions\CallbackRequired;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
 use Spatie\LaravelAutoDiscoverer\Tests\Fakes\Failing\CorruptClass;
@@ -33,15 +35,15 @@ beforeEach(function () {
 it('can discover everything within a directory', function () {
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
-        ->basePath( __DIR__ . '/')
+        ->basePath(__DIR__ . '/')
         ->within(__DIR__ . '/Fakes')
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqualCanonicalizing([
+    expect($found->all())->toEqualCanonicalizing([
         FailingClass::class,
         FakeClass::class,
         FakeInterface::class,
@@ -62,13 +64,13 @@ it('can discover specific class names', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([FakeClass::class]);
+    expect($found->all())->toEqual([FakeClass::class]);
 });
 
 it('can discover specific classes extending another class', function () {
@@ -76,13 +78,13 @@ it('can discover specific classes extending another class', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->extending(FakeAsbtractClass::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([FakeClassExtending::class]);
+    expect($found->all())->toEqual([FakeClassExtending::class]);
 });
 
 it('can discover specific classes implementing an interface', function () {
@@ -90,27 +92,27 @@ it('can discover specific classes implementing an interface', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->implementing(FakeInterface::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([FakeClassImplementing::class]);
+    expect($found->all())->toEqual([FakeClassImplementing::class]);
 });
 
 it('can discover specific classes based upon closure', function () {
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
-        ->custom(fn (ReflectionClass $reflection) => $reflection->name === FakeClass::class)
-        ->get(function (array $classes) use (&$found) {
+        ->custom(fn(ReflectionClass $reflection) => $reflection->name === FakeClass::class)
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([FakeClass::class]);
+    expect($found->all())->toEqual([FakeClass::class]);
 });
 
 it('can discover specific classes based upon using an attribute', function () {
@@ -118,13 +120,13 @@ it('can discover specific classes based upon using an attribute', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->attribute(FakeAttribute::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([
+    expect($found->all())->toEqual([
         FakeClassUsingAttribute::class,
         FakeClassUsingAttributeWithArguments::class,
     ]);
@@ -137,13 +139,13 @@ it('can discover specific classes based upon using an attribute with specific ar
         ->attribute(FakeAttribute::class, [
             'POST',
         ])
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([
+    expect($found->all())->toEqual([
         FakeClassUsingAttributeWithArguments::class,
     ]);
 });
@@ -152,14 +154,14 @@ it('can discover specific classes based upon using an attribute by inspection vi
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
-        ->attribute(FakeAttribute::class, fn (FakeAttribute $fakeAttribute) => $fakeAttribute->method === 'POST')
-        ->get(function (array $classes) use (&$found) {
+        ->attribute(FakeAttribute::class, fn(FakeAttribute $fakeAttribute) => $fakeAttribute->method === 'POST')
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([
+    expect($found->all())->toEqual([
         FakeClassUsingAttributeWithArguments::class,
     ]);
 });
@@ -170,13 +172,13 @@ it('can discover specific classes based upon multiple rules', function () {
         ->within(__DIR__ . '/Fakes')
         ->attribute(FakeAttribute::class)
         ->named(FakeClassUsingAttributeWithArguments::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([
+    expect($found->all())->toEqual([
         FakeClassUsingAttributeWithArguments::class,
     ]);
 });
@@ -195,13 +197,13 @@ it('can discover specific classes based upon sets of conditions', function () {
                 ProfileCondition::named(FakeClass::class),
             )
         )
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqualCanonicalizing([
+    expect($found->all())->toEqualCanonicalizing([
         FakeClass::class,
         FakeClassImplementing::class,
     ]);
@@ -213,13 +215,13 @@ it('can discover specific classes with their reflection', function () {
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
         ->returnReflection()
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([new ReflectionClass(FakeClass::class)]);
+    expect($found->all())->toEqual([new ReflectionClass(FakeClass::class)]);
 });
 
 it('can have multiple discover profiles', function () {
@@ -227,7 +229,7 @@ it('can have multiple discover profiles', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->implementing(FakeInterface::class)
-        ->get(function (array $classes) use (&$foundA) {
+        ->get(function (Collection $classes) use (&$foundA) {
             $foundA = $classes;
         });
 
@@ -235,14 +237,14 @@ it('can have multiple discover profiles', function () {
         ->within(__DIR__ . '/Fakes')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->extending(FakeAsbtractClass::class)
-        ->get(function (array $classes) use (&$foundB) {
+        ->get(function (Collection $classes) use (&$foundB) {
             $foundB = $classes;
         });
 
     Discover::run();
 
-    expect($foundA)->toBe([FakeClassImplementing::class]);
-    expect($foundB)->toBe([FakeClassExtending::class]);
+    expect($foundA->all())->toBe([FakeClassImplementing::class]);
+    expect($foundB->all())->toBe([FakeClassExtending::class]);
 });
 
 it('can have multiple callbacks', function () {
@@ -250,21 +252,21 @@ it('can have multiple callbacks', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
-        ->get(function (array $classes) use (&$foundOne) {
+        ->get(function (Collection $classes) use (&$foundOne) {
             $foundOne = $classes;
         });
 
-    Discover::addCallback('a', function (array $classes) use (&$foundTwo) {
+    Discover::addCallback('a', function (Collection $classes) use (&$foundTwo) {
         $foundTwo = $classes;
     });
 
     Discover::run();
 
-    expect($foundOne)->toBe([FakeClass::class]);
-    expect($foundTwo)->toBe([FakeClass::class]);
+    expect($foundOne->all())->toBe([FakeClass::class]);
+    expect($foundTwo->all())->toBe([FakeClass::class]);
 });
 
-it('can get the discovered classes later on in the process', function(){
+it('can get the discovered classes later on in the process', function () {
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
@@ -272,16 +274,16 @@ it('can get the discovered classes later on in the process', function(){
 
     Discover::run();
 
-    expect(Discover::get('a'))->toBe([FakeClass::class]);
+    expect(Discover::get('a')->all())->toBe([FakeClass::class]);
 });
 
-it('cannot get the discovered classes before the discoverer has ran', function(){
+it('cannot get the discovered classes before the discoverer has ran', function () {
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class);
 
-    expect(Discover::get('a'))->toBe([FakeClass::class]);
+    expect(Discover::get('a')->all())->toBe([FakeClass::class]);
 })->expectException(CallbackRequired::class);
 
 it('can cache the output', function () {
@@ -289,14 +291,14 @@ it('can cache the output', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::cache();
     Discover::run();
 
-    expect($found)->toEqual([FakeClass::class]);
+    expect($found->all())->toEqual([FakeClass::class]);
     expect(app(DiscoverCache::class)->get($profile))->toEqual([FakeClass::class]);
 
     // We update the cache, so we're sure the cache is being used
@@ -304,7 +306,7 @@ it('can cache the output', function () {
 
     Discover::run();
 
-    expect($found)->toEqual([FakeClassImplementing::class]);
+    expect($found->all())->toEqual([FakeClassImplementing::class]);
 });
 
 it('can cache the output with reflection returning', function () {
@@ -313,14 +315,14 @@ it('can cache the output with reflection returning', function () {
         ->within(__DIR__ . '/Fakes')
         ->returnReflectionWhenCached()
         ->named(FakeClass::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::cache();
     Discover::run();
 
-    expect($found)->toEqual([new ReflectionClass(FakeClass::class)]);
+    expect($found->all())->toEqual([FakeClass::class]);
     expect(app(DiscoverCache::class)->get($profile))->toEqual([FakeClass::class]);
 
     // We update the cache, so we're sure the cache is being used
@@ -328,7 +330,7 @@ it('can cache the output with reflection returning', function () {
 
     Discover::run();
 
-    expect($found)->toEqual([new ReflectionClass(FakeClassImplementing::class)]);
+    expect($found->all())->toEqual([new ReflectionClass(FakeClassImplementing::class)]);
 });
 
 it('can use a cached and non cached profile next to each other', function () {
@@ -336,7 +338,7 @@ it('can use a cached and non cached profile next to each other', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
-        ->get(function (array $classes) use (&$foundA) {
+        ->get(function (Collection $classes) use (&$foundA) {
             $foundA = $classes;
         });
 
@@ -346,7 +348,7 @@ it('can use a cached and non cached profile next to each other', function () {
         ->within(__DIR__ . '/Fakes')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->named(FakeClassImplementing::class)
-        ->get(function (array $classes) use (&$foundB) {
+        ->get(function (Collection $classes) use (&$foundB) {
             $foundB = $classes;
         });
 
@@ -355,34 +357,29 @@ it('can use a cached and non cached profile next to each other', function () {
     expect(app(DiscoverCache::class)->has($profileA))->toBeTrue();
     expect(app(DiscoverCache::class)->has($profileB))->toBeFalse();
 
-    expect($foundA)->toEqual([FakeClass::class]);
-    expect($foundB)->toEqual([FakeClassImplementing::class]);
+    expect($foundA->all())->toEqual([FakeClass::class]);
+    expect($foundB->all())->toEqual([FakeClassImplementing::class]);
 });
 
 it('can discover in specific directories', function () {
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes/LevelUp')
-        ->get(function (array $classes) use (&$foundA) {
+        ->get(function (Collection $classes) use (&$foundA) {
             $foundA = $classes;
         });
 
-    Discover::classes('a')
+    Discover::classes('b')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes/OtherLevelUp')
-        ->get(function (array $classes) use (&$foundB) {
+        ->get(function (Collection $classes) use (&$foundB) {
             $foundB = $classes;
         });
 
     Discover::run();
 
-    expect($foundA)->toEqual([
-        FakeLevelUpClass::class,
-    ]);
-
-    expect($foundB)->toEqual([
-        FakeOtherLevelUpClass::class,
-    ]);
+    expect($foundA->all())->toEqual([FakeLevelUpClass::class])
+        ->and($foundB->all())->toEqual([FakeOtherLevelUpClass::class]);
 });
 
 it('can use a different base path and root namespace', function () {
@@ -390,13 +387,13 @@ it('can use a different base path and root namespace', function () {
         ->basePath(__DIR__ . '/Fakes/LevelUp')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\Fakes\LevelUp\\')
         ->within(__DIR__ . '/Fakes/LevelUp')
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([
+    expect($found->all())->toEqual([
         FakeLevelUpClass::class,
     ]);
 });
@@ -408,7 +405,7 @@ it('can ignore certain files', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
@@ -422,26 +419,26 @@ it('ignores corrupt classes', function () {
         ->within(__DIR__ . '/Fakes')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->named(FakeClass::class, CorruptClass::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([FakeClass::class]);
+    expect($found->all())->toEqual([FakeClass::class]);
 });
 
 it('can discover without specifying a directory', function () {
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->named(FakeClass::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([FakeClass::class]);
+    expect($found->all())->toEqual([FakeClass::class]);
 });
 
 it('can discover using a Facade', function () {
@@ -449,11 +446,11 @@ it('can discover using a Facade', function () {
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
         ->named(FakeClass::class)
-        ->get(function (array $classes) use (&$found) {
+        ->get(function (Collection $classes) use (&$found) {
             $found = $classes;
         });
 
     Discover::run();
 
-    expect($found)->toEqual([FakeClass::class]);
+    expect($found->all())->toEqual([FakeClass::class]);
 });

@@ -5,32 +5,35 @@ namespace Spatie\LaravelAutoDiscoverer;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use ReflectionClass;
+use Spatie\LaravelAutoDiscoverer\Contracts\DiscoverProfileIdentifieable;
+use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfile;
+use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfileConfig;
+use TypeError;
+use function Pest\Laravel\instance;
 
 class DiscoverCache
 {
     public static ?array $cache = null;
 
-    public function has(DiscoverProfile $profile): bool
+    public function has(DiscoverProfileIdentifieable $profile): bool
     {
-        return array_key_exists($profile->identifier, $this->all());
+        return array_key_exists($profile->getIdentifier(), $this->all());
     }
 
-    public function get(DiscoverProfile $profile): array
+    public function get(DiscoverProfileIdentifieable $profile): array
     {
-        return $this->all()[$profile->identifier];
+        return $this->all()[$profile->getIdentifier()];
     }
 
-    public function save(Collection $profilesAndDiscovered): void
+    public function save(DiscoverProfilesCollection $profiles): void
     {
-        $json = $profilesAndDiscovered->mapWithKeys(function (array $item) {
-            /** @var \Spatie\LaravelAutoDiscoverer\DiscoverProfile $profile */
-            /** @var \Illuminate\Support\Collection $discovered */
-            [$profile, $discovered] = $item;
-
-            return [
-                $profile->identifier => $discovered->map(fn (ReflectionClass $class) => $class->name)->all(),
-            ];
-        })->toJson();
+        $json = $profiles
+            ->filter(fn(DiscoverProfile $profile) => $profile->isDiscovered())
+            ->toCollection()
+            ->mapWithKeys(fn(DiscoverProfile $profile) => [
+                $profile->getIdentifier() => $profile->getDiscoveredClassNames()->all(),
+            ])
+            ->toJson();
 
         File::ensureDirectoryExists(config('auto-discoverer.cache_directory'));
         File::put($this->resolveCacheFile(), $json);

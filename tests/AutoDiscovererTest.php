@@ -268,7 +268,8 @@ it('can get the discovered classes later on in the process', function () {
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
         ->within(__DIR__ . '/Fakes')
-        ->named(FakeClass::class);
+        ->named(FakeClass::class)
+        ->get(fn(Collection $classes) => $classes);
 
     Discover::run();
 
@@ -426,19 +427,6 @@ it('ignores corrupt classes', function () {
     expect($found->all())->toEqual([FakeClass::class]);
 });
 
-it('can discover without specifying a directory', function () {
-    Discover::classes('a')
-        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
-        ->named(FakeClass::class)
-        ->get(function (Collection $classes) use (&$found) {
-            $found = $classes;
-        });
-
-    Discover::run();
-
-    expect($found->all())->toEqual([FakeClass::class]);
-});
-
 it('can discover using a Facade', function () {
     Discover::classes('a')
         ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
@@ -451,4 +439,58 @@ it('can discover using a Facade', function () {
     Discover::run();
 
     expect($found->all())->toEqual([FakeClass::class]);
+});
+
+it('can discover a profile instantly without affecting others', function (){
+    Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
+        ->within(__DIR__ . '/Fakes')
+        ->implementing(FakeInterface::class)
+        ->get(function (Collection $classes) use (&$foundA) {
+            $foundA = $classes;
+        });
+
+    Discover::classes('b')
+        ->within(__DIR__ . '/Fakes')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
+        ->extending(FakeAsbtractClass::class)
+        ->get(function (Collection $classes) use (&$foundB) {
+            $foundB = $classes;
+        });
+
+    expect($foundA)->toBeNull();
+    expect(Discover::getInstantly('b')->all())->toBe([FakeClassExtending::class]);
+    expect($foundB->all())->toBe([FakeClassExtending::class]);
+
+    Discover::run();
+
+    expect($foundA->all())->toBe([FakeClassImplementing::class]);
+    expect($foundB->all())->toBe([FakeClassExtending::class]);
+});
+
+it('only discovers profiles with registered callbacks', function (){
+    Discover::classes('a')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
+        ->within(__DIR__ . '/Fakes')
+        ->implementing(FakeInterface::class);
+
+    Discover::classes('b')
+        ->within(__DIR__ . '/Fakes')
+        ->rootNamespace('Spatie\LaravelAutoDiscoverer\Tests\\')
+        ->extending(FakeAsbtractClass::class)
+        ->get(fn (Collection $classes) => $classes);
+
+    Discover::run();
+
+    /** @var \Spatie\LaravelAutoDiscoverer\DiscoverProfilesCollection $profiles */
+    $profiles = invade(Discover::$manager)->profiles;
+
+    expect($profiles->get('a')->isDiscovered())->toBeFalse();
+    expect($profiles->get('b')->isDiscovered())->toBeTrue();
+
+    Discover::addCallback('a', fn (Collection $classes) => $classes);
+    Discover::run();
+
+    expect($profiles->get('a')->isDiscovered())->toBeTrue();
+    expect($profiles->get('b')->isDiscovered())->toBeTrue();
 });

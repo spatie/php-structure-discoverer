@@ -5,7 +5,7 @@ namespace Spatie\LaravelAutoDiscoverer;
 /** @mixin \Spatie\LaravelAutoDiscoverer\DiscoverManager */
 class Discover
 {
-    protected static DiscoverManager $manager;
+    public static DiscoverManager $manager;
 
     private function __construct()
     {

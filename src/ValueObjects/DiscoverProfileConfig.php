@@ -3,7 +3,9 @@
 namespace Spatie\LaravelAutoDiscoverer\ValueObjects;
 
 use Closure;
+use Illuminate\Support\Collection;
 use Spatie\LaravelAutoDiscoverer\Contracts\DiscoverProfileIdentifieable;
+use Spatie\LaravelAutoDiscoverer\Discover;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\AndCombinationProfileCondition;
 use Spatie\LaravelAutoDiscoverer\ProfileConditions\ProfileCondition;
 
@@ -93,6 +95,11 @@ class DiscoverProfileConfig implements DiscoverProfileIdentifieable
         $this->callBacks[] = $callBack;
 
         return $this;
+    }
+
+    public function getInstantly(): Collection
+    {
+        return Discover::getInstantly($this->identifier);
     }
 
     public function getIdentifier(): string

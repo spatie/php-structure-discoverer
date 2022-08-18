@@ -43,6 +43,11 @@ class DiscoverManager
         $this->profiles->get($identifier)->config->get($closure);
     }
 
+    public function has(string $identifier): bool
+    {
+        return $this->profiles->has($identifier);
+    }
+
     public function get(string $identifier): Collection
     {
         $profile = $this->profiles->get($identifier);
@@ -54,30 +59,47 @@ class DiscoverManager
         return $profile->getDiscoveredClasses();
     }
 
+    public function getInstantly(string $identifier): Collection
+    {
+        $profile = $this->profiles->get($identifier);
+
+        if (! $profile->isDiscovered()) {
+            $this->run([$profile->getIdentifier()]);
+        }
+
+        return $profile->getDiscoveredClasses();
+    }
+
     public function update(string $identifier, Closure $closure): void
     {
         $closure($this->profiles->get($identifier)->config);
     }
 
-    public function run(): void
+    public function run(?array $selectedProfiles = null): void
     {
-        [$discoveredProfiles, $nonDiscoveredProfiles] = $this->profiles->partition(
-            fn (DiscoverProfile $profile) => $profile->isDiscovered()
-        );
+        [$activeProfiles, $ignoredProfiles] = $this->profiles->partition(fn(DiscoverProfile $profile) => match (true) {
+            $profile->isDiscovered() => false,
+            count($profile->config->callBacks) === 0 => false,
+            $selectedProfiles === null => true,
+            default => in_array($profile->getIdentifier(), $selectedProfiles),
+        });
 
-        [$cachedProfiles, $nonCachedProfiles] = $nonDiscoveredProfiles->partition(
-            fn (DiscoverProfile $profile) => $this->cache->has($profile)
+        [$cachedProfiles, $nonCachedProfiles] = $activeProfiles->partition(
+            fn(DiscoverProfile $profile) => $this->cache->has($profile)
         );
 
         $this->profiles = $cachedProfiles
             ->transform(
-                fn (DiscoverProfile $profile) => $profile
-                ->addDiscovered(...$this->cache->get($profile))
-                ->markDiscovered(fromCache: true)
+                fn(DiscoverProfile $profile) => $profile
+                    ->addDiscovered(...$this->cache->get($profile))
+                    ->markDiscovered(fromCache: true)
             )
             ->merge(ClassDiscoverer::create()->discover($nonCachedProfiles))
-            ->merge($discoveredProfiles)
-            ->each(fn (DiscoverProfile $profile) => $profile->runCallbacks());
+            ->merge($ignoredProfiles);
+
+        $this->profiles
+            ->filter(fn(DiscoverProfile $profile) => $profile->isDiscovered())
+            ->each(fn(DiscoverProfile $profile) => $profile->runCallbacks());
     }
 
     public function resetDiscovered(): void

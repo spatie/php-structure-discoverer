@@ -39,13 +39,9 @@ class DiscoverProfile implements DiscoverProfileIdentifieable
 
     public function getDirectories(): array
     {
-        $directories = ! empty($this->config->directories)
-            ? $this->config->directories
-            : [$this->config->basePath];
-
         return array_map(
             fn (string $directory) => realpath($directory),
-            $directories
+            $this->config->directories
         );
     }
 

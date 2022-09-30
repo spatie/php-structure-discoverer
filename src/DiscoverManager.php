@@ -79,7 +79,7 @@ class DiscoverManager
     {
         [$activeProfiles, $ignoredProfiles] = $this->profiles->partition(fn(DiscoverProfile $profile) => match (true) {
             $profile->isDiscovered() => false,
-            count($profile->config->callBacks) === 0 => false,
+//            count($profile->config->callBacks) === 0 => false, Let's say we have an instantly get without callable, then this should not evaluate
             $selectedProfiles === null => true,
             default => in_array($profile->getIdentifier(), $selectedProfiles),
         });

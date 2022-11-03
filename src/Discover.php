@@ -2,21 +2,69 @@
 
 namespace Spatie\LaravelAutoDiscoverer;
 
-/** @mixin \Spatie\LaravelAutoDiscoverer\DiscoverManager */
+use Spatie\LaravelAutoDiscoverer\DiscoverConditions\AndCombinationDiscoverCondition;
+use Spatie\LaravelAutoDiscoverer\DiscoverConditions\DiscoverCondition;
+
 class Discover
 {
-    public static DiscoverManager $manager;
+    protected AndCombinationDiscoverCondition $conditions;
 
-    private function __construct()
-    {
+    protected array $directories = [];
+
+    protected ?string $basePath = null;
+
+    protected ?string $rootNamespace = null;
+
+    public static function all(
+        string $identifier
+    ): Discover {
+        return new self($identifier);
     }
 
-    public static function __callStatic(string $name, array $arguments): mixed
-    {
-        if (! isset(static::$manager)) {
-            static::$manager = new DiscoverManager();
-        }
+    public static function classes(
+        string $identifier
+    ): Discover {
+        return new self($identifier);
+    }
 
-        return call_user_func([static::$manager, $name], ...$arguments);
+    public function __construct(
+        public string $identifier,
+    ) {
+        $this->conditions = new AndCombinationDiscoverCondition();
+    }
+
+    public function __call(string $name, array $arguments): static
+    {
+        $condition = DiscoverCondition::{$name}(...$arguments);
+
+        $this->conditions->add($condition);
+
+        return $this;
+    }
+
+    public function within(string ...$directories): static
+    {
+        $this->directories = array_merge($this->directories, $directories);
+
+        return $this;
+    }
+
+    public function basePath(string $basePath): static
+    {
+        $this->basePath = $basePath;
+
+        return $this;
+    }
+
+    public function rootNamespace(string $rootNamespace): static
+    {
+        $this->rootNamespace = $rootNamespace;
+
+        return $this;
+    }
+
+    public function get(): array
+    {
+        return (new Discoverer($this->directories))->execute();
     }
 }

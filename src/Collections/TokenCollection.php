@@ -1,11 +1,12 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Collections;
+namespace Spatie\StructureDiscoverer\Collections;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use Spatie\LaravelAutoDiscoverer\Data\Token;
+use PhpToken;
+use Spatie\StructureDiscoverer\Data\Token;
 use Traversable;
 
 class TokenCollection implements IteratorAggregate, Countable
@@ -20,7 +21,7 @@ class TokenCollection implements IteratorAggregate, Countable
         return array_key_exists($index, $this->tokens);
     }
 
-    public function get(int $index): ?Token
+    public function get(int $index): ?PhpToken
     {
         return $this->has($index)
             ? $this->tokens[$index]
@@ -28,7 +29,7 @@ class TokenCollection implements IteratorAggregate, Countable
     }
 
     /**
-     * @return Traversable<int, Token>
+     * @return Traversable<int, PhpToken>
      */
     public function getIterator(): Traversable
     {

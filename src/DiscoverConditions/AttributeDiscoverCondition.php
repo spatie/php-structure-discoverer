@@ -1,34 +1,41 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\DiscoverConditions;
+namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Closure;
 use ReflectionClass;
+use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
+use Spatie\StructureDiscoverer\Data\DiscoveredClass;
+use Spatie\StructureDiscoverer\Data\DiscoveredData;
+use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
+use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 
 class AttributeDiscoverCondition extends DiscoverCondition
 {
+    /** @var string[] */
+    private array $classes;
+
     public function __construct(
-        private string $class,
-        private null|array|Closure $arguments = null
+        string ...$classes,
     ) {
+        $this->classes = $classes;
     }
 
-    public function satisfies(ReflectionClass $reflectionClass): bool
+    public function satisfies(DiscoveredData $discoveredData): bool
     {
-        foreach ($reflectionClass->getAttributes($this->class) as $reflectionAttribute) {
-            if ($this->arguments === null) {
-                return true;
-            }
+        $hasAttributes = $discoveredData instanceof DiscoveredInterface
+            || $discoveredData instanceof DiscoveredEnum
+            || $discoveredData instanceof DiscoveredClass;
 
-            if (is_callable($this->arguments) && ($this->arguments)($reflectionAttribute->newInstance())) {
-                return true;
-            }
-
-            if ($this->arguments === $reflectionAttribute->getArguments()) {
-                return true;
-            }
+        if (! $hasAttributes) {
+            return false;
         }
 
-        return false;
+        $foundAttributes = array_filter(
+            $discoveredData->attributes,
+            fn(DiscoveredAttribute $attribute) => in_array($attribute->class, $this->classes)
+        );
+
+        return count($foundAttributes) > 0;
     }
 }

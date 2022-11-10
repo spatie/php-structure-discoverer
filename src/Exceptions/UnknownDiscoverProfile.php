@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Exceptions;
+namespace Spatie\StructureDiscoverer\Exceptions;
 
 use Exception;
 

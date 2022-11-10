@@ -1,11 +1,11 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Data;
+namespace Spatie\StructureDiscoverer\Data;
 
 class DiscoveredAttribute
 {
     public function __construct(
-        string $class,
+        public string $class,
     ) {
     }
 }

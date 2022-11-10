@@ -1,17 +1,28 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\DiscoverConditions;
+namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use ReflectionClass;
+use Spatie\StructureDiscoverer\Data\DiscoveredClass;
+use Spatie\StructureDiscoverer\Data\DiscoveredData;
+use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 
 class ExtendsDiscoverCondition extends DiscoverCondition
 {
-    public function __construct(private string $class)
+    /** @var string[] */
+    private array $classes;
+
+    public function __construct(string ...$classes)
     {
+        $this->classes = $classes;
     }
 
-    public function satisfies(ReflectionClass $reflectionClass): bool
+    public function satisfies(DiscoveredData $discoveredData): bool
     {
-        return $reflectionClass->isSubclassOf($this->class);
+        if ($discoveredData instanceof DiscoveredClass) {
+            return in_array($discoveredData->extends, $this->classes);
+        }
+
+        return false;
     }
 }

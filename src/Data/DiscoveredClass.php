@@ -1,15 +1,15 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Data;
+namespace Spatie\StructureDiscoverer\Data;
 
-use Illuminate\Support\Collection;
-use Spatie\LaravelAutoDiscoverer\Collections\UsageCollection;
-use Spatie\LaravelAutoDiscoverer\Resolvers\ReferenceListResolver;
+use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 
 /**
  * @property array<string> $extends
  * @property array<string> $implements
- * @property array<\Spatie\LaravelAutoDiscoverer\Data\DiscoveredAttribute> $attributes
+ * @property array<DiscoveredAttribute> $attributes
+ * @property ?array<string> $extendsChain
+ * @property ?array<string> $implementsChain
  */
 class DiscoveredClass extends DiscoveredData
 {
@@ -23,7 +23,14 @@ class DiscoveredClass extends DiscoveredData
         public ?string $extends,
         public array $implements,
         public array $attributes,
+        public ?array $extendsChain = null,
+        public ?array $implementsChain = null,
     ) {
         parent::__construct($name, $namespace, $file);
+    }
+
+    public function getType(): DiscoveredStructureType
+    {
+        return DiscoveredStructureType::ClassDefinition;
     }
 }

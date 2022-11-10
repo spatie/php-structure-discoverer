@@ -1,17 +1,22 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\DiscoverConditions;
+namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use ReflectionClass;
+use Spatie\StructureDiscoverer\Data\DiscoveredData;
 
 class NameDiscoverCondition extends DiscoverCondition
 {
-    public function __construct(private string $name)
+    /** @var string[] */
+    private array $names;
+
+    public function __construct(string ...$names)
     {
+        $this->names = $names;
     }
 
-    public function satisfies(ReflectionClass $reflectionClass): bool
+    public function satisfies(DiscoveredData $discoveredData): bool
     {
-        return $reflectionClass->getName() === $this->name;
+        return in_array($discoveredData->name, $this->names);
     }
 }

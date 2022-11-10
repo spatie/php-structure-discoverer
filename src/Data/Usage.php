@@ -1,16 +1,24 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Data;
-
-use Illuminate\Support\Str;
+namespace Spatie\StructureDiscoverer\Data;
 
 class Usage
 {
-    public string $name;
-
     public function __construct(
-        public string $fcqn
+        public string $fcqn,
+        public ?string $name = null,
     ) {
-        $this->name = Str::afterLast($this->fcqn, '\\');
+        $this->name ??=$this->resolveNonFcqnName($this->fcqn);
+    }
+
+    public function resolveNonFcqnName(string $fcqn): string
+    {
+        $position = strrpos($fcqn, '\\');
+
+        if ($position === false) {
+            return $fcqn;
+        }
+
+        return substr($fcqn, $position + strlen('\\'));
     }
 }

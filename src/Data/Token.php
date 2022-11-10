@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Data;
+namespace Spatie\StructureDiscoverer\Data;
 
 class Token
 {

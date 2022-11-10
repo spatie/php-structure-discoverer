@@ -1,9 +1,10 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\DiscoverConditions;
+namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Closure;
 use ReflectionClass;
+use Spatie\StructureDiscoverer\Data\DiscoveredData;
 
 class CustomDiscoverCondition extends DiscoverCondition
 {
@@ -11,8 +12,8 @@ class CustomDiscoverCondition extends DiscoverCondition
     {
     }
 
-    public function satisfies(ReflectionClass $reflectionClass): bool
+    public function satisfies(DiscoveredData $discoveredData): bool
     {
-        return ($this->closure)($reflectionClass);
+        return ($this->closure)($discoveredData);
     }
 }

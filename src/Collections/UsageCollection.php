@@ -1,9 +1,8 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Collections;
+namespace Spatie\StructureDiscoverer\Collections;
 
-use Illuminate\Support\Arr;
-use Spatie\LaravelAutoDiscoverer\Data\Usage;
+use Spatie\StructureDiscoverer\Data\Usage;
 
 /**
  * @property array<Usage> $usages
@@ -25,7 +24,13 @@ class UsageCollection
 
     public function findForAlias(string $alias): ?Usage
     {
-        return Arr::first($this->usages, fn(Usage $usage) => $usage->name === $alias);
+        foreach ($this->usages as $usage){
+            if($usage->name === $alias){
+                return $usage;
+            }
+        }
+
+        return null;
     }
 
     public function findFcqnForIdentifier(

@@ -1,10 +1,17 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Data;
+namespace Spatie\StructureDiscoverer\Data;
 
 use Illuminate\Support\Collection;
-use Spatie\LaravelAutoDiscoverer\Collections\UsageCollection;
+use Spatie\StructureDiscoverer\Collections\AttributeCollection;
+use Spatie\StructureDiscoverer\Collections\UsageCollection;
+use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 
+/**
+ * @property array<string> $extends
+ * @property array<DiscoveredAttribute> $attributes
+ * @property ?array<string> $extendsChain
+ */
 class DiscoveredInterface extends DiscoveredData
 {
     public function __construct(
@@ -12,7 +19,14 @@ class DiscoveredInterface extends DiscoveredData
         string $file,
         string $namespace,
         public array $extends,
+        public array $attributes,
+        public ?array $extendsChain = null,
     ) {
         parent::__construct($name, $namespace, $file);
+    }
+
+    public function getType(): DiscoveredStructureType
+    {
+        return DiscoveredStructureType::Interface;
     }
 }

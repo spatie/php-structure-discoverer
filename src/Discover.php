@@ -1,70 +1,128 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer;
+namespace Spatie\StructureDiscoverer;
 
-use Spatie\LaravelAutoDiscoverer\DiscoverConditions\AndCombinationDiscoverCondition;
-use Spatie\LaravelAutoDiscoverer\DiscoverConditions\DiscoverCondition;
+use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
+use Spatie\StructureDiscoverer\Cache\NullDiscoverCacheDriver;
+use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
+use Spatie\StructureDiscoverer\DiscoverWorkers\AsynchronousDiscoverWorker;
+use Spatie\StructureDiscoverer\Exceptions\InvalidDiscoverCacheId;
+use Spatie\StructureDiscoverer\Exceptions\NoCacheConfigured;
+use Spatie\StructureDiscoverer\Resolvers\StructuresResolver;
+use Spatie\StructureDiscoverer\DiscoverConditionFactory;
+use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\AttributeDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\DiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\ExtendsDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\ImplementsDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\NameDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\AnyDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\TypeDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
+use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
+use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 
-class Discover
+/**
+ * TODO
+ * - test chains
+ * - add extra conditions based upon chains
+ * - readme
+ */
+class Discover extends DiscoverConditionFactory
 {
-    protected AndCombinationDiscoverCondition $conditions;
+    public readonly DiscoverProfileConfig $config;
 
-    protected array $directories = [];
+    public static function in(string ...$directories): self
+    {
+        if (function_exists('app') && function_exists('resolve')) {
+            return app(self::class, [
+                'directories' => $directories,
+            ]);
+        }
 
-    protected ?string $basePath = null;
-
-    protected ?string $rootNamespace = null;
-
-    public static function all(
-        string $identifier
-    ): Discover {
-        return new self($identifier);
-    }
-
-    public static function classes(
-        string $identifier
-    ): Discover {
-        return new self($identifier);
+        return new self(directories: $directories);
     }
 
     public function __construct(
-        public string $identifier,
+        ?string $cacheId = null,
+        array $directories = [],
+        array $ignoredFiles = [],
+        ExactDiscoverCondition $conditions = new ExactDiscoverCondition(),
+        bool $asString = false,
+        DiscoverWorker $worker = new SynchronousDiscoverWorker(),
+        ?DiscoverCacheDriver $cache = null,
+        bool $withChains = true,
     ) {
-        $this->conditions = new AndCombinationDiscoverCondition();
+        $this->config = new DiscoverProfileConfig(
+            $cacheId,
+            $directories,
+            $ignoredFiles,
+            $asString,
+            $worker,
+            $cache,
+            $withChains
+        );
+
+        parent::__construct($conditions);
     }
 
-    public function __call(string $name, array $arguments): static
+    public function inDirectories(string ...$directories): self
     {
-        $condition = DiscoverCondition::{$name}(...$arguments);
-
-        $this->conditions->add($condition);
+        array_push($this->config->directories, ...$directories);
 
         return $this;
     }
 
-    public function within(string ...$directories): static
+    public function ignoreFiles(string ...$ignoredFiles): self
     {
-        $this->directories = array_merge($this->directories, $directories);
+        array_push($this->config->ignoredFiles, ...$ignoredFiles);
 
         return $this;
     }
 
-    public function basePath(string $basePath): static
+    public function asString(): self
     {
-        $this->basePath = $basePath;
+        $this->config->asString = true;
 
         return $this;
     }
 
-    public function rootNamespace(string $rootNamespace): static
+    public function usingWorker(DiscoverWorker $worker): self
     {
-        $this->rootNamespace = $rootNamespace;
+        $this->config->worker = $worker;
+
+        return $this;
+    }
+
+    public function async(int $filesPerJob = 50): self
+    {
+        return $this->usingWorker(new AsynchronousDiscoverWorker($filesPerJob));
+    }
+
+    public function cache(string $id, ?DiscoverCacheDriver $cache = null): self
+    {
+        $this->config->cacheId = $id;
+
+        if ($this->config->cacheDriver === null && $cache === null) {
+            throw new NoCacheConfigured();
+        }
+
+        $this->config->cacheDriver = $cache;
+
+        return $this;
+    }
+
+    public function withoutChains(bool $withoutChains = true): self
+    {
+        $this->config->withChains = ! $withoutChains;
 
         return $this;
     }
 
     public function get(): array
     {
-        return (new Discoverer($this->directories))->execute();
+        $discoverer = new StructuresResolver($this->config->worker);
+
+        return $discoverer->run($this);
     }
 }

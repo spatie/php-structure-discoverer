@@ -1,13 +1,14 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Enums;
+namespace Spatie\StructureDiscoverer\Enums;
 
 use Exception;
-use Spatie\LaravelAutoDiscoverer\Data\DiscoveredClass;
-use Spatie\LaravelAutoDiscoverer\Data\DiscoveredEnum;
-use Spatie\LaravelAutoDiscoverer\Data\DiscoveredInterface;
-use Spatie\LaravelAutoDiscoverer\Data\DiscoveredTrait;
-use Spatie\LaravelAutoDiscoverer\Data\Token;
+use PhpToken;
+use Spatie\StructureDiscoverer\Data\DiscoveredClass;
+use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
+use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
+use Spatie\StructureDiscoverer\Data\DiscoveredTrait;
+use Spatie\StructureDiscoverer\Data\Token;
 
 enum DiscoveredStructureType
 {
@@ -17,9 +18,9 @@ enum DiscoveredStructureType
     case Interface;
 
     public static function fromToken(
-        Token $token
+        PhpToken $token
     ): ?self {
-        return match ($token->type) {
+        return match ($token->id) {
             T_CLASS => self::ClassDefinition,
             T_ENUM => self::Enum,
             T_INTERFACE => self::Interface,
@@ -28,7 +29,7 @@ enum DiscoveredStructureType
         };
     }
 
-    /** @return class-string<\Spatie\LaravelAutoDiscoverer\Data\DiscoveredData> */
+    /** @return class-string<\Spatie\StructureDiscoverer\Data\DiscoveredData> */
     public function getDataClass(): string
     {
         return match ($this) {

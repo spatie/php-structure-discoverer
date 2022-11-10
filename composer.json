@@ -1,12 +1,12 @@
 {
-    "name": "spatie/laravel-auto-discoverer",
+    "name": "spatie/laravel-structure-discoverer",
     "description": "Automatically discover classes within your Laravel app",
     "keywords": [
         "LaravelAutoDiscoverer",
         "laravel",
-        "laravel-auto-discoverer"
+        "laravel-structure-discoverer"
     ],
-    "homepage": "https://github.com/laravelautodiscoverer/laravel-auto-discoverer",
+    "homepage": "https://github.com/spatie/structure-discoverer",
     "license": "MIT",
     "authors": [
         {
@@ -17,8 +17,11 @@
     ],
     "require": {
         "php": "^8.1",
-        "spatie/laravel-package-tools": "^1.4.3",
-        "illuminate/contracts": "^8.69.0|^9.0"
+        "amphp/parallel": "^1.4",
+        "amphp/parallel-functions": "^1.1",
+        "illuminate/collections": "^8.69.0|^9.0",
+        "spatie/async": "^1.5",
+        "spatie/laravel-package-tools": "^1.4.3"
     },
     "require-dev": {
         "nunomaduro/collision": "^6.0|^5.3",
@@ -31,13 +34,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\LaravelAutoDiscoverer\\": "src",
-            "Spatie\\LaravelAutoDiscoverer\\Database\\Factories\\": "database/factories"
+            "Spatie\\StructureDiscoverer\\": "src",
+            "Spatie\\StructureDiscoverer\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\LaravelAutoDiscoverer\\Tests\\": "tests"
+            "Spatie\\StructureDiscoverer\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -54,7 +57,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Spatie\\LaravelAutoDiscoverer\\LaravelAutoDiscovererServiceProvider"
+                "Spatie\\StructureDiscoverer\\StructureDiscovererServiceProvider"
             ]
         }
     },

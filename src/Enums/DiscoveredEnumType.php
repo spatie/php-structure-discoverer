@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Enums;
+namespace Spatie\StructureDiscoverer\Enums;
 
 enum DiscoveredEnumType
 {

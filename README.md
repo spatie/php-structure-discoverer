@@ -1,19 +1,19 @@
-# Automatically discover classes within your Laravel app
+# Automatically discover classes, interfaces, enums and traits within your PHP application
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-auto-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-auto-discoverer)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-auto-discoverer/run-tests?label=tests)](https://github.com/spatie/laravel-auto-discoverer/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-auto-discoverer/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/laravel-auto-discoverer/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-auto-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-auto-discoverer)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-structure-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-structure-discoverer)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-structure-discoverer/run-tests?label=tests)](https://github.com/spatie/laravel-structure-discoverer/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-structure-discoverer/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/laravel-structure-discoverer/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-structure-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-structure-discoverer)
 
-With this package, you'll be able to quickly discover classes within your Laravel installation that fulfil certain conditions. For example, you could search for a class implementing an interface, extending another class or using an Attribute.
+With this package, you'll be able to quickly discover classes within your PHP application that fulfil certain conditions. For example, you could search for a class implementing an interface, extending another class or using an attribute.
 
-On top of that, it adds a mechanism to cache these discovered classes to minimize the performance overhead of discovering classes in your production environment.
+It also has a mechanism to cache these discovered classes to minimize the performance overhead of discovering classes in your production environment.
 
-You can use this package within Laravels projects or other packages.
+The package is not only limited to classes but can also find enums, interfaces and traits.
 
 ## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-auto-discoverer.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-auto-discoverer)
+[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-structure-discoverer.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-structure-discoverer)
 
 We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
 
@@ -24,12 +24,12 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 You can install the package via composer:
 
 ```bash
-composer require spatie/laravel-auto-discoverer
+composer require spatie/php-structure-discoverer
 ```
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="Spatie\LaravelAutoDiscoverer\LaravelAutoDiscovererServiceProvider"
+php artisan vendor:publish --provider="Spatie\StructureDiscoverer\StructureDiscovererServiceProvider"
 ```
 
 This is the contents of the published config file:
@@ -55,7 +55,7 @@ return [
     /*
      *  Directory where cached discover profiles are stored
      */
-    'cache_directory' => storage_path('app/auto-discoverer/'),
+    'cache_directory' => storage_path('app/structure-discoverer/'),
 ];
 ```
 

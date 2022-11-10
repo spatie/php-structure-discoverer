@@ -1,10 +1,10 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Tests;
+namespace Spatie\StructureDiscoverer\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Spatie\LaravelAutoDiscoverer\LaravelAutoDiscovererServiceProvider;
+use Spatie\StructureDiscoverer\StructureDiscovererServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -13,14 +13,14 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Spatie\\LaravelAutoDiscoverer\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Spatie\\StructureDiscoverer\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            LaravelAutoDiscovererServiceProvider::class,
+            StructureDiscovererServiceProvider::class,
         ];
     }
 
@@ -29,7 +29,7 @@ class TestCase extends Orchestra
         config()->set('database.default', 'testing');
 
         /*
-        $migration = include __DIR__.'/../database/migrations/create_laravel-auto-discoverer_table.php.stub';
+        $migration = include __DIR__.'/../database/migrations/create_laravel-structure-discoverer_table.php.stub';
         $migration->up();
         */
     }

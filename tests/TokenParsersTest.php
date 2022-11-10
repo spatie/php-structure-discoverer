@@ -27,7 +27,7 @@ function getDiscoveredStructure(
 ): DiscoveredEnum|DiscoveredClass|DiscoveredInterface|DiscoveredTrait {
     return Arr::first(
         getDiscovered($definition, $filename),
-        $structure ? fn(DiscoveredData $discovered) => $discovered->name === $structure : null,
+        $structure ? fn (DiscoveredData $discovered) => $discovered->name === $structure : null,
     );
 }
 
@@ -446,13 +446,13 @@ PHP;
         ->toBeArray()
         ->toHaveCount(3)
         ->sequence(
-            fn($discovered) => $discovered
+            fn ($discovered) => $discovered
                 ->toBeInstanceOf(DiscoveredClass::class)
                 ->attributes->toEqual([new DiscoveredAttribute('ClassAttribute')]),
-            fn($discovered) => $discovered
+            fn ($discovered) => $discovered
                 ->toBeInstanceOf(DiscoveredInterface::class)
                 ->attributes->toEqual([new DiscoveredAttribute('InterfaceAttribute')]),
-            fn($discovered) => $discovered
+            fn ($discovered) => $discovered
                 ->toBeInstanceOf(DiscoveredEnum::class)
                 ->attributes->toEqual([new DiscoveredAttribute('EnumAttribute')])
         );
@@ -493,22 +493,22 @@ PHP;
         ->toBeArray()
         ->toHaveCount(6)
         ->sequence(
-            fn($discovered) => $discovered
+            fn ($discovered) => $discovered
                 ->toBeInstanceOf(DiscoveredTrait::class)
                 ->name->ToEqual('BaseTrait'),
-            fn($discovered) => $discovered
+            fn ($discovered) => $discovered
                 ->toBeInstanceOf(DiscoveredEnum::class)
                 ->name->ToEqual('BaseEnum'),
-            fn($discovered) => $discovered
+            fn ($discovered) => $discovered
                 ->toBeInstanceOf(DiscoveredInterface::class)
                 ->name->ToEqual('BaseInterface'),
-            fn($discovered) => $discovered
+            fn ($discovered) => $discovered
                 ->toBeInstanceOf(DiscoveredInterface::class)
                 ->name->ToEqual('ChildInterface'),
-            fn($discovered) => $discovered
+            fn ($discovered) => $discovered
                 ->toBeInstanceOf(DiscoveredClass::class)
                 ->name->ToEqual('BaseClass'),
-            fn($discovered) => $discovered
+            fn ($discovered) => $discovered
                 ->toBeInstanceOf(DiscoveredClass::class)
                 ->name->ToEqual('ChildClass')
         );

@@ -3,7 +3,6 @@
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Closure;
-use ReflectionClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
 
 class CustomDiscoverCondition extends DiscoverCondition

@@ -2,8 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
-use Closure;
-use ReflectionClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
@@ -33,7 +31,7 @@ class AttributeDiscoverCondition extends DiscoverCondition
 
         $foundAttributes = array_filter(
             $discoveredData->attributes,
-            fn(DiscoveredAttribute $attribute) => in_array($attribute->class, $this->classes)
+            fn (DiscoveredAttribute $attribute) => in_array($attribute->class, $this->classes)
         );
 
         return count($foundAttributes) > 0;

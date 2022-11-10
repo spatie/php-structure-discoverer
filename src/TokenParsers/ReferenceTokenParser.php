@@ -5,7 +5,6 @@ namespace Spatie\StructureDiscoverer\TokenParsers;
 use Exception;
 use PhpToken;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
-use Spatie\StructureDiscoverer\Data\Token;
 
 class ReferenceTokenParser
 {

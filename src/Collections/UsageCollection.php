@@ -24,8 +24,8 @@ class UsageCollection
 
     public function findForAlias(string $alias): ?Usage
     {
-        foreach ($this->usages as $usage){
-            if($usage->name === $alias){
+        foreach ($this->usages as $usage) {
+            if ($usage->name === $alias) {
                 return $usage;
             }
         }

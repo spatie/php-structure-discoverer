@@ -67,7 +67,7 @@ class StructureChainResolver
                 continue;
             }
 
-            if($implementedStructure->extendsChain === null){
+            if ($implementedStructure->extendsChain === null) {
                 $this->resolveImplementsChain($discovered, $implementedStructure);
             }
 

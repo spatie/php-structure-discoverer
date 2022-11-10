@@ -2,10 +2,8 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
-use ReflectionClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
-use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 
 class ExtendsDiscoverCondition extends DiscoverCondition
 {

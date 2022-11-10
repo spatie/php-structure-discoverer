@@ -3,7 +3,6 @@
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
-use Spatie\StructureDiscoverer\Data\Token;
 use Spatie\StructureDiscoverer\Data\Usage;
 
 class UseTokenParser

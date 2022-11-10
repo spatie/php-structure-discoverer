@@ -4,8 +4,6 @@ namespace Spatie\StructureDiscoverer\TokenParsers;
 
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
-use Spatie\StructureDiscoverer\Data\Token;
-use Stringable;
 
 class ReferenceListTokenParser
 {

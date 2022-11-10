@@ -2,8 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
-use Spatie\StructureDiscoverer\TokenParsers\FileTokenParser;
-
 class MultiFileTokenParser
 {
     public function execute(array $filenames): array

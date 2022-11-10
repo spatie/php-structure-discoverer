@@ -5,8 +5,8 @@ use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
 use Spatie\StructureDiscoverer\Discover;
-use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 use Spatie\StructureDiscoverer\DiscoverConditions\DiscoverCondition;
+use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeAttribute;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeEnum;
@@ -155,7 +155,7 @@ it('can discover using complex conditions', function () {
 });
 
 it('can discover using a custom condition', function () {
-    $condition = new class extends DiscoverCondition {
+    $condition = new class () extends DiscoverCondition {
         public function satisfies(DiscoveredData $discoveredData): bool
         {
             return $discoveredData instanceof DiscoveredClass && $discoveredData->name === 'FakeClass';

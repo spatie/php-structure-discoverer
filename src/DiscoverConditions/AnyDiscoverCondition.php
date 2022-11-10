@@ -2,18 +2,17 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
-use ReflectionClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
 use Spatie\StructureDiscoverer\DiscoverConditionFactory;
 
 class AnyDiscoverCondition extends DiscoverCondition
 {
-    /** @var DiscoverCondition[]  */
+    /** @var DiscoverCondition[] */
     private array $conditions = [];
 
     public function __construct(DiscoverCondition|DiscoverConditionFactory ...$conditions)
     {
-        foreach ($conditions as $condition){
+        foreach ($conditions as $condition) {
             $this->add($condition);
         }
     }

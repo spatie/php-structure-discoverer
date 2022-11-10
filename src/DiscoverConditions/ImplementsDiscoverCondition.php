@@ -2,7 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
-use ReflectionClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
@@ -24,7 +23,7 @@ class ImplementsDiscoverCondition extends DiscoverCondition
         if ($discoveredData instanceof DiscoveredClass || $discoveredData instanceof DiscoveredEnum) {
             $foundImplements = array_filter(
                 $discoveredData->implements,
-                fn(string $interface) => in_array($interface, $this->interfaces)
+                fn (string $interface) => in_array($interface, $this->interfaces)
             );
 
             return count($foundImplements) > 0;
@@ -33,7 +32,7 @@ class ImplementsDiscoverCondition extends DiscoverCondition
         if ($discoveredData instanceof DiscoveredInterface) {
             $foundExtends = array_filter(
                 $discoveredData->extends,
-                fn(string $class) => in_array($class, $this->interfaces)
+                fn (string $class) => in_array($class, $this->interfaces)
             );
 
             return count($foundExtends) > 0;

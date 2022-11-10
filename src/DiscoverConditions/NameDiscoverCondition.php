@@ -2,7 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
-use ReflectionClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
 
 class NameDiscoverCondition extends DiscoverCondition

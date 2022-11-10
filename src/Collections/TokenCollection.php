@@ -6,7 +6,6 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use PhpToken;
-use Spatie\StructureDiscoverer\Data\Token;
 use Traversable;
 
 class TokenCollection implements IteratorAggregate, Countable
@@ -35,7 +34,6 @@ class TokenCollection implements IteratorAggregate, Countable
     {
         return new ArrayIterator($this->tokens);
     }
-
 
     public function count(): int
     {

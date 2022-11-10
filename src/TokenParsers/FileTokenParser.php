@@ -5,14 +5,9 @@ namespace Spatie\StructureDiscoverer\TokenParsers;
 use Illuminate\Support\Collection;
 use ParseError;
 use PhpToken;
-use Spatie\StructureDiscoverer\Collections\AttributeCollection;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
-use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
-use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
-use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
-use Spatie\StructureDiscoverer\Data\DiscoveredTrait;
 use Spatie\StructureDiscoverer\Data\Token;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 use Spatie\StructureDiscoverer\Exceptions\CouldNotParseFile;
@@ -38,9 +33,9 @@ class FileTokenParser
         try {
             /** @var TokenCollection $tokens */
             $tokens = collect(PhpToken::tokenize($contents, TOKEN_PARSE))
-                ->reject(fn(PhpToken $token) => $token->is([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]))
+                ->reject(fn (PhpToken $token) => $token->is([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]))
                 ->values()
-                ->pipe(fn(Collection $collection): TokenCollection => new TokenCollection($collection->all()));
+                ->pipe(fn (Collection $collection): TokenCollection => new TokenCollection($collection->all()));
         } catch (ParseError $error) {
             return [];
         }
@@ -81,6 +76,7 @@ class FileTokenParser
 
                 if ($type === null) {
                     $index++;
+
                     continue;
                 }
 

@@ -1,9 +1,9 @@
 # Automatically discover classes, interfaces, enums and traits within your PHP application
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-structure-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-structure-discoverer)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-structure-discoverer/run-tests?label=tests)](https://github.com/spatie/laravel-structure-discoverer/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/laravel-structure-discoverer/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/laravel-structure-discoverer/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-structure-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-structure-discoverer)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/php-structure-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/php-structure-discoverer)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/php-structure-discoverer/run-tests?label=tests)](https://github.com/spatie/php-structure-discoverer/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/php-structure-discoverer/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/php-structure-discoverer/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/spatie/php-structure-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/php-structure-discoverer)
 
 With this package, you'll be able to quickly discover classes within your PHP application that fulfil certain conditions. For example, you could search for a class implementing an interface, extending another class or using an attribute.
 

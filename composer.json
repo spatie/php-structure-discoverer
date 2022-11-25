@@ -1,12 +1,13 @@
 {
-    "name": "spatie/laravel-structure-discoverer",
-    "description": "Automatically discover classes within your Laravel app",
+    "name": "spatie/php-structure-discoverer",
+    "description": "Automatically discover classes within your PHP application",
     "keywords": [
-        "LaravelAutoDiscoverer",
+        "PHPStructureDiscoverer",
         "laravel",
-        "laravel-structure-discoverer"
+        "php",
+        "php-structure-discoverer"
     ],
-    "homepage": "https://github.com/spatie/structure-discoverer",
+    "homepage": "https://github.com/spatie/php-structure-discoverer",
     "license": "MIT",
     "authors": [
         {

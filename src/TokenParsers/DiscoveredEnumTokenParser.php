@@ -3,12 +3,9 @@
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
 use _PHPStan_59fb0a3b2\Nette\Neon\Exception;
-use Illuminate\Support\Collection;
-use Spatie\StructureDiscoverer\Collections\AttributeCollection;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
-use Spatie\StructureDiscoverer\Data\Token;
 use Spatie\StructureDiscoverer\Enums\DiscoveredEnumType;
 
 class DiscoveredEnumTokenParser
@@ -18,7 +15,7 @@ class DiscoveredEnumTokenParser
     ) {
     }
 
-    function execute(
+    public function execute(
         int $index,
         TokenCollection $tokens,
         string $namespace,

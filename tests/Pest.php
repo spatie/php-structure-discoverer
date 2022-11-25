@@ -1,8 +1,8 @@
 <?php
 
-use Spatie\StructureDiscoverer\Resolvers\StructuresResolver;
 use Spatie\StructureDiscoverer\DiscoverCache;
 use Spatie\StructureDiscoverer\DiscoverProfilesCollection;
+use Spatie\StructureDiscoverer\Resolvers\StructuresResolver;
 use Spatie\StructureDiscoverer\Tests\TestCase;
 use Spatie\StructureDiscoverer\ValueObjects\DiscoverProfile;
 use Spatie\StructureDiscoverer\ValueObjects\DiscoverProfileConfig;

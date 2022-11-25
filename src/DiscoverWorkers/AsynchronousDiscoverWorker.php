@@ -2,17 +2,17 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverWorkers;
 
-use Illuminate\Support\Collection;
-use Spatie\StructureDiscoverer\TokenParsers\MultiFileTokenParser;
 use function Amp\ParallelFunctions\parallelMap;
 use function Amp\Promise\wait;
+
+use Illuminate\Support\Collection;
+use Spatie\StructureDiscoverer\TokenParsers\MultiFileTokenParser;
 
 class AsynchronousDiscoverWorker implements DiscoverWorker
 {
     public function __construct(
         public int $filesPerJob = 50
-    )
-    {
+    ) {
     }
 
     public function run(Collection $filenames): array

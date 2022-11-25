@@ -2,8 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
-use Illuminate\Support\Collection;
-use Spatie\StructureDiscoverer\Collections\AttributeCollection;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;

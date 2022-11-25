@@ -8,7 +8,7 @@ class Usage
         public string $fcqn,
         public ?string $name = null,
     ) {
-        $this->name ??=$this->resolveNonFcqnName($this->fcqn);
+        $this->name ??= $this->resolveNonFcqnName($this->fcqn);
     }
 
     public function resolveNonFcqnName(string $fcqn): string

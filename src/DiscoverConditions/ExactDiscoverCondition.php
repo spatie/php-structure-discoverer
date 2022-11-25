@@ -2,7 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
-use ReflectionClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
 use Spatie\StructureDiscoverer\DiscoverConditionFactory;
 
@@ -13,7 +12,7 @@ class ExactDiscoverCondition extends DiscoverCondition
 
     public function __construct(DiscoverCondition|DiscoverConditionFactory ...$conditions)
     {
-        foreach ($conditions as $condition){
+        foreach ($conditions as $condition) {
             $this->add($condition);
         }
     }

@@ -2,9 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\Data;
 
-use Illuminate\Support\Collection;
-use Spatie\StructureDiscoverer\Collections\AttributeCollection;
-use Spatie\StructureDiscoverer\Collections\UsageCollection;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 
 /**

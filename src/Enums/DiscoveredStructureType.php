@@ -8,7 +8,6 @@ use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 use Spatie\StructureDiscoverer\Data\DiscoveredTrait;
-use Spatie\StructureDiscoverer\Data\Token;
 
 enum DiscoveredStructureType
 {

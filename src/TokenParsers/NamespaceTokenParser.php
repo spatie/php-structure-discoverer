@@ -2,11 +2,7 @@
 
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
-use Illuminate\Support\Collection;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
-use Spatie\StructureDiscoverer\Data\ResolvedResult;
-use Spatie\StructureDiscoverer\Data\Token;
-use Spatie\StructureDiscoverer\Data\Usage;
 
 class NamespaceTokenParser
 {
@@ -29,7 +25,6 @@ class NamespaceTokenParser
 
             $parts[] = $token->text;
             $index++;
-
         } while ($index < count($tokens));
 
         return implode('', $parts);

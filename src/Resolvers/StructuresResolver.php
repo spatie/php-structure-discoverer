@@ -2,23 +2,11 @@
 
 namespace Spatie\StructureDiscoverer\Resolvers;
 
-use Illuminate\Support\Collection;
-use ParseError;
-use Spatie\Async\Pool;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
 use Spatie\StructureDiscoverer\Discover;
-use Spatie\StructureDiscoverer\Exceptions\InvalidDiscoverCacheId;
-use Spatie\StructureDiscoverer\TokenParsers\MultiFileTokenParser;
-use Spatie\StructureDiscoverer\Collections\UsageCollection;
-use Spatie\StructureDiscoverer\Data\Token;
-use Spatie\StructureDiscoverer\Data\Usage;
-use Spatie\StructureDiscoverer\DiscoverWorkers\AsynchronousDiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
-use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
-use Spatie\StructureDiscoverer\TokenParsers\FileTokenParser;
-use Spatie\StructureDiscoverer\TokenParsers\NamespaceTokenParser;
-use Spatie\StructureDiscoverer\TokenParsers\UseTokenParser;
+use Spatie\StructureDiscoverer\Exceptions\InvalidDiscoverCacheId;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
@@ -41,18 +29,18 @@ class StructuresResolver
             $profile->config->ignoredFiles
         );
 
-        if($profile->config->withChains){
+        if ($profile->config->withChains) {
             $this->structureChainResolver->execute($structures);
         }
 
         $structures = array_filter(
             $structures,
-            fn(DiscoveredData $discovered) => $profile->conditions->satisfies($discovered)
+            fn (DiscoveredData $discovered) => $profile->conditions->satisfies($discovered)
         );
 
         if ($profile->config->asString) {
             $structures = array_map(
-                fn(DiscoveredData $discovered) => $discovered->getFcqn(),
+                fn (DiscoveredData $discovered) => $discovered->getFcqn(),
                 $structures
             );
         }
@@ -77,8 +65,8 @@ class StructuresResolver
         $files = (new Finder())->files()->in($directories);
 
         $filenames = collect($files)
-            ->reject(fn(SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles) || $file->getExtension() !== 'php')
-            ->map(fn(SplFileInfo $file) => $file->getPathname());
+            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles) || $file->getExtension() !== 'php')
+            ->map(fn (SplFileInfo $file) => $file->getPathname());
 
         return $this->discoverWorker->run($filenames);
     }

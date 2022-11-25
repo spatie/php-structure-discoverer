@@ -2,8 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
-use Closure;
-use ReflectionClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredData;
 use Spatie\StructureDiscoverer\DiscoverConditionFactory;
 

@@ -3,7 +3,6 @@
 namespace Spatie\StructureDiscoverer\Data;
 
 use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
-use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 
 class DiscoverProfileConfig

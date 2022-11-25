@@ -2,13 +2,13 @@
 
 namespace Spatie\StructureDiscoverer;
 
-use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\AnyDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\AttributeDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\DiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\ExtendsDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\ImplementsDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\NameDiscoverCondition;
-use Spatie\StructureDiscoverer\DiscoverConditions\AnyDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\TypeDiscoverCondition;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 

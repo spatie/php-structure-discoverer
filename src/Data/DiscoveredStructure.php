@@ -4,7 +4,7 @@ namespace Spatie\StructureDiscoverer\Data;
 
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 
-abstract class DiscoveredData
+abstract class DiscoveredStructure
 {
     public function __construct(
         public string $name,

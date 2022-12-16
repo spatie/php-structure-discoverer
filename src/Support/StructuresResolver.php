@@ -1,8 +1,8 @@
 <?php
 
-namespace Spatie\StructureDiscoverer\Resolvers;
+namespace Spatie\StructureDiscoverer\Support;
 
-use Spatie\StructureDiscoverer\Data\DiscoveredData;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Discover;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
@@ -18,7 +18,8 @@ class StructuresResolver
     ) {
     }
 
-    public function run(Discover $profile): array
+    /** @return array<DiscoveredStructure>|array<string> */
+    public function execute(Discover $profile): array
     {
         if ($profile->config->shouldUseCache() && $profile->config->cacheDriver->has($profile->config->cacheId)) {
             return $profile->config->cacheDriver->get($profile->config->cacheId);
@@ -35,12 +36,12 @@ class StructuresResolver
 
         $structures = array_filter(
             $structures,
-            fn (DiscoveredData $discovered) => $profile->conditions->satisfies($discovered)
+            fn (DiscoveredStructure $discovered) => $profile->conditions->satisfies($discovered)
         );
 
-        if ($profile->config->asString) {
+        if ($profile->config->full === false) {
             $structures = array_map(
-                fn (DiscoveredData $discovered) => $discovered->getFcqn(),
+                fn (DiscoveredStructure $discovered) => $discovered->getFcqn(),
                 $structures
             );
         }
@@ -57,7 +58,7 @@ class StructuresResolver
         return $structures;
     }
 
-    /** @return array<DiscoveredData> */
+    /** @return array<DiscoveredStructure> */
     public function discover(
         array $directories,
         array $ignoredFiles = []
@@ -69,16 +70,5 @@ class StructuresResolver
             ->map(fn (SplFileInfo $file) => $file->getPathname());
 
         return $this->discoverWorker->run($filenames);
-    }
-
-    private function ensureCacheIdIsValid(?string $id): void
-    {
-        if ($id === null) {
-            return;
-        }
-
-        if (preg_match("/^[\s\w-]+$/", $id) !== 1) {
-            throw InvalidDiscoverCacheId::create($id);
-        }
     }
 }

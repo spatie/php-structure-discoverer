@@ -7,7 +7,7 @@ use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 
-class ImplementsDiscoverCondition extends DiscoverCondition
+class ImplementsWithoutChainDiscoverCondition extends DiscoverCondition
 {
     /** @var string[] */
     private array $interfaces;
@@ -22,7 +22,7 @@ class ImplementsDiscoverCondition extends DiscoverCondition
     {
         if ($discoveredData instanceof DiscoveredClass || $discoveredData instanceof DiscoveredEnum) {
             $foundImplements = array_filter(
-                $discoveredData->implementsChain ?? $discoveredData->implements,
+                $discoveredData->implements,
                 fn (string $interface) => in_array($interface, $this->interfaces)
             );
 
@@ -31,7 +31,7 @@ class ImplementsDiscoverCondition extends DiscoverCondition
 
         if ($discoveredData instanceof DiscoveredInterface) {
             $foundExtends = array_filter(
-                $discoveredData->extendsChain ?? $discoveredData->extends,
+                $discoveredData->extends,
                 fn (string $class) => in_array($class, $this->interfaces)
             );
 

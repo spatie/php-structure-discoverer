@@ -7,7 +7,7 @@ use ParseError;
 use PhpToken;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
-use Spatie\StructureDiscoverer\Data\DiscoveredData;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Data\Token;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 use Spatie\StructureDiscoverer\Exceptions\CouldNotParseFile;
@@ -23,7 +23,7 @@ class FileTokenParser
     ) {
     }
 
-    /** @return array<DiscoveredData> */
+    /** @return array<DiscoveredStructure> */
     public function execute(
         string $filename,
         string $contents,

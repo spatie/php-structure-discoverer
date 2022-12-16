@@ -2,7 +2,7 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
-use Spatie\StructureDiscoverer\Data\DiscoveredData;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 
 class NameDiscoverCondition extends DiscoverCondition
 {
@@ -14,7 +14,7 @@ class NameDiscoverCondition extends DiscoverCondition
         $this->names = $names;
     }
 
-    public function satisfies(DiscoveredData $discoveredData): bool
+    public function satisfies(DiscoveredStructure $discoveredData): bool
     {
         return in_array($discoveredData->name, $this->names);
     }

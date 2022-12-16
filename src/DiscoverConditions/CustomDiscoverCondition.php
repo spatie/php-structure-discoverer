@@ -3,7 +3,7 @@
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Closure;
-use Spatie\StructureDiscoverer\Data\DiscoveredData;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 
 class CustomDiscoverCondition extends DiscoverCondition
 {
@@ -11,7 +11,7 @@ class CustomDiscoverCondition extends DiscoverCondition
     {
     }
 
-    public function satisfies(DiscoveredData $discoveredData): bool
+    public function satisfies(DiscoveredStructure $discoveredData): bool
     {
         return ($this->closure)($discoveredData);
     }

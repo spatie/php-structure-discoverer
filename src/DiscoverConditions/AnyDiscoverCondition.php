@@ -2,7 +2,7 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
-use Spatie\StructureDiscoverer\Data\DiscoveredData;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\DiscoverConditionFactory;
 
 class AnyDiscoverCondition extends DiscoverCondition
@@ -26,7 +26,7 @@ class AnyDiscoverCondition extends DiscoverCondition
         return $this;
     }
 
-    public function satisfies(DiscoveredData $discoveredData): bool
+    public function satisfies(DiscoveredStructure $discoveredData): bool
     {
         if (empty($this->conditions)) {
             return true;

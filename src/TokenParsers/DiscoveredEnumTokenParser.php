@@ -27,8 +27,8 @@ class DiscoveredEnumTokenParser
 
         return new DiscoveredEnum(
             $tokens->get($index)->text,
-            $namespace,
             $file,
+            $namespace,
             $this->resolveType($index, $tokens),
             $head->implements,
             $attributes,

@@ -5,19 +5,28 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/php-structure-discoverer/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/php-structure-discoverer/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/php-structure-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/php-structure-discoverer)
 
-With this package, you'll be able to quickly discover classes within your PHP application that fulfil certain conditions. For example, you could search for a class implementing an interface, extending another class or using an attribute.
+With this package, you'll be able to quickly discover classes structures your PHP application that fulfil certain
+conditions. For example, you could search for classes implementing an interface:
 
-It also has a mechanism to cache these discovered classes to minimize the performance overhead of discovering classes in your production environment.
+```php
+Discover::in(__DIR__)->classes()->implementing(Arrayable::class)->get(); // PostModel, Collection, ...
+```
 
-The package is not only limited to classes but can also find enums, interfaces and traits.
+As an added benefit it has also a built-in cache functionality, so it won't slow down your application in production.
+
+The package is not only limited to classes but can also find enums, interfaces and traits and has some extra meta data
+for each structure.
 
 ## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/laravel-structure-discoverer.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/laravel-structure-discoverer)
+[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/php-structure-discoverer.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/php-structure-discoverer)
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can
+support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
+You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards
+on [our virtual postcard wall](https://spatie.be/open-source/postcards).
 
 ## Installation
 
@@ -27,7 +36,8 @@ You can install the package via composer:
 composer require spatie/php-structure-discoverer
 ```
 
-You can publish the config file with:
+If you're using Laravel, then you can also publish the config file with:
+
 ```bash
 php artisan vendor:publish --provider="Spatie\StructureDiscoverer\StructureDiscovererServiceProvider"
 ```
@@ -37,153 +47,473 @@ This is the contents of the published config file:
 ```php
 return [
     /*
-     *  The base path where the package (recursively) will search for classes.
-     *  By default, this will be the base path of your application.
-     */
-    'base_path' => base_path(),
-
-    /*
-     *  When you're using another root namespace, you can define it here
-     */
-    'root_namespace' => '',
-
-    /*
      *  A list of files that should be ignored during the discovering process.
      */
-    'ignored_files' => [],
+    'ignored_files' => [
+
+    ],
+
+    /**
+     * The directories where the package should search for structure scouts
+     */
+    'structure_scout_directories' => [
+        app_path(),
+    ],
 
     /*
-     *  Directory where cached discover profiles are stored
+     *  Configure the cache driver for discoverers
      */
-    'cache_directory' => storage_path('app/structure-discoverer/'),
+    'cache' => [
+        'driver' => \Spatie\StructureDiscoverer\Cache\LaravelDiscoverCacheDriver::class,
+        'store' => null,
+    ]
 ];
 ```
 
 ## Usage
 
-You can find classes within your project by creating a discover profile. This profile should be registered within a service provider, have a unique identifier and one or more specific conditions.
-
-The discoverer will only run once when the application boots and then process all registered profiles at once, passing the discovered classes through a closure ready to be used.
-
-You can have as many profiles as you want within your codebase as long as they have a unique identifier.
-
-### Creating a discover profile
+You always need to define in which directories you want to look for structures:
 
 ```php
-Discover::classes('discover-settings')
-    ->extending(Settings::class)
-    ->get(fn (array $classes) => dump($classes));
+Discover::in(__DIR__)->...
 ```
 
-When your application is booted, the `$classes` array will contain all classes extending the `Settings` class. The `discover-settings` string is the unique identifier symbolizing the profile.
-
-You can specify a specific directory where classes should be discovered:
+It is possible to look in multiple directories like this:
 
 ```php
-Discover::classes('discover-settings')
-	->within(app_path('settings'))
-    ->extending(Settings::class)
-    ->get(fn (array $classes) => dump($classes);
+Discover::in(app_path('models'), app_path('enums'))->...
 ```
 
-By default, the `$classes` array contains the fully qualified names of the discovered classes. It is possible to get a `ReflectionClass` instance of the discovered classes:
+You can get structures as such:
 
 ```php
-Discover::classes('discover-settings')
-    ->extending(Settings::class)
-    ->returnReflection()
-    ->get(fn (array $classes) => dump($classes);
+Discover::in(__DIR__)->get();
 ```
 
-When you want to include a specific class, you can add the following condition:
+This will return an array of class FCQN's and because no filters were added the package will return all classes, enums,
+interfaces and traits.
+
+You only discover classes like this:
 
 ```php
-Discover::classes('discover-settings')
-    ->named(GeneralSettings::class)
-    ->get(fn (array $classes) => dump($classes);
+Discover::in(__DIR__)->classes()->get();
 ```
 
-You can discover classes implementing an interface as such:
+Interfaces like this:
 
 ```php
-Discover::classes('discover-projectors')
-    ->implementing(Projector::class)
-    ->get(fn (array $classes) => dump($classes);
+Discover::in(__DIR__)->interfaces()->get();
 ```
 
-Classes using an attribute can be discovered as such:
+Enums like this:
+
+```php
+Discover::in(__DIR__)->enums()->get();
+```
+
+And traits like this:
+
+```php
+Discover::in(__DIR__)->traits()->get();
+```
+
+When you want to include a specific named structure you can do the following:
+
+```php
+Discover::in(__DIR__)->named('MyAwesomeClass')->get();
+```
+
+You can discover classes extending another clas sas such:
+
+```php
+Discover::in(__DIR__)->extending(Model::class)->get();
+```
+
+Discovering classes, interfaces or enums implementing an interface can be done like this:
+
+```php
+Discover::in(__DIR__)->implementing(Arrayable::class)->get();
+```
+
+Be aware, though interfaces extend another interface, in this context, the implements keyword seemed a more logical
+choice to us to find interfaces extended by another interface. Using the `extends` method for such filter won't work!
+
+Classes, interfaces or traits using an attribute can be discovered as such:
+
+```php
+Discover::in(__DIR__)->withAttribute(Cast::class)->get();
+```
+
+For more fine-grained control, you can use a closure that receives a `DiscoveredStructure` object (more on that later)
+and should return `true` if the structure should be included:
 
  ```php
-Discover::classes('discover-routes')
-    ->attribute(Route::class)
-    ->get(fn (array $classes) => dump($classes);
+Discover::in(__DIR__)
+    ->custom(fn(DiscoveredStructure $structure) => $structure->namespace === 'App')
+    ->get()
 ```
 
-You can even check if the attribute has specific parameters:
+More complex custom conditions can be embedded in a class:
 
-  ```php
-Discover::classes('discover-routes')
-    ->attribute(Route::class, ['POST'])
-    ->get(fn (array $classes) => dump($classes);
+```php
+class AppDiscoverCondition extends DiscoverCondition 
+{
+    public function satisfies(DiscoveredStructure $discoveredData): bool
+    {
+        return $structure->namespace === 'App';
+    }
+};
 ```
 
-Or you can inspect the attribute of a class using a closure to determine if it should be discovered or not:
+This condition can now be used like this:
 
  ```php
-Discover::classes('discover-routes')
-    ->attribute(Route::class, fn(Route $route) => $route->method === 'POST')
-    ->get(fn (array $classes) => dump($classes);
+Discover::in(__DIR__)
+    ->custom(new AppDiscoverCondition())
+    ->get()
 ```
 
-For more fine-grained control, you can use a closure that receives a `ReflectionClass` and should return `true` if the class should be included:
+### Combining conditions
 
- ```php
-Discover::classes('discover-settings')
-    ->custom(fn(ReflectionClass $reflection) => str_ends_with($reflection, 'Settings'))
-    ->get(fn (array $classes) => dump($classes);
+By default, all conditions will work like an AND operation, so in this case:
+
+```php
+Discover::in(__DIR__)->classes()->implementing(Arrayable::class)->get();
 ```
 
-It is possible to combine conditions. These will all be applied as an AND combination. Which means they all should be valid for the class to be discovered:
+The package will only look for structures which are class **and** implement `Arrayble`.
 
-  ```php
-Discover::classes('discover-routes')
-    ->extending(Controller::class)
-    ->attribute(Route::class)
-    ->get(fn (array $classes) => dump($classes);
-```
+You can create an OR combination of conditions like this:
 
-In this case, only classes extending `Controller` with a `Route` attribute will be discovered.
-
-You can include classes that adhere to one or more conditions as such:
-
-  ```php
-Discover::classes('discover-routes')
+```php
+Discover::in(__DIR__)
 	->any(
-		ProfileCondition::extending(Controller::class),
-		ProfileCondition::attribute(Route::class)
+		ProfileCondition::classes(),
+		ProfileCondition::enums()
 	)
-    ->get(fn (array $classes) => dump($classes);
+    ->get();
 ```
 
-Now classes extending `Controller` OR classes with a `Route` attribute will be discovered.
+Now the package will only discover structures which are classes **or** enums.
 
-You can mix and match these conditions in any way you want.
+You can also create more complex operations like an or of ands:
+
+```php
+Discover::in(__DIR__)
+	->any(
+		ProfileCondition::exact(
+		    ProfileCondition::classes(),
+		    ProfileCondition::implementing(Arrayble::class),
+		),
+		ProfileCondition::exact(
+            ProfileCondition::enums(),
+		    ProfileCondition::implementing(Stringable::class),
+		)
+	)
+    ->get();
+```
+
+This example can be written shorter like this:
+
+```php
+Discover::in(__DIR__)
+	->any(
+		ProfileCondition::exact(
+		    ProfileCondition::classes()->implementing(Arrayble::class),
+		),
+		ProfileCondition::exact(
+            ProfileCondition::enums()->implementing(Stringable::class),
+		)
+	)
+    ->get();
+```
 
 ### Caching
 
-The package can cache all the profiles, so they do not need to be discovered when your application runs in production. This makes the whole process a lot faster.
+This package is able to cache all discovered structures so no performance heavy operations are required in production.
 
-You can cache all profiles as such:
+The fastest way to start caching is by creating a structure scout, which is a class that describes what you want to
+discover:
 
-```bash
-php artisan auto-discovered:cache
+```php
+class EnumsDiscoverer extends StructureScout
+{
+    protected function definition(): Discover|DiscoverConditionFactory
+    {
+        return Discover::in(__DIR__)->enums();
+    }
+
+    public function cacheDriver(): DiscoverCacheDriver
+    {
+        return new FileDiscoverCacheDriver('/path/to/temp/directory');
+    }
+}
 ```
 
-To clear the cached profiles, you can run:
+Each discoverer extends from `Discoverer` and should have
 
- ```bash
-php artisan auto-discovered:clear
+- a definition where you describe what to discover and where, just like we did inline earlier
+- a driver to be used for the cache, when you're using Laravel this method is not required since it is already defined
+  in the config file
+
+Within your application you can use the discoverer as such:
+
+```php
+EnumsDiscoverer::create()->get();
 ```
+
+The first time this method is called the whole discover process will run. But on the second time the discover process
+will not run making a call to this method amazingly fast!
+
+#### In production
+
+When you're deploying to production, you can warm all your structure scout caches as such:
+
+```php
+StructureScoutManager::cache([__DIR__]); 
+```
+
+You should provide a directory where the scouts are stored.
+
+If you're using Laravel you can use the following command:
+
+````bash
+php artisan structure-scouts::cache
+````
+
+It is also possible to clear all caches for structure scouts as such:
+
+```php
+StructureScoutManager::clear([__DIR__]); 
+```
+
+Or if you're using Laravel:
+
+````bash
+php artisan structure-scouts::clear
+````
+
+#### Cache drivers
+
+##### File
+
+The `FileDiscoverCacheDriver` allows you to cache discovered structures in a file, you should provide a `directory`
+parameter where all the cache files should be stored.
+
+##### Laravel
+
+The `LaravelDiscoverCacheDriver` will use the default Laravel cache, you can provide an optional `store` parameter to
+define the store to be used and an optional `prefix` parameter for the cache key.
+
+##### Null
+
+The `NullDiscoverCacheDriver` will not cache anything and can be used for testing purposes.
+
+##### Your own
+
+A cache driver can be built be extending the `DiscoverCacheDriver` interface:
+
+```php
+interface DiscoverCacheDriver
+{
+    public function has(string $id): bool;
+
+    public function get(string $id): array;
+
+    public function put(string $id, array $discovered): void;
+
+    public function forget(string $id): void;
+}
+```
+
+#### Without structure scouts
+
+You can also use caching inline without the use of scouts, be aware, warming up these caches in production is not
+possible:
+
+```php
+Discover::in(__DIR__)
+	->cache(
+		'Some identifier',
+		new FileDiscoverCacheDriver('/path/to/temp/directory');
+	)
+    ->get();
+```
+
+### Parallel
+
+Getting all structures in a larger application can be quite slow due to a lot of files being scanned. This process can
+be sped up by parallelized scanning. This can be enabled as such:
+
+```php
+Discover::in(__DIR__)->parallel()->get();
+```
+
+It is possible to set the amount of files each individual process will scan:
+
+```php
+Discover::in(__DIR__)->parallel(100)->get();
+```
+
+By default, each process will scan 50 files.
+
+### Chains
+
+Often structures inherit other structures with extends and implementations. The package automatically includes these structures when discovering them. So for example
+
+```php
+class Request
+{
+}
+
+class FormRequest extends Request
+{
+}
+
+class UserFormRequest extends Request
+{
+}
+```
+
+When using:
+
+```php
+Discover::in(__DIR__)->extending(Request::class)->get();
+```
+
+Both `FormRequest` and `UserFormRequest` will be found, although `UserFormRequest` is not a direct descendant of `Request` it is one through `FormRequest`.
+
+You can disable this behaviour for extending as such:
+
+```php
+Discover::in(__DIR__)->extendingWithoutChain(Request::class)
+```
+
+Or for implementing as such:
+
+```php
+Discover::in(__DIR__)->impelemntingWithoutChain(Request::class)
+```
+
+Resolving chains is a complicated and resource heavy process, it can be completely disabled as such:
+
+```php
+Discover::in(__DIR__)->withoutChains()->extending(Request::class)->get();
+```
+
+### Full information
+
+When discovering structures, the output will be a reference string to the structure by default. Internally the package
+keeps track of a lot more information which can be useful for all purposes. You can also retrieve this information as
+such:
+
+```php
+Discover::in(__DIR__)->full()->get();
+```
+
+Instead of returning an array of strings, now an array of `DiscoveredStructure` objects is returned. Let's go through
+the different types:
+
+#### DiscoveredClass
+
+Represents a class, the `$extends` and `$implements` properties address the direct extend and implements of the class.
+The `$extendsChain` and `$implementsChain` properties contain all extends and implementation for the full inheritance
+chain.
+
+```php
+class DiscoveredClass extends DiscoveredStructure
+{
+    public function __construct(
+        string $name,
+        string $file,
+        string $namespace,
+        public bool $isFinal,
+        public bool $isAbstract,
+        public bool $isReadonly,
+        public ?string $extends,
+        public array $implements,
+        public array $attributes,
+        public ?array $extendsChain = null,
+        public ?array $implementsChain = null,
+    ) {
+    }
+}
+```
+
+#### DiscoveredInterface
+
+Represents a class, the `$extends` property addresses the direct extends of the interface. The `$extendsChain` property
+contain all extends for the full inheritance chain.
+
+```php
+class DiscoveredInterface extends DiscoveredStructure
+{
+    public function __construct(
+        string $name,
+        string $file,
+        string $namespace,
+        public array $extends,
+        public array $attributes,
+        public ?array $extendsChain = null,
+    ) {
+    }
+```
+
+#### DiscoveredEnum
+
+Represents an enum, the `$implements` property addresses the direct extends of the enum. The `$implementsChain` property
+contain all implements for the full inheritance chain. The `$type` property is an enum describing the
+type: `Unit`, `String`, `Int`.
+
+```php
+class DiscoveredEnum extends DiscoveredStructure
+{
+    public function __construct(
+        public string $name,
+        public string $namespace,
+        public string $file,
+        public DiscoveredEnumType $type,
+        public array $implements,
+        public array $attributes,
+        public ?array $implementsChain = null,
+    ) {
+    }
+}
+```
+
+### DiscoveredTrait
+
+Represents a trait.
+
+```php
+class DiscoveredTrait extends DiscoveredStructure
+{
+    public function __construct(
+        public string $name,
+        public string $namespace,
+        public string $file,
+    ) {
+    }
+}
+```
+
+### Help? My structure cannot be found!
+
+The internals of this package will scan all files within a directory and tries to make a virtual map linking all structures together with their extends, uses and implementations.
+
+Due to this file scanning, if referenced structures are not being scanned, this map is not complete.
+
+For example, we scan for all classes extending Laravel's `Model` in our app directory, a lot of models have been found but the `User` model is missing.
+
+This is because:
+
+- The package searches in the app directory for classes extending `Model`
+- `User` extends `Authenticatable` which itself extends `Model`
+- `Authenticatable` is stored within the `vendor/laravel/...` directory which isn't being scanned
+- The package has no knowledge that `Authenticatable` extends `Model`
+- `User` will not be found
+
+A solution to this problem could be to also include the `laravel` directory in the scanning process.
 
 ## Testing
 
@@ -206,6 +536,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - [Ruben Van Assche](https://github.com/rubenvanassche)
+- [Construct Finder](https://github.com/thephpleague/construct-finder) a big influence for this package
 - [All Contributors](../../contributors)
 
 ## License

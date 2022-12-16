@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\StructureDiscoverer\Resolvers;
+namespace Spatie\StructureDiscoverer\Support;
 
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
@@ -8,7 +8,7 @@ use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 
 class StructureChainResolver
 {
-    public function execute(array &$discovered)
+    public function execute(array &$discovered): void
     {
         foreach ($discovered as $structure) {
             if ($structure instanceof DiscoveredClass && $structure->extendsChain === null) {
@@ -33,14 +33,20 @@ class StructureChainResolver
         array &$discovered,
         DiscoveredClass $structure
     ): void {
-        /** @var DiscoveredClass $extendedStructure */
-        $extendedStructure = $discovered[$structure->extends] ?? null;
-
-        if ($extendedStructure === null) {
+        if ($structure->extends === null) {
             $structure->extendsChain = [];
 
             return;
         }
+
+        if(! array_key_exists($structure->extends, $discovered)){
+            $structure->extendsChain = [$structure->extends];
+
+            return;
+        }
+
+        /** @var DiscoveredClass $extendedStructure */
+        $extendedStructure = $discovered[$structure->extends];
 
         if ($extendedStructure->extendsChain === null) {
             $this->resolveExtendsChain($discovered, $extendedStructure);
@@ -60,12 +66,13 @@ class StructureChainResolver
         $chain = $implements;
 
         foreach ($implements as $implement) {
-            /** @var DiscoveredInterface $implementedStructure */
-            $implementedStructure = $discovered[$implement] ?? null;
+            if(! array_key_exists($implement, $discovered)){
+                $chain[] = $implement;
 
-            if ($implementedStructure === null) {
                 continue;
             }
+            /** @var DiscoveredInterface $implementedStructure */
+            $implementedStructure = $discovered[$implement];
 
             if ($implementedStructure->extendsChain === null) {
                 $this->resolveImplementsChain($discovered, $implementedStructure);
@@ -73,6 +80,22 @@ class StructureChainResolver
 
             array_push($chain, ...$implementedStructure->extendsChain);
         }
+
+        if ($structure instanceof DiscoveredClass
+            && $structure->extends
+            && array_key_exists($structure->extends, $discovered)
+        ) {
+            /** @var DiscoveredClass $extendedStructure */
+            $extendedStructure = $discovered[$structure->extends] ?? null;
+
+            if ($extendedStructure->implementsChain === null) {
+                $this->resolveImplementsChain($discovered, $extendedStructure);
+            }
+
+            array_push($chain, ...$extendedStructure->implementsChain);
+        }
+
+        $chain = array_unique($chain);
 
         if ($structure instanceof DiscoveredInterface) {
             $structure->extendsChain = $chain;

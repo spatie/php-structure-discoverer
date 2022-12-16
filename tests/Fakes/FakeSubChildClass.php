@@ -2,6 +2,7 @@
 
 namespace Spatie\StructureDiscoverer\Tests\Fakes;
 
-interface FakeOtherInterface
+class FakeSubChildClass extends FakeChildClass
 {
+
 }

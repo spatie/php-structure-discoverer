@@ -2,6 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\Tests\Fakes;
 
-enum FakeEnum implements FakeChildInterface
+class FakeRootClass implements FakeRootInterface
 {
 }

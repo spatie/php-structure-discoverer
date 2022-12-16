@@ -7,7 +7,8 @@ use Illuminate\Contracts\Cache\Repository;
 class LaravelDiscoverCacheDriver implements DiscoverCacheDriver
 {
     public function __construct(
-        public ?string $driver = null,
+        public ?string $prefix = null,
+        public ?string $store = null,
     ) {
     }
 
@@ -33,11 +34,13 @@ class LaravelDiscoverCacheDriver implements DiscoverCacheDriver
 
     private function resolveCacheRepository(): Repository
     {
-        return cache()->driver($this->driver);
+        return cache()->store($this->store);
     }
 
     private function resolveCacheKey(string $id): string
     {
-        return "discoverer-cache-{$id}";
+        return $this->prefix
+            ? "{$this->prefix}-discoverer-cache-{$id}"
+            : "discoverer-cache-{$id}";
     }
 }

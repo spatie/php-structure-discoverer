@@ -8,7 +8,7 @@ use function Amp\Promise\wait;
 use Illuminate\Support\Collection;
 use Spatie\StructureDiscoverer\TokenParsers\MultiFileTokenParser;
 
-class AsynchronousDiscoverWorker implements DiscoverWorker
+class ParallelDiscoverWorker implements DiscoverWorker
 {
     public function __construct(
         public int $filesPerJob = 50

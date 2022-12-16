@@ -10,12 +10,12 @@ use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
  * @property array<DiscoveredAttribute> $attributes
  * @property ?array<string> $implementsChain
  */
-class DiscoveredEnum extends DiscoveredData
+class DiscoveredEnum extends DiscoveredStructure
 {
     public function __construct(
         public string $name,
-        public string $namespace,
         public string $file,
+        public string $namespace,
         public DiscoveredEnumType $type,
         public array $implements,
         public array $attributes,

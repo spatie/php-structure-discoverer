@@ -28,7 +28,7 @@ enum DiscoveredStructureType
         };
     }
 
-    /** @return class-string<\Spatie\StructureDiscoverer\Data\DiscoveredData> */
+    /** @return class-string<\Spatie\StructureDiscoverer\Data\DiscoveredStructure> */
     public function getDataClass(): string
     {
         return match ($this) {

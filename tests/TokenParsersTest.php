@@ -6,7 +6,7 @@ use Illuminate\Contracts\Support\Responsable;
 use Illuminate\Support\Arr;
 use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
-use Spatie\StructureDiscoverer\Data\DiscoveredData;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 use Spatie\StructureDiscoverer\Data\DiscoveredTrait;
@@ -27,7 +27,7 @@ function getDiscoveredStructure(
 ): DiscoveredEnum|DiscoveredClass|DiscoveredInterface|DiscoveredTrait {
     return Arr::first(
         getDiscovered($definition, $filename),
-        $structure ? fn (DiscoveredData $discovered) => $discovered->name === $structure : null,
+        $structure ? fn (DiscoveredStructure $discovered) => $discovered->name === $structure : null,
     );
 }
 

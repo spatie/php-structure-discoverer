@@ -3,10 +3,9 @@
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
-use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 
-class ExtendsDiscoverCondition extends DiscoverCondition
+class ExtendsWithoutChainDiscoverCondition extends DiscoverCondition
 {
     /** @var string[] */
     private array $classes;
@@ -19,16 +18,7 @@ class ExtendsDiscoverCondition extends DiscoverCondition
     public function satisfies(DiscoveredStructure $discoveredData): bool
     {
         if ($discoveredData instanceof DiscoveredClass) {
-            $extends = $discoveredData->extends === null
-                ? []
-                : [$discoveredData->extends];
-
-            $foundExtends = array_filter(
-                $discoveredData->extendsChain ?? $extends,
-                fn (string $class) => in_array($class, $this->classes)
-            );
-
-            return count($foundExtends) > 0;
+            return in_array($discoveredData->extends, $this->classes);
         }
 
         return false;

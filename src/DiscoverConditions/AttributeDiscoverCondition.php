@@ -4,7 +4,7 @@ namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
-use Spatie\StructureDiscoverer\Data\DiscoveredData;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 
@@ -19,7 +19,7 @@ class AttributeDiscoverCondition extends DiscoverCondition
         $this->classes = $classes;
     }
 
-    public function satisfies(DiscoveredData $discoveredData): bool
+    public function satisfies(DiscoveredStructure $discoveredData): bool
     {
         $hasAttributes = $discoveredData instanceof DiscoveredInterface
             || $discoveredData instanceof DiscoveredEnum

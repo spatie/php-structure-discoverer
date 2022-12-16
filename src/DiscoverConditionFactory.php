@@ -2,12 +2,16 @@
 
 namespace Spatie\StructureDiscoverer;
 
+use Closure;
 use Spatie\StructureDiscoverer\DiscoverConditions\AnyDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\AttributeDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\CustomDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\DiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\ExtendsDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\ExtendsWithoutChainDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\ImplementsDiscoverCondition;
+use Spatie\StructureDiscoverer\DiscoverConditions\ImplementsWithoutChainDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\NameDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\TypeDiscoverCondition;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
@@ -68,9 +72,23 @@ class DiscoverConditionFactory
         return $this;
     }
 
+    public function extendingWithoutChain(string ...$classOrInterfaces): self
+    {
+        $this->conditions->add(new ExtendsWithoutChainDiscoverCondition(...$classOrInterfaces));
+
+        return $this;
+    }
+
     public function implementing(string ...$interfaces): self
     {
         $this->conditions->add(new ImplementsDiscoverCondition(...$interfaces));
+
+        return $this;
+    }
+
+    public function implementingWithoutChain(string ...$interfaces): self
+    {
+        $this->conditions->add(new ImplementsWithoutChainDiscoverCondition(...$interfaces));
 
         return $this;
     }
@@ -82,10 +100,14 @@ class DiscoverConditionFactory
         return $this;
     }
 
-    public function custom(DiscoverCondition|DiscoverConditionFactory ...$conditions): self
+    public function custom(DiscoverCondition|DiscoverConditionFactory|Closure ...$conditions): self
     {
         foreach ($conditions as $condition) {
-            $this->conditions->add($condition);
+            $this->conditions->add(
+                $condition instanceof Closure
+                    ? new CustomDiscoverCondition($condition)
+                    : $condition
+            );
         }
 
         return $this;

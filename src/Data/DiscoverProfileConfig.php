@@ -8,12 +8,12 @@ use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 class DiscoverProfileConfig
 {
     public function __construct(
-        public ?string $cacheId,
         public array $directories,
         public array $ignoredFiles,
-        public bool $asString,
+        public bool $full,
         public DiscoverWorker $worker,
         public ?DiscoverCacheDriver $cacheDriver,
+        public ?string $cacheId,
         public bool $withChains,
     ) {
     }

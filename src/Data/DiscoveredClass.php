@@ -11,7 +11,7 @@ use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
  * @property ?array<string> $extendsChain
  * @property ?array<string> $implementsChain
  */
-class DiscoveredClass extends DiscoveredData
+class DiscoveredClass extends DiscoveredStructure
 {
     public function __construct(
         string $name,

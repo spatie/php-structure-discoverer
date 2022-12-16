@@ -3,18 +3,18 @@
 namespace Spatie\StructureDiscoverer;
 
 use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
 use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
-use Spatie\StructureDiscoverer\DiscoverWorkers\AsynchronousDiscoverWorker;
+use Spatie\StructureDiscoverer\DiscoverWorkers\ParallelDiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
 use Spatie\StructureDiscoverer\Exceptions\NoCacheConfigured;
-use Spatie\StructureDiscoverer\Resolvers\StructuresResolver;
+use Spatie\StructureDiscoverer\Support\LaravelDetector;
+use Spatie\StructureDiscoverer\Support\StructuresResolver;
 
 /**
  * TODO
- * - test chains
- * - add extra conditions based upon chains
  * - readme
  */
 class Discover extends DiscoverConditionFactory
@@ -23,33 +23,35 @@ class Discover extends DiscoverConditionFactory
 
     public static function in(string ...$directories): self
     {
-        if (function_exists('app') && function_exists('resolve')) {
+        if (LaravelDetector::isRunningLaravel()) {
             return app(self::class, [
                 'directories' => $directories,
             ]);
         }
 
-        return new self(directories: $directories);
+        return new self(
+            directories: $directories,
+        );
     }
 
     public function __construct(
-        ?string $cacheId = null,
         array $directories = [],
         array $ignoredFiles = [],
         ExactDiscoverCondition $conditions = new ExactDiscoverCondition(),
-        bool $asString = false,
+        bool $full = false,
         DiscoverWorker $worker = new SynchronousDiscoverWorker(),
-        ?DiscoverCacheDriver $cache = null,
+        ?DiscoverCacheDriver $cacheDriver = null,
+        ?string $cacheId = null,
         bool $withChains = true,
     ) {
         $this->config = new DiscoverProfileConfig(
-            $cacheId,
-            $directories,
-            $ignoredFiles,
-            $asString,
-            $worker,
-            $cache,
-            $withChains
+            directories: $directories,
+            ignoredFiles: $ignoredFiles,
+            full: $full,
+            worker: $worker,
+            cacheDriver: $cacheDriver,
+            cacheId: $cacheId,
+            withChains: $withChains
         );
 
         parent::__construct($conditions);
@@ -69,9 +71,9 @@ class Discover extends DiscoverConditionFactory
         return $this;
     }
 
-    public function asString(): self
+    public function full(): self
     {
-        $this->config->asString = true;
+        $this->config->full = true;
 
         return $this;
     }
@@ -83,9 +85,9 @@ class Discover extends DiscoverConditionFactory
         return $this;
     }
 
-    public function async(int $filesPerJob = 50): self
+    public function parallel(int $filesPerJob = 50): self
     {
-        return $this->usingWorker(new AsynchronousDiscoverWorker($filesPerJob));
+        return $this->usingWorker(new ParallelDiscoverWorker($filesPerJob));
     }
 
     public function cache(string $id, ?DiscoverCacheDriver $cache = null): self
@@ -108,10 +110,11 @@ class Discover extends DiscoverConditionFactory
         return $this;
     }
 
+    /** @return array<DiscoveredStructure>|array<string> */
     public function get(): array
     {
         $discoverer = new StructuresResolver($this->config->worker);
 
-        return $discoverer->run($this);
+        return $discoverer->execute($this);
     }
 }

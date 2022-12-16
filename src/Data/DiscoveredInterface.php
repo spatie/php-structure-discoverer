@@ -9,7 +9,7 @@ use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
  * @property array<DiscoveredAttribute> $attributes
  * @property ?array<string> $extendsChain
  */
-class DiscoveredInterface extends DiscoveredData
+class DiscoveredInterface extends DiscoveredStructure
 {
     public function __construct(
         string $name,

@@ -4,7 +4,7 @@ namespace Spatie\StructureDiscoverer\Data;
 
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 
-class DiscoveredTrait extends DiscoveredData
+class DiscoveredTrait extends DiscoveredStructure
 {
     public function getType(): DiscoveredStructureType
     {

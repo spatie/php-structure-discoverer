@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "amphp/parallel": "^1.4",
+        "amphp/parallel": "^1.4.1",
         "amphp/parallel-functions": "^1.1",
         "illuminate/collections": "^9.30",
         "spatie/laravel-package-tools": "^1.4.3"

@@ -9,7 +9,10 @@
 With this package, you'll be able to discover structures in your PHP application that fulfill certain conditions quickly. For example, you could search for classes implementing an interface:
 
 ```php
-Discover::in(__DIR__)->classes()->implementing(Arrayable::class)->get(); // PostModel, Collection, ...
+use Spatie\StructureDiscoverer\Discover;
+
+// PostModel::class, Collection::class, ...
+Discover::in(__DIR__)->classes()->implementing(Arrayable::class)->get(); 
 ```
 
 As an added benefit, it also has a built-in cache functionality that makes the whole process fast in production.

@@ -4,6 +4,7 @@ namespace Spatie\StructureDiscoverer\Commands;
 
 use Illuminate\Console\Command;
 use Spatie\StructureDiscoverer\Support\StructureScoutManager;
+
 class CacheStructureScoutsCommand extends Command
 {
     protected $signature = 'structure-scouts:cache';

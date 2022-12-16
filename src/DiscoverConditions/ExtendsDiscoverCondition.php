@@ -3,7 +3,6 @@
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
-use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 
 class ExtendsDiscoverCondition extends DiscoverCondition

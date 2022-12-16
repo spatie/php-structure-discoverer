@@ -39,7 +39,7 @@ class StructureChainResolver
             return;
         }
 
-        if(! array_key_exists($structure->extends, $discovered)){
+        if (! array_key_exists($structure->extends, $discovered)) {
             $structure->extendsChain = [$structure->extends];
 
             return;
@@ -66,7 +66,7 @@ class StructureChainResolver
         $chain = $implements;
 
         foreach ($implements as $implement) {
-            if(! array_key_exists($implement, $discovered)){
+            if (! array_key_exists($implement, $discovered)) {
                 $chain[] = $implement;
 
                 continue;

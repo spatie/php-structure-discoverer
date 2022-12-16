@@ -6,5 +6,4 @@ use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootInterface;
 
 interface FakeInterfaceDepender extends FakeRootInterface
 {
-
 }

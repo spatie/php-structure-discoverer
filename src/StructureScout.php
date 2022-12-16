@@ -3,8 +3,6 @@
 namespace Spatie\StructureDiscoverer;
 
 use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
-use Spatie\StructureDiscoverer\Cache\LaravelDiscoverCacheDriver;
-use Spatie\StructureDiscoverer\Cache\NullDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Exceptions\StructureScoutsCacheDriverMissing;
 use Spatie\StructureDiscoverer\Support\DiscoverCacheDriverFactory;

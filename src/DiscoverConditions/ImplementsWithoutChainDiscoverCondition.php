@@ -3,9 +3,9 @@
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
-use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 
 class ImplementsWithoutChainDiscoverCondition extends DiscoverCondition
 {

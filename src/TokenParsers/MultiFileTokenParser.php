@@ -2,15 +2,11 @@
 
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
-use Illuminate\Support\Facades\File;
-use Spatie\StructureDiscoverer\TokenParsers\FileTokenParser;
-
 class MultiFileTokenParser
 {
     public function __construct(
         protected FileTokenParser $fileTokenParser = new FileTokenParser()
-    )
-    {
+    ) {
     }
 
     public function execute(array $filenames): array

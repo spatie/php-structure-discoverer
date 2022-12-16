@@ -6,7 +6,6 @@ use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Discover;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
-use Spatie\StructureDiscoverer\Exceptions\InvalidDiscoverCacheId;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 

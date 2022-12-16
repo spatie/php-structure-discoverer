@@ -39,7 +39,7 @@ class StructureScoutManager
             /** @var StructureScout $discoverer */
             $discoverer = LaravelDetector::isRunningLaravel()
                 ? app($discoverer)
-                : new $discoverer;
+                : new $discoverer();
 
             $closure($discoverer);
 

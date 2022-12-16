@@ -6,5 +6,4 @@ use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootClass;
 
 class FakeClassDepender extends FakeRootClass
 {
-
 }

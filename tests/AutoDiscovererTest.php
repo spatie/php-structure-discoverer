@@ -13,16 +13,16 @@ use Spatie\StructureDiscoverer\Tests\Fakes\Dependers\FakeClassDepender;
 use Spatie\StructureDiscoverer\Tests\Fakes\Dependers\FakeInterfaceDepender;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeAttribute;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeChildClass;
-use Spatie\StructureDiscoverer\Tests\Fakes\FakeEnum;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeChildInterface;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeEnum;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootInterface;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildClass;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeTrait;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\OtherNested\FakeOtherNestedClass;
-use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildClass;
-use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildInterface;
 use Spatie\StructureDiscoverer\Tests\Stubs\StubStructureScout;
 
 it('can discover everything within a directory', function () {
@@ -42,7 +42,7 @@ it('can discover everything within a directory', function () {
         FakeSubChildInterface::class,
         FakeSubChildClass::class,
         FakeClassDepender::class,
-        FakeInterfaceDepender::class
+        FakeInterfaceDepender::class,
     ]);
 });
 
@@ -226,7 +226,7 @@ it('can discover using a custom condition', function () {
 
 it('can discover using a custom closure condition', function () {
     $found = Discover::in(__DIR__ . '/Fakes')
-        ->custom(fn(DiscoveredStructure $discoveredData) => $discoveredData instanceof DiscoveredClass && $discoveredData->name === 'FakeChildClass')
+        ->custom(fn (DiscoveredStructure $discoveredData) => $discoveredData instanceof DiscoveredClass && $discoveredData->name === 'FakeChildClass')
         ->get();
 
     expect($found)->toEqualCanonicalizing([

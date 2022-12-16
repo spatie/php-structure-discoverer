@@ -15,7 +15,6 @@ use Spatie\StructureDiscoverer\DiscoverConditions\ImplementsWithoutChainDiscover
 use Spatie\StructureDiscoverer\DiscoverConditions\NameDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverConditions\TypeDiscoverCondition;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
-use Spatie\StructureDiscoverer\Support\Conditions\HasConditions;
 
 trait HasConditionsTrait
 {

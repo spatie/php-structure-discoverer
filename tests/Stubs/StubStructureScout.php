@@ -5,7 +5,6 @@ namespace Spatie\StructureDiscoverer\Tests\Stubs;
 use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Cache\StaticDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Discover;
-use Spatie\StructureDiscoverer\Support\Conditions\HasConditionsTrait;
 use Spatie\StructureDiscoverer\StructureScout;
 
 class StubStructureScout extends StructureScout

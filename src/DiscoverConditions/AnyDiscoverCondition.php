@@ -4,7 +4,6 @@ namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Support\Conditions\HasConditions;
-use Spatie\StructureDiscoverer\Support\Conditions\HasConditionsTrait;
 
 class AnyDiscoverCondition extends DiscoverCondition
 {

@@ -25,7 +25,7 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
     {
         $file = file_get_contents($this->resolvePath($id));
 
-        if($file === false){
+        if ($file === false) {
             throw new Exception("Could not load file {$this->resolvePath($id)}");
         }
 

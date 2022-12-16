@@ -237,11 +237,11 @@ it('can discover using a custom closure condition', function () {
 it('can discover and receive the complete structure', function () {
     $found = Discover::in(__DIR__ . '/Fakes')->named('FakeChildClass')->full()->get();
 
-    expect($found)->toEqualCanonicalizing([
+    expect($found)->toEqual([
         new DiscoveredClass(
             name: 'FakeChildClass',
-            file: 'Spatie\StructureDiscoverer\Tests\Fakes',
-            namespace: '/Users/ruben/Spatie/structure-discoverer/tests/Fakes/FakeChildClass.php',
+            file: __DIR__.'/Fakes/FakeChildClass.php',
+            namespace: 'Spatie\StructureDiscoverer\Tests\Fakes',
             isFinal: false,
             isAbstract: false,
             isReadonly: false,

@@ -19,7 +19,7 @@ class DiscoveredInterface extends DiscoveredStructure
         public array $attributes,
         public ?array $extendsChain = null,
     ) {
-        parent::__construct($name, $namespace, $file);
+        parent::__construct($name, $file, $namespace);
     }
 
     public function getType(): DiscoveredStructureType

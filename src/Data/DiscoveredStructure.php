@@ -8,8 +8,8 @@ abstract class DiscoveredStructure
 {
     public function __construct(
         public string $name,
-        public string $namespace,
         public string $file,
+        public string $namespace,
     ) {
     }
 

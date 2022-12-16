@@ -95,8 +95,8 @@ class DiscoveredDataTokenParser
     ): DiscoveredTrait {
         return new DiscoveredTrait(
             $tokens->get($index)->text,
-            $namespace,
             $file,
+            $namespace,
         );
     }
 }

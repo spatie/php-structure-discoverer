@@ -21,7 +21,7 @@ class DiscoveredEnum extends DiscoveredStructure
         public array $attributes,
         public ?array $implementsChain = null,
     ) {
-        parent::__construct($name, $namespace, $file);
+        parent::__construct($name, $file, $namespace);
     }
 
     public function getType(): DiscoveredStructureType

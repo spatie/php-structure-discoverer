@@ -1,8 +1,9 @@
 # Automatically discover classes, interfaces, enums, and traits within your PHP application
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/php-structure-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/php-structure-discoverer)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/spatie/php-structure-discoverer/run-tests?label=tests)](https://github.com/spatie/php-structure-discoverer/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/spatie/php-structure-discoverer/Check%20&%20fix%20styling?label=code%20style)](https://github.com/spatie/php-structure-discoverer/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![run-tests](https://github.com/spatie/php-structure-discoverer/actions/workflows/run-tests.yml/badge.svg)](https://github.com/spatie/php-structure-discoverer/actions/workflows/run-tests.yml)
+[![PHPStan](https://github.com/spatie/php-structure-discoverer/actions/workflows/phpstan.yml/badge.svg)](https://github.com/spatie/php-structure-discoverer/actions/workflows/phpstan.yml)
+[![Check & fix styling](https://github.com/spatie/php-structure-discoverer/actions/workflows/php-cs-fixer.yml/badge.svg)](https://github.com/spatie/php-structure-discoverer/actions/workflows/php-cs-fixer.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/php-structure-discoverer.svg?style=flat-square)](https://packagist.org/packages/spatie/php-structure-discoverer)
 
 With this package, you'll be able to discover structures in your PHP application that fulfill certain conditions quickly. For example, you could search for classes implementing an interface:

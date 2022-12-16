@@ -28,6 +28,7 @@ class StructureScoutManager
         array $directories,
         Closure $closure
     ): array {
+        /** @var string[] $discoverers */
         $discoverers = Discover::in(...$directories)
             ->classes()
             ->extending(StructureScout::class)

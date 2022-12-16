@@ -1,0 +1,11 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Unable to resolve the template type T in call to function Amp\\\\Promise\\\\wait$#"
+			count: 1
+			path: src/DiscoverWorkers/ParallelDiscoverWorker.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: src/StructureScout.php

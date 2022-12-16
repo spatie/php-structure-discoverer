@@ -35,7 +35,7 @@ class StructuresResolver
 
         $structures = array_filter(
             $structures,
-            fn (DiscoveredStructure $discovered) => $profile->conditions->satisfies($discovered)
+            fn (DiscoveredStructure $discovered) => $profile->config->conditions->satisfies($discovered)
         );
 
         if ($profile->config->full === false) {

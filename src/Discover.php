@@ -10,15 +10,14 @@ use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\ParallelDiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
 use Spatie\StructureDiscoverer\Exceptions\NoCacheConfigured;
+use Spatie\StructureDiscoverer\Support\Conditions\HasConditionsTrait;
 use Spatie\StructureDiscoverer\Support\LaravelDetector;
 use Spatie\StructureDiscoverer\Support\StructuresResolver;
 
-/**
- * TODO
- * - readme
- */
-class Discover extends DiscoverConditionFactory
+class Discover
 {
+    use HasConditionsTrait;
+
     public readonly DiscoverProfileConfig $config;
 
     public static function in(string ...$directories): self
@@ -51,10 +50,9 @@ class Discover extends DiscoverConditionFactory
             worker: $worker,
             cacheDriver: $cacheDriver,
             cacheId: $cacheId,
-            withChains: $withChains
+            withChains: $withChains,
+            conditions: $conditions,
         );
-
-        parent::__construct($conditions);
     }
 
     public function inDirectories(string ...$directories): self
@@ -116,5 +114,10 @@ class Discover extends DiscoverConditionFactory
         $discoverer = new StructuresResolver($this->config->worker);
 
         return $discoverer->execute($this);
+    }
+
+    public function conditionsStore(): ExactDiscoverCondition
+    {
+        return $this->config->conditions;
     }
 }

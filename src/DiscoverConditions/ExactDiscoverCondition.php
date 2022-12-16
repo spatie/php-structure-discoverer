@@ -3,24 +3,25 @@
 namespace Spatie\StructureDiscoverer\DiscoverConditions;
 
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
-use Spatie\StructureDiscoverer\DiscoverConditionFactory;
+use Spatie\StructureDiscoverer\Support\Conditions\HasConditions;
+use Spatie\StructureDiscoverer\Support\Conditions\HasConditionsTrait;
 
 class ExactDiscoverCondition extends DiscoverCondition
 {
     /** @var DiscoverCondition[] */
     private array $conditions = [];
 
-    public function __construct(DiscoverCondition|DiscoverConditionFactory ...$conditions)
+    public function __construct(DiscoverCondition|HasConditions ...$conditions)
     {
         foreach ($conditions as $condition) {
             $this->add($condition);
         }
     }
 
-    public function add(DiscoverCondition|DiscoverConditionFactory $condition): static
+    public function add(DiscoverCondition|HasConditions $condition): static
     {
-        $this->conditions[] = $condition instanceof DiscoverConditionFactory
-            ? $condition->conditions
+        $this->conditions[] = $condition instanceof HasConditions
+            ? $condition->conditionsStore()
             : $condition;
 
         return $this;

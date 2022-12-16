@@ -20,7 +20,7 @@ abstract class StructureScout
         return static::class;
     }
 
-    abstract protected function definition(): Discover|DiscoverConditionFactory;
+    abstract protected function definition(): Discover;
 
     public function cacheDriver(): DiscoverCacheDriver
     {

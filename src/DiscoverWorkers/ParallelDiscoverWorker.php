@@ -19,9 +19,11 @@ class ParallelDiscoverWorker implements DiscoverWorker
     {
         $sets = $filenames->chunk($this->filesPerJob)->toArray();
 
-        $found = wait(parallelMap($sets, function (array $set) {
+        $promise = parallelMap($sets, function (array $set): array {
             return (new MultiFileTokenParser())->execute($set);
-        }));
+        });
+
+        $found = wait($promise);
 
         return array_merge(...$found);
     }

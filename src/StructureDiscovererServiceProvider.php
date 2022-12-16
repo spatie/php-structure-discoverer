@@ -19,7 +19,7 @@ class StructureDiscovererServiceProvider extends PackageServiceProvider
             ->hasCommand(ClearStructureScoutsCommand::class);
     }
 
-    public function packageRegistered()
+    public function packageRegistered(): void
     {
         $this->app->bind(Discover::class, fn ($app, $provided) => new Discover(
             directories: $provided['directories'],

@@ -2,6 +2,8 @@
 
 namespace Spatie\StructureDiscoverer\Cache;
 
+use Exception;
+
 class FileDiscoverCacheDriver implements DiscoverCacheDriver
 {
     public function __construct(
@@ -21,7 +23,13 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
 
     public function get(string $id): array
     {
-        return unserialize(file_get_contents($this->resolvePath($id)));
+        $file = file_get_contents($this->resolvePath($id));
+
+        if($file === false){
+            throw new Exception("Could not load file {$this->resolvePath($id)}");
+        }
+
+        return unserialize($file);
     }
 
     public function put(string $id, array $discovered): void

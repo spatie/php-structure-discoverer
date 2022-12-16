@@ -20,7 +20,7 @@ class StubStructureScout extends StructureScout
         return new StaticDiscoverCacheDriver();
     }
 
-    protected function definition(): Discover|DiscoverConditionFactory
+    protected function definition(): Discover
     {
         return Discover::in(__DIR__ . '/../Fakes')->enums();
     }

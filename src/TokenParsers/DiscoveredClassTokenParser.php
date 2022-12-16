@@ -51,7 +51,7 @@ class DiscoveredClassTokenParser
     ): bool {
         $token = $tokens->get($index - 2);
 
-        return defined(T_READONLY) && $token && $token->is(T_READONLY);
+        return defined('T_READONLY') && $token && $token->is(T_READONLY);
     }
 
     protected function isClassAbstract(

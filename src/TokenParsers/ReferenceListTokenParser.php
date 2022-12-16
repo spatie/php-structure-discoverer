@@ -17,7 +17,7 @@ class ReferenceListTokenParser
         TokenCollection $tokens,
         string $namespace,
         UsageCollection $usages,
-    ): array|string {
+    ): array {
         $classes = [];
 
         do {

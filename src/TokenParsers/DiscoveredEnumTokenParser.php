@@ -2,7 +2,7 @@
 
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
-use _PHPStan_59fb0a3b2\Nette\Neon\Exception;
+use Exception;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;

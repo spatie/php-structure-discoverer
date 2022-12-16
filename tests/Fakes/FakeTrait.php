@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Tests\Fakes;
+namespace Spatie\StructureDiscoverer\Tests\Fakes;
 
 trait FakeTrait
 {

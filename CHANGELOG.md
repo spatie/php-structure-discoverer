@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `laravel-auto-discoverer` will be documented in this file.
+All notable changes to `php-structure-discoverer` will be documented in this file.
 
 ## 0.0.2 - 2022-08-18
 

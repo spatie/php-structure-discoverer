@@ -1,13 +1,10 @@
 <?php
 
-namespace Spatie\LaravelAutoDiscoverer\Tests\Fakes;
+namespace Spatie\StructureDiscoverer\Tests\Fakes;
 
 use Attribute;
 
 #[Attribute]
 class FakeAttribute
 {
-    public function __construct(public ?string $method = null)
-    {
-    }
 }

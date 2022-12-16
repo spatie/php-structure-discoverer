@@ -1,11 +1,11 @@
 <?php
 
-use Spatie\LaravelAutoDiscoverer\Discover;
-use Spatie\LaravelAutoDiscoverer\DiscoverCache;
-use Spatie\LaravelAutoDiscoverer\DiscoverProfilesCollection;
-use Spatie\LaravelAutoDiscoverer\Tests\TestCase;
-use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfile;
-use Spatie\LaravelAutoDiscoverer\ValueObjects\DiscoverProfileConfig;
+use Spatie\StructureDiscoverer\DiscoverCache;
+use Spatie\StructureDiscoverer\DiscoverProfilesCollection;
+use Spatie\StructureDiscoverer\Support\StructuresResolver;
+use Spatie\StructureDiscoverer\Tests\TestCase;
+use Spatie\StructureDiscoverer\ValueObjects\DiscoverProfile;
+use Spatie\StructureDiscoverer\ValueObjects\DiscoverProfileConfig;
 
 uses(TestCase::class)->in(__DIR__);
 
@@ -26,6 +26,6 @@ if (! function_exists('setProfileInCache')) {
 
         app(DiscoverCache::class)->save($collection);
 
-        Discover::resetDiscovered();
+        StructuresResolver::resetDiscovered();
     }
 }

@@ -8,6 +8,7 @@ use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 use Spatie\StructureDiscoverer\Data\DiscoveredTrait;
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 
 enum DiscoveredStructureType
 {
@@ -28,7 +29,7 @@ enum DiscoveredStructureType
         };
     }
 
-    /** @return class-string<\Spatie\StructureDiscoverer\Data\DiscoveredStructure> */
+    /** @return class-string<DiscoveredStructure> */
     public function getDataClass(): string
     {
         return match ($this) {

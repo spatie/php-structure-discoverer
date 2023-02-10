@@ -98,8 +98,6 @@ class FileTokenParser
                 $index++;
             } while ($index < count($tokens));
         } catch (Throwable $throwable) {
-            ray($tokens, $index);
-
             throw new CouldNotParseFile($filename, $throwable);
         }
 

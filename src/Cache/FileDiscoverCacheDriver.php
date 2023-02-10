@@ -7,7 +7,9 @@ use Exception;
 class FileDiscoverCacheDriver implements DiscoverCacheDriver
 {
     public function __construct(
-        public string $directory
+        public string $directory,
+        public bool $serialize = true,
+        public ?string $filename = null,
     ) {
         $this->directory = rtrim($this->directory, '/');
 
@@ -23,10 +25,16 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
 
     public function get(string $id): array
     {
-        $file = file_get_contents($this->resolvePath($id));
+        $path = $this->resolvePath($id);
+
+        if($this->serialize === false){
+            return require_once $path;
+        }
+
+        $file = file_get_contents($path);
 
         if ($file === false) {
-            throw new Exception("Could not load file {$this->resolvePath($id)}");
+            throw new Exception("Could not load file {$path}");
         }
 
         return unserialize($file);
@@ -34,7 +42,9 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
 
     public function put(string $id, array $discovered): void
     {
-        $export = serialize($discovered);
+        $export = $this->serialize
+            ? serialize($discovered)
+            : '<?php return ' . var_export($discovered, true) . ';';
 
         file_put_contents(
             $this->resolvePath($id),
@@ -53,6 +63,8 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
 
     private function resolvePath(string $id): string
     {
-        return "{$this->directory}/discoverer-cache-{$id}";
+        return $this->filename
+            ? "{$this->directory}/{$this->filename}"
+            : "{$this->directory}/discoverer-cache-{$id}";
     }
 }

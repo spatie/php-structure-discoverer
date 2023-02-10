@@ -28,7 +28,7 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
         $path = $this->resolvePath($id);
 
         if ($this->serialize === false) {
-            return require_once $path;
+            return require $path;
         }
 
         $file = file_get_contents($path);

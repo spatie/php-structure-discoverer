@@ -2,6 +2,10 @@
 
 All notable changes to `php-structure-discoverer` will be documented in this file.
 
+## 1.0.1 - 2023-02-10
+
+- Fix require with file cache driver
+
 ## 0.0.5 - 2023-02-10
 
 Test release

@@ -22,6 +22,5 @@ class ClearStructureScoutsCommand extends Command
             ->whenNotEmpty(fn () => $this->newLine());
 
         $this->components->info('All done!');
-
     }
 }

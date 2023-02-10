@@ -1,5 +1,7 @@
 <?php
 
+use function Pest\Laravel\artisan;
+
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Cache\StaticDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
@@ -24,7 +26,6 @@ use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\OtherNested\FakeOtherNestedClass;
 use Spatie\StructureDiscoverer\Tests\Stubs\StubStructureScout;
-use function Pest\Laravel\artisan;
 
 beforeEach(function () {
     StaticDiscoverCacheDriver::clear();
@@ -231,7 +232,7 @@ it('can discover using a custom condition', function () {
 
 it('can discover using a custom closure condition', function () {
     $found = Discover::in(__DIR__ . '/Fakes')
-        ->custom(fn(DiscoveredStructure $discoveredData) => $discoveredData instanceof DiscoveredClass && $discoveredData->name === 'FakeChildClass')
+        ->custom(fn (DiscoveredStructure $discoveredData) => $discoveredData instanceof DiscoveredClass && $discoveredData->name === 'FakeChildClass')
         ->get();
 
     expect($found)->toEqualCanonicalizing([

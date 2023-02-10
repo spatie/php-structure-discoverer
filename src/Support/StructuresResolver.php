@@ -31,12 +31,12 @@ class StructuresResolver
 
         $structures = array_filter(
             $structures,
-            fn(DiscoveredStructure $discovered) => $profile->config->conditions->satisfies($discovered)
+            fn (DiscoveredStructure $discovered) => $profile->config->conditions->satisfies($discovered)
         );
 
         if ($profile->config->full === false) {
             $structures = array_map(
-                fn(DiscoveredStructure $discovered) => $discovered->getFcqn(),
+                fn (DiscoveredStructure $discovered) => $discovered->getFcqn(),
                 $structures
             );
         }
@@ -56,8 +56,8 @@ class StructuresResolver
         $files = (new Finder())->files()->in($directories);
 
         $filenames = collect($files)
-            ->reject(fn(SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles) || $file->getExtension() !== 'php')
-            ->map(fn(SplFileInfo $file) => $file->getPathname());
+            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles) || $file->getExtension() !== 'php')
+            ->map(fn (SplFileInfo $file) => $file->getPathname());
 
         return $this->discoverWorker->run($filenames);
     }

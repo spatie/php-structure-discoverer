@@ -6,6 +6,11 @@ parameters:
 			path: src/DiscoverWorkers/ParallelDiscoverWorker.php
 
 		-
+			message: "#^Undefined array key \"directories\"$#"
+			count: 1
+			path: src/StructureDiscovererServiceProvider.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: src/StructureScout.php

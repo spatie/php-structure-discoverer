@@ -36,7 +36,7 @@ class FileTokenParser
                 ->reject(fn (PhpToken $token) => $token->is([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]))
                 ->values()
                 ->pipe(fn (Collection $collection): TokenCollection => new TokenCollection($collection->all()));
-        } catch (ParseError $error) {
+        } catch (ParseError) {
             return [];
         }
 

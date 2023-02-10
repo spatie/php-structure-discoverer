@@ -2,6 +2,10 @@
 
 All notable changes to `php-structure-discoverer` will be documented in this file.
 
+## 0.0.5 - 2023-02-10
+
+Test release
+
 ## 0.0.3 - 2022-12-16
 
 - test release

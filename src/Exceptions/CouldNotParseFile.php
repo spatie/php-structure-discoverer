@@ -13,7 +13,7 @@ class CouldNotParseFile extends Exception
     ) {
         parent::__construct(
             "Could not parse file {$file} because: {$previous->getMessage()}",
-            previous: $previous
+            previous: $previous,
         );
     }
 }

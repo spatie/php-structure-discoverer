@@ -13,12 +13,15 @@ class ClearStructureScoutsCommand extends Command
 
     public function handle(): void
     {
-        $this->components->info('Clearing structure scouts');
+        $this->components->info('Clearing structure scouts...');
 
         $cached = StructureScoutManager::clear(config('structure-discoverer.structure_scout_directories'));
 
         collect($cached)
             ->each(fn (string $identifier) => $this->components->task($identifier))
             ->whenNotEmpty(fn () => $this->newLine());
+
+        $this->components->info('All done!');
+
     }
 }

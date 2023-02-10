@@ -13,12 +13,15 @@ class CacheStructureScoutsCommand extends Command
 
     public function handle(): void
     {
-        $this->components->info('Caching structure scouts');
+        $this->components->info('Caching structure scouts...');
 
         $cached = StructureScoutManager::cache(config('structure-discoverer.structure_scout_directories'));
 
         collect($cached)
             ->each(fn (string $identifier) => $this->components->task($identifier))
             ->whenNotEmpty(fn () => $this->newLine());
+
+        $this->components->info('All done!');
+
     }
 }

@@ -22,7 +22,7 @@ class StructureDiscovererServiceProvider extends PackageServiceProvider
     public function packageRegistered(): void
     {
         $this->app->bind(Discover::class, fn ($app, $provided) => new Discover(
-            directories: $provided['directories'],
+            directories: $provided['directories'] ?? [],
             ignoredFiles: config('structure-discoverer.ignored_files'),
             cacheDriver: DiscoverCacheDriverFactory::create(config('structure-discoverer.cache'))
         ));

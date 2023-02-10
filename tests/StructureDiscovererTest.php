@@ -24,6 +24,11 @@ use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\OtherNested\FakeOtherNestedClass;
 use Spatie\StructureDiscoverer\Tests\Stubs\StubStructureScout;
+use function Pest\Laravel\artisan;
+
+beforeEach(function () {
+    StaticDiscoverCacheDriver::clear();
+});
 
 it('can discover everything within a directory', function () {
     $found = Discover::in(__DIR__ . '/Fakes')->get();
@@ -226,7 +231,7 @@ it('can discover using a custom condition', function () {
 
 it('can discover using a custom closure condition', function () {
     $found = Discover::in(__DIR__ . '/Fakes')
-        ->custom(fn (DiscoveredStructure $discoveredData) => $discoveredData instanceof DiscoveredClass && $discoveredData->name === 'FakeChildClass')
+        ->custom(fn(DiscoveredStructure $discoveredData) => $discoveredData instanceof DiscoveredClass && $discoveredData->name === 'FakeChildClass')
         ->get();
 
     expect($found)->toEqualCanonicalizing([
@@ -240,7 +245,7 @@ it('can discover and receive the complete structure', function () {
     expect($found)->toEqual([
         new DiscoveredClass(
             name: 'FakeChildClass',
-            file: __DIR__.'/Fakes/FakeChildClass.php',
+            file: __DIR__ . '/Fakes/FakeChildClass.php',
             namespace: 'Spatie\StructureDiscoverer\Tests\Fakes',
             isFinal: false,
             isAbstract: false,
@@ -293,8 +298,8 @@ it('can cache discovered settings', function () {
     $cache = new FileDiscoverCacheDriver(__DIR__ . '/temp/');
 
     $found = Discover::in(__DIR__ . '/Fakes')
-        ->cache('cached', $cache)
-        ->get();
+        ->withCache('cached', $cache)
+        ->cache();
 
     expect($cache->has('cached'))->toBeTrue();
     expect($found)->toEqual($cache->get('cached'));
@@ -313,7 +318,7 @@ it('can use cached discovered settings', function () {
     $cache->put('cached', $nestedFound);
 
     $fakeFound = Discover::in(__DIR__ . '/Fakes')
-        ->cache('cached', new FileDiscoverCacheDriver(__DIR__ . '/temp/'))
+        ->withCache('cached', new FileDiscoverCacheDriver(__DIR__ . '/temp/'))
         ->get();
 
     expect($fakeFound)->not()->toEqual($expectedFound);
@@ -357,8 +362,6 @@ it('can disable chains completely', function () {
 });
 
 it('can use a discoverer with cache', function () {
-    StaticDiscoverCacheDriver::clear();
-
     $found = StubStructureScout::create()->get();
 
     expect($found)->toBe([FakeEnum::class]);
@@ -378,6 +381,35 @@ it('can warm and clear discoverers', function () {
     expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class]);
 
     StructureScoutManager::clear([__DIR__ . '/Stubs']);
+
+    expect(StaticDiscoverCacheDriver::$entries)->not()->toHaveKey('stub');
+});
+
+it('can add additional structure scouts not automatically found', function () {
+    StructureScoutManager::cache([]);
+
+    expect(StaticDiscoverCacheDriver::$entries)->toBeEmpty();
+
+    StructureScoutManager::add(StubStructureScout::class);
+    StructureScoutManager::cache([]);
+
+    expect(StaticDiscoverCacheDriver::$entries)->toHaveKey('stub');
+    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class]);
+
+    StructureScoutManager::clear([__DIR__ . '/Stubs']);
+
+    expect(StaticDiscoverCacheDriver::$entries)->not()->toHaveKey('stub');
+});
+
+it('can run a commands to cache the structure scouts', function () {
+    config()->set('structure-discoverer.structure_scout_directories', [__DIR__ . '/Stubs']);
+
+    artisan('structure-scouts:cache');
+
+    expect(StaticDiscoverCacheDriver::$entries)->toHaveKey('stub');
+    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class]);
+
+    artisan('structure-scouts:clear');
 
     expect(StaticDiscoverCacheDriver::$entries)->not()->toHaveKey('stub');
 });

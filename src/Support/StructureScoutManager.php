@@ -8,43 +8,59 @@ use Spatie\StructureDiscoverer\StructureScout;
 
 class StructureScoutManager
 {
+    protected static array $extra = [];
+
     public static function cache(array $directories): array
     {
-        return self::forEachDiscoverer($directories, function (StructureScout $discoverer) {
+        return self::forEachScout($directories, function (StructureScout $discoverer) {
             $discoverer->cacheDriver()->forget($discoverer->identifier());
 
-            $discoverer->get();
+            $discoverer->cache();
         });
     }
 
     public static function clear(array $directories): array
     {
-        return self::forEachDiscoverer($directories, function (StructureScout $discoverer) {
+        return self::forEachScout($directories, function (StructureScout $discoverer) {
             $discoverer->cacheDriver()->forget($discoverer->identifier());
         });
     }
 
-    private static function forEachDiscoverer(
+    public static function add(string $scout): void
+    {
+        if (in_array($scout, static::$extra)) {
+            return;
+        }
+
+        static::$extra[] = $scout;
+    }
+
+    private static function forEachScout(
         array $directories,
         Closure $closure
     ): array {
-        /** @var string[] $discoverers */
-        $discoverers = Discover::in(...$directories)
+        /** @var string[] $discoveredScouts */
+        $discoveredScouts = Discover::in(...$directories)
             ->classes()
             ->extending(StructureScout::class)
             ->get();
 
+        $scouts = array_unique([
+            ...$discoveredScouts,
+            ...static::$extra,
+        ]);
+
         $touched = [];
 
-        foreach ($discoverers as $discoverer) {
-            /** @var StructureScout $discoverer */
-            $discoverer = LaravelDetector::isRunningLaravel()
-                ? app($discoverer)
-                : new $discoverer();
+        foreach ($scouts as $scout) {
+            /** @var StructureScout $scout */
+            $scout = LaravelDetector::isRunningLaravel()
+                ? app($scout)
+                : new $scout();
 
-            $closure($discoverer);
+            $closure($scout);
 
-            $touched[] = $discoverer->identifier();
+            $touched[] = $scout->identifier();
         }
 
         return $touched;

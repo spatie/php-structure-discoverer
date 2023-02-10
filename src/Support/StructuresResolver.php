@@ -20,10 +20,6 @@ class StructuresResolver
     /** @return array<DiscoveredStructure>|array<string> */
     public function execute(Discover $profile): array
     {
-        if ($profile->config->shouldUseCache() && $profile->config->cacheDriver->has($profile->config->cacheId)) {
-            return $profile->config->cacheDriver->get($profile->config->cacheId);
-        }
-
         $structures = $this->discover(
             $profile->config->directories,
             $profile->config->ignoredFiles
@@ -35,26 +31,17 @@ class StructuresResolver
 
         $structures = array_filter(
             $structures,
-            fn (DiscoveredStructure $discovered) => $profile->config->conditions->satisfies($discovered)
+            fn(DiscoveredStructure $discovered) => $profile->config->conditions->satisfies($discovered)
         );
 
         if ($profile->config->full === false) {
             $structures = array_map(
-                fn (DiscoveredStructure $discovered) => $discovered->getFcqn(),
+                fn(DiscoveredStructure $discovered) => $discovered->getFcqn(),
                 $structures
             );
         }
 
-        $structures = array_values($structures);
-
-        if ($profile->config->shouldUseCache()) {
-            $profile->config->cacheDriver->put(
-                $profile->config->cacheId,
-                $structures
-            );
-        }
-
-        return $structures;
+        return array_values($structures);
     }
 
     /** @return array<DiscoveredStructure> */
@@ -62,11 +49,15 @@ class StructuresResolver
         array $directories,
         array $ignoredFiles = []
     ): array {
+        if (empty($directories)) {
+            return [];
+        }
+
         $files = (new Finder())->files()->in($directories);
 
         $filenames = collect($files)
-            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles) || $file->getExtension() !== 'php')
-            ->map(fn (SplFileInfo $file) => $file->getPathname());
+            ->reject(fn(SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles) || $file->getExtension() !== 'php')
+            ->map(fn(SplFileInfo $file) => $file->getPathname());
 
         return $this->discoverWorker->run($filenames);
     }

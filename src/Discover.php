@@ -88,7 +88,7 @@ class Discover
         return $this->usingWorker(new ParallelDiscoverWorker($filesPerJob));
     }
 
-    public function cache(string $id, ?DiscoverCacheDriver $cache = null): self
+    public function withCache(string $id, ?DiscoverCacheDriver $cache = null): self
     {
         $this->config->cacheId = $id;
 
@@ -111,9 +111,36 @@ class Discover
     /** @return array<DiscoveredStructure>|array<string> */
     public function get(): array
     {
+        if ($this->config->shouldUseCache() && $this->config->cacheDriver->has($this->config->cacheId)) {
+            return $this->config->cacheDriver->get($this->config->cacheId);
+        }
+
+        if ($this->config->shouldUseCache()) {
+            return $this->cache();
+        }
+
+        return $this->getWithoutCache();
+    }
+
+    /** @return array<DiscoveredStructure>|array<string> */
+    public function getWithoutCache(): array
+    {
         $discoverer = new StructuresResolver($this->config->worker);
 
         return $discoverer->execute($this);
+    }
+
+    /** @return array<DiscoveredStructure>|array<string> */
+    public function cache(): array
+    {
+        $structures = $this->getWithoutCache();
+
+        $this->config->cacheDriver->put(
+            $this->config->cacheId,
+            $structures
+        );
+
+        return $structures;
     }
 
     public function conditionsStore(): ExactDiscoverCondition

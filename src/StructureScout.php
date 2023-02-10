@@ -31,11 +31,35 @@ abstract class StructureScout
         throw new StructureScoutsCacheDriverMissing();
     }
 
-    /** @return array<DiscoveredStructure>|array<string> */
+    /**
+     * @return array<DiscoveredStructure>|array<string>
+     */
     public function get(): array
     {
         return $this->definition()
-            ->cache($this->identifier(), $this->cacheDriver())
+            ->withCache($this->identifier(), $this->cacheDriver())
             ->get();
+    }
+
+    /**
+     * @return array<DiscoveredStructure>|array<string>
+     */
+    public function cache(): array
+    {
+        return $this->definition()
+            ->withCache($this->identifier(), $this->cacheDriver())
+            ->cache();
+    }
+
+    public function clear(): static
+    {
+        $this->cacheDriver()->forget($this->identifier());
+
+        return $this;
+    }
+
+    public function isCached(): bool
+    {
+        return $this->cacheDriver()->has($this->identifier());
     }
 }

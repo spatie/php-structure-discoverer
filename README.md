@@ -38,7 +38,7 @@ You can install the package via composer:
 composer require spatie/php-structure-discoverer
 ```
 
-If you're using Laravel, then you can also publish the config file with:
+If you're using Laravel, then you can also publish the config file with the following command:
 
 ```bash
 php artisan vendor:publish --provider="Spatie\StructureDiscoverer\StructureDiscovererServiceProvider"
@@ -92,7 +92,7 @@ You can get the structures as such:
 Discover::in(__DIR__)->get();
 ```
 
-This will return an array of class FCQN, and because no conditions were added, the package will return all classes, enums, interfaces, and traits.
+Which will return an array of class FCQN, and because no conditions were added, the package will return all classes, enums, interfaces, and traits.
 
 You only discover classes like this:
 
@@ -234,7 +234,7 @@ This package can cache all discovered structures, so no performance-heavy operat
 The fastest way to start caching is by creating a structure scout, which is a class that describes what you want to discover:
 
 ```php
-class EnumsDiscoverer extends StructureScout
+class EnumsStructureScout extends StructureScout
 {
     protected function definition(): Discover|DiscoverConditionFactory
     {
@@ -256,10 +256,10 @@ Each structure scout extends from `StructureScout` and should have
 Within your application, you can use the discoverer as such:
 
 ```php
-EnumsDiscoverer::create()->get();
+EnumsStructureScout::create()->get();
 ```
 
-The first time this method is called, the whole discovery process will run. But the discovery process will not run the second time, making a call to this method amazingly fast!
+The first time this method is called, the whole discovery process will run taking a bit more time. The second call will skip the discovery process and use the cached version, making a call to this method amazingly fast!
 
 #### In production
 
@@ -288,6 +288,18 @@ Or, if you're using Laravel:
 ````bash
 php artisan structure-scouts::clear
 ````
+
+##### For packages
+
+Since an individual user defines the directories where structure scouts can be found, packages can't ensure their structure scouts will be discovered with the cache commands.
+
+It is possible to add structure scouts like this manually:
+
+```php
+StructureScoutManager::add(SettingsStructureScout::class); 
+```
+
+In a Laravel application, you typically do this within the package ServiceProvider.
 
 #### Cache drivers
 
@@ -328,14 +340,14 @@ You can also use caching inline without the use of scouts, be aware warming up t
 Discover::in(__DIR__)
    ->cache(
       'Some identifier',
-      new FileDiscoverCacheDriver('/path/to/temp/directory');
+      new FileDiscoverCacheDriver('/path/to/temp/directory);
    )
     ->get();
 ```
 
 ### Parallel
 
-Getting all structures in a larger application can be slow due to many files being scanned. This process can be sped up by parallelized scanning. You can enable this as such:
+Getting all structures in a bigger application can be slow due to many files being scanned. This process can be sped up by parallelized scanning. You can enable this as such:
 
 ```php
 Discover::in(__DIR__)->parallel()->get();
@@ -467,7 +479,7 @@ class DiscoveredEnum extends DiscoveredStructure
 
 ### DiscoveredTrait
 
-Represents a discovered trait.
+Represents a discovered trait within the application.
 
 ```php
 class DiscoveredTrait extends DiscoveredStructure
@@ -485,7 +497,7 @@ class DiscoveredTrait extends DiscoveredStructure
 
 The internals of this package will scan all files within a directory and try to make a virtual map linking all structures with their extends, uses, and implementations.
 
-Due to this file scanning, if referenced structures are not being scanned, this map is not complete.
+Due to this file scanning, this map is incomplete if referenced structures are not being scanned.
 
 For example, we scan for all classes extending Laravel's `Model` in our app directory, a lot of models have been found, but the `User` model is missing.
 

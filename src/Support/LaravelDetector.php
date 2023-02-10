@@ -6,6 +6,6 @@ class LaravelDetector
 {
     public static function isRunningLaravel(): bool
     {
-        return function_exists('app') && function_exists('resolve');
+        return defined('LARAVEL_VERSION') && defined('LARAVEL_START');
     }
 }

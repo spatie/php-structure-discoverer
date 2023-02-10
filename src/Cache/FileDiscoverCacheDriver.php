@@ -44,7 +44,11 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
 
     public function forget(string $id): void
     {
-        unlink($this->resolvePath($id));
+        $path = $this->resolvePath($id);
+
+        if(file_exists($path)) {
+            unlink($path);
+        }
     }
 
     private function resolvePath(string $id): string

@@ -115,10 +115,6 @@ class Discover
             return $this->config->cacheDriver->get($this->config->cacheId);
         }
 
-        if ($this->config->shouldUseCache()) {
-            return $this->cache();
-        }
-
         return $this->getWithoutCache();
     }
 

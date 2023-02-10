@@ -53,10 +53,10 @@ it('can discover everything within a directory', function () {
 });
 
 it('can only discover certain types', function (
-    Discover $profile,
+    Discover $discover,
     array $expected,
 ) {
-    $found = $profile->inDirectories(__DIR__ . '/Fakes')->get();
+    $found = $discover->inDirectories(__DIR__ . '/Fakes')->get();
 
     expect($found)->toEqualCanonicalizing($expected);
 })->with(
@@ -232,7 +232,7 @@ it('can discover using a custom condition', function () {
 
 it('can discover using a custom closure condition', function () {
     $found = Discover::in(__DIR__ . '/Fakes')
-        ->custom(fn (DiscoveredStructure $discoveredData) => $discoveredData instanceof DiscoveredClass && $discoveredData->name === 'FakeChildClass')
+        ->custom(fn(DiscoveredStructure $discoveredData) => $discoveredData instanceof DiscoveredClass && $discoveredData->name === 'FakeChildClass')
         ->get();
 
     expect($found)->toEqualCanonicalizing([

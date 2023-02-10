@@ -21,7 +21,7 @@ class DiscoveredEnumTokenParser
         string $namespace,
         UsageCollection $usages,
         array $attributes,
-        string $file
+        string $file,
     ): DiscoveredEnum {
         $head = $this->structureHeadResolver->execute($index, $tokens, $namespace, $usages);
 

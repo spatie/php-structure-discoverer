@@ -28,7 +28,7 @@ class DiscoveredDataTokenParser
         UsageCollection $usages,
         array $attributes,
         DiscoveredStructureType $type,
-        string $file
+        string $file,
     ): DiscoveredInterface|DiscoveredClass|DiscoveredTrait|DiscoveredEnum {
         return match ($type) {
             DiscoveredStructureType::ClassDefinition => $this->discoveredClassResolver->execute(

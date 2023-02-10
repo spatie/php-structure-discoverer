@@ -21,7 +21,7 @@
         "amphp/amp": "^2.6.2",
         "amphp/parallel": "^1.4.1",
         "amphp/parallel-functions": "^1.1",
-        "illuminate/collections": "^9.30",
+        "illuminate/collections": "^9.30|^10.0",
         "spatie/laravel-package-tools": "^1.4.3"
     },
     "require-dev": {

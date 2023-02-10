@@ -47,7 +47,7 @@ class StructuresResolver
     /** @return array<DiscoveredStructure> */
     public function discover(
         array $directories,
-        array $ignoredFiles = []
+        array $ignoredFiles = [],
     ): array {
         if (empty($directories)) {
             return [];

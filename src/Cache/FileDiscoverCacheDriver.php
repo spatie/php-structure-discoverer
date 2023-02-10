@@ -46,7 +46,7 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
     {
         $path = $this->resolvePath($id);
 
-        if(file_exists($path)) {
+        if (file_exists($path)) {
             unlink($path);
         }
     }

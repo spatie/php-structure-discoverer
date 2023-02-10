@@ -274,7 +274,7 @@ You should provide a directory where the structure scouts are stored.
 If you're using Laravel, you can run the following command:``
 
 ````bash
-php artisan structure-scouts::cache
+php artisan structure-scouts:cache
 ````
 
 It is also possible to clear all caches for structure scouts as such:
@@ -286,7 +286,7 @@ StructureScoutManager::clear([__DIR__]);
 Or, if you're using Laravel:
 
 ````bash
-php artisan structure-scouts::clear
+php artisan structure-scouts:clear
 ````
 
 ##### For packages
@@ -396,7 +396,7 @@ Discover::in(__DIR__)->extendingWithoutChain(Request::class)
 Or for implementing as such:
 
 ```php
-Discover::in(__DIR__)->impelemntingWithoutChain(Request::class)
+Discover::in(__DIR__)->implementingWithoutChain(Request::class)
 ```
 
 Resolving chains is a complicated and resource-heavy process. It can be completely disabled as such:

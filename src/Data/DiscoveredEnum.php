@@ -2,8 +2,14 @@
 
 namespace Spatie\StructureDiscoverer\Data;
 
+use Exception;
+use ReflectionAttribute;
+use ReflectionClass;
+use ReflectionEnum;
+use ReflectionEnumBackedCase;
 use Spatie\StructureDiscoverer\Enums\DiscoveredEnumType;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
+use Spatie\StructureDiscoverer\Exceptions\InvalidReflection;
 
 /**
  * @property array<string> $implements
@@ -27,5 +33,38 @@ class DiscoveredEnum extends DiscoveredStructure
     public function getType(): DiscoveredStructureType
     {
         return DiscoveredStructureType::Enum;
+    }
+
+    public static function fromReflection(ReflectionClass $reflection): DiscoveredStructure
+    {
+        if (! $reflection instanceof ReflectionEnum) {
+            throw InvalidReflection::create(ReflectionEnum::class, $reflection);
+        }
+
+        if (! $reflection->isEnum()) {
+            throw InvalidReflection::expectedEnum();
+        }
+
+        $type = match (true) {
+            $reflection->isBacked() === false => DiscoveredEnumType::Unit,
+            $reflection->isBacked() === true && (string) $reflection->getBackingType() === 'string' => DiscoveredEnumType::String,
+            $reflection->isBacked() === true && (string) $reflection->getBackingType() === 'int' => DiscoveredEnumType::Int,
+            default => throw new Exception('Unknown enum type')
+        };
+
+        $implements = array_values($reflection->getInterfaceNames());
+
+        return new self(
+            name: $reflection->getShortName(),
+            file: $reflection->getFileName(),
+            namespace: $reflection->getNamespaceName(),
+            type: $type,
+            implements: $implements,
+            attributes: array_map(
+                fn(ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),
+                $reflection->getAttributes()
+            ),
+            implementsChain: $implements
+        );
     }
 }

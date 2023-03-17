@@ -2,7 +2,11 @@
 
 namespace Spatie\StructureDiscoverer\Data;
 
+use Exception;
+use ReflectionAttribute;
+use ReflectionClass;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
+use Spatie\StructureDiscoverer\Exceptions\InvalidReflection;
 
 /**
  * @property array<string> $extends
@@ -32,5 +36,31 @@ class DiscoveredClass extends DiscoveredStructure
     public function getType(): DiscoveredStructureType
     {
         return DiscoveredStructureType::ClassDefinition;
+    }
+
+    public static function fromReflection(ReflectionClass $reflection): DiscoveredStructure
+    {
+        if ($reflection->isTrait() || $reflection->isInterface() || $reflection->isEnum()) {
+            throw InvalidReflection::expectedClass();
+        }
+
+        $implements = array_values($reflection->getInterfaceNames());
+
+        return new self(
+            name: $reflection->getShortName(),
+            file: $reflection->getFileName(),
+            namespace: $reflection->getNamespaceName(),
+            isFinal: $reflection->isFinal(),
+            isAbstract: $reflection->isAbstract(),
+            isReadonly: version_compare(phpversion(), '8.2', '>=') ? $reflection->isReadonly() : false,
+            extends: $reflection->getParentClass()?->getName(),
+            implements: $implements,
+            attributes: array_map(
+                fn(ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),
+                $reflection->getAttributes()
+            ),
+            extendsChain: array_values(class_parents($reflection->getName())),
+            implementsChain: $implements
+        );
     }
 }

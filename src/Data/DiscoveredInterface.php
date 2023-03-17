@@ -2,7 +2,10 @@
 
 namespace Spatie\StructureDiscoverer\Data;
 
+use ReflectionAttribute;
+use ReflectionClass;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
+use Spatie\StructureDiscoverer\Exceptions\InvalidReflection;
 
 /**
  * @property array<string> $extends
@@ -25,5 +28,26 @@ class DiscoveredInterface extends DiscoveredStructure
     public function getType(): DiscoveredStructureType
     {
         return DiscoveredStructureType::Interface;
+    }
+
+    public static function fromReflection(ReflectionClass $reflection): DiscoveredStructure
+    {
+        if (! $reflection->isInterface()) {
+            throw InvalidReflection::expectedInterface();
+        }
+
+        $extends = array_values($reflection->getInterfaceNames());
+
+        return new self(
+            name: $reflection->getShortName(),
+            file: $reflection->getFileName(),
+            namespace: $reflection->getNamespaceName(),
+            extends: $extends,
+            attributes: array_map(
+                fn(ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),
+                $reflection->getAttributes()
+            ),
+            extendsChain: $extends
+        );
     }
 }

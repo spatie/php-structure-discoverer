@@ -2,6 +2,7 @@
 
 namespace Spatie\StructureDiscoverer\Data;
 
+use ReflectionClass;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 
 abstract class DiscoveredStructure
@@ -14,6 +15,8 @@ abstract class DiscoveredStructure
     }
 
     abstract public function getType(): DiscoveredStructureType;
+
+    abstract public static function fromReflection(ReflectionClass $reflection): DiscoveredStructure;
 
     public function getFcqn(): string
     {

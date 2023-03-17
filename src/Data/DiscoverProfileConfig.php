@@ -17,7 +17,6 @@ class DiscoverProfileConfig
         public ?string $cacheId,
         public bool $withChains,
         public ExactDiscoverCondition $conditions,
-        public bool $useReflection,
     ) {
     }
 

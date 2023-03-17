@@ -26,6 +26,11 @@ parameters:
 			path: src/DiscoverWorkers/ParallelDiscoverWorker.php
 
 		-
+			message: "#^Match arm is unreachable because previous comparison is always true\\.$#"
+			count: 1
+			path: src/Enums/DiscoveredStructureType.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: src/StructureScout.php

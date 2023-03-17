@@ -46,6 +46,10 @@ class DiscoveredClass extends DiscoveredStructure
 
         $implements = array_values($reflection->getInterfaceNames());
 
+        $extends = $reflection->getParentClass() !== false
+            ? $reflection->getParentClass()->getName()
+            : null;
+
         return new self(
             name: $reflection->getShortName(),
             file: $reflection->getFileName(),
@@ -53,7 +57,7 @@ class DiscoveredClass extends DiscoveredStructure
             isFinal: $reflection->isFinal(),
             isAbstract: $reflection->isAbstract(),
             isReadonly: version_compare(phpversion(), '8.2', '>=') ? $reflection->isReadonly() : false,
-            extends: $reflection->getParentClass()?->getName(),
+            extends: $extends,
             implements: $implements,
             attributes: array_map(
                 fn(ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),

@@ -1,6 +1,26 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\$file of class Spatie\\\\StructureDiscoverer\\\\Data\\\\DiscoveredClass constructor expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Data/DiscoveredClass.php
+
+		-
+			message: "#^Parameter \\$file of class Spatie\\\\StructureDiscoverer\\\\Data\\\\DiscoveredEnum constructor expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Data/DiscoveredEnum.php
+
+		-
+			message: "#^Parameter \\$file of class Spatie\\\\StructureDiscoverer\\\\Data\\\\DiscoveredInterface constructor expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Data/DiscoveredInterface.php
+
+		-
+			message: "#^Parameter \\$file of class Spatie\\\\StructureDiscoverer\\\\Data\\\\DiscoveredTrait constructor expects string, string\\|false given\\.$#"
+			count: 1
+			path: src/Data/DiscoveredTrait.php
+
+		-
 			message: "#^Unable to resolve the template type T in call to function Amp\\\\Promise\\\\wait$#"
 			count: 1
 			path: src/DiscoverWorkers/ParallelDiscoverWorker.php

@@ -44,7 +44,7 @@ class DiscoveredInterface extends DiscoveredStructure
             namespace: $reflection->getNamespaceName(),
             extends: $extends,
             attributes: array_map(
-                fn(ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),
+                fn (ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),
                 $reflection->getAttributes()
             ),
             extendsChain: $extends

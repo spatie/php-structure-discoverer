@@ -41,7 +41,8 @@ it('can reflect a class', function () {
                 FakeChildInterface::class,
                 FakeNestedInterface::class,
             ]
-        ));
+        )
+    );
 });
 
 it('can reflect an interface', function () {
@@ -55,7 +56,8 @@ it('can reflect an interface', function () {
             extends: [FakeChildInterface::class, FakeNestedInterface::class, FakeRootInterface::class],
             attributes: [],
             extendsChain: [FakeChildInterface::class, FakeNestedInterface::class, FakeRootInterface::class],
-        ));
+        )
+    );
 });
 
 it('can reflect an enum', function () {
@@ -70,7 +72,8 @@ it('can reflect an enum', function () {
             implements: [FakeChildInterface::class, UnitEnum::class, FakeNestedInterface::class, FakeRootInterface::class],
             attributes: [],
             implementsChain: [FakeChildInterface::class, UnitEnum::class, FakeNestedInterface::class, FakeRootInterface::class],
-        ));
+        )
+    );
 });
 
 it('can reflect a trait', function () {
@@ -81,5 +84,6 @@ it('can reflect a trait', function () {
             name: 'FakeTrait',
             file: __DIR__.'/Fakes/FakeTrait.php',
             namespace: 'Spatie\StructureDiscoverer\Tests\Fakes',
-        ));
+        )
+    );
 });

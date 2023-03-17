@@ -6,7 +6,6 @@ use Exception;
 use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionEnum;
-use ReflectionEnumBackedCase;
 use Spatie\StructureDiscoverer\Enums\DiscoveredEnumType;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 use Spatie\StructureDiscoverer\Exceptions\InvalidReflection;
@@ -61,7 +60,7 @@ class DiscoveredEnum extends DiscoveredStructure
             type: $type,
             implements: $implements,
             attributes: array_map(
-                fn(ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),
+                fn (ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),
                 $reflection->getAttributes()
             ),
             implementsChain: $implements

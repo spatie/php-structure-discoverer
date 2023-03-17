@@ -2,7 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\Data;
 
-use Exception;
 use ReflectionAttribute;
 use ReflectionClass;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
@@ -60,7 +59,7 @@ class DiscoveredClass extends DiscoveredStructure
             extends: $extends,
             implements: $implements,
             attributes: array_map(
-                fn(ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),
+                fn (ReflectionAttribute $reflectionAttribute) => DiscoveredAttribute::fromReflection($reflectionAttribute),
                 $reflection->getAttributes()
             ),
             extendsChain: array_values(class_parents($reflection->getName())),

@@ -2,6 +2,10 @@
 
 All notable changes to `php-structure-discoverer` will be documented in this file.
 
+## 1.1.1 - 2023-03-24
+
+- Add symphony finder as a requirement
+
 ## 1.1.0 - 2023-03-17
 
 - Allow discovered structures to be built using reflection

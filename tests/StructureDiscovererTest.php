@@ -1,6 +1,6 @@
 <?php
 
-use Spatie\StructureDiscoverer\Enums\StructureResolverSort;
+use Spatie\StructureDiscoverer\Enums\Sort;
 use function Pest\Laravel\artisan;
 
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
@@ -279,16 +279,16 @@ it('can discover in multiple directories', function () {
 });
 
 it('can sort discovered files', function (
-    StructureResolverSort $sortBy,
+    Sort $sort,
     array $expected,
 ) {
-    $found = Discover::in(__DIR__ . '/Fakes')->classes()->sortBy($sortBy)->get();
+    $found = Discover::in(__DIR__ . '/Fakes')->classes()->sortBy($sort)->get();
 
     expect($found)->toEqual($expected);
 })->with(
     [
         'name' => [
-            StructureResolverSort::NAME,
+            Sort::Name,
             [
                 FakeClassDepender::class,
                 FakeAttribute::class,
@@ -303,16 +303,16 @@ it('can sort discovered files', function (
 );
 
 it('can sort discovered files in reverse', function (
-    StructureResolverSort $sortBy,
+    Sort $sort,
     array $expected,
 ) {
-    $found = Discover::in(__DIR__ . '/Fakes')->classes()->sortBy($sortBy, true)->get();
+    $found = Discover::in(__DIR__ . '/Fakes')->classes()->sortBy($sort, true)->get();
 
     expect($found)->toEqual($expected);
 })->with(
     [
         'name' => [
-            StructureResolverSort::NAME,
+            Sort::Name,
             [
                 FakeOtherNestedClass::class,
                 FakeNestedClass::class,

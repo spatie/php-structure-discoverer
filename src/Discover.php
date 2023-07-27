@@ -9,7 +9,7 @@ use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\ParallelDiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
-use Spatie\StructureDiscoverer\Enums\StructureResolverSort;
+use Spatie\StructureDiscoverer\Enums\Sort;
 use Spatie\StructureDiscoverer\Exceptions\NoCacheConfigured;
 use Spatie\StructureDiscoverer\Support\Conditions\HasConditionsTrait;
 use Spatie\StructureDiscoverer\Support\LaravelDetector;
@@ -43,7 +43,7 @@ class Discover
         ?DiscoverCacheDriver $cacheDriver = null,
         ?string $cacheId = null,
         bool $withChains = true,
-        StructureResolverSort $sortBy = null,
+        Sort $sort = null,
         bool $reverseSorting = false,
     ) {
         $this->config = new DiscoverProfileConfig(
@@ -55,7 +55,7 @@ class Discover
             cacheId: $cacheId,
             withChains: $withChains,
             conditions: $conditions,
-            sortBy: $sortBy,
+            sort: $sort,
             reverseSorting: $reverseSorting
         );
     }
@@ -74,9 +74,9 @@ class Discover
         return $this;
     }
 
-    public function sortBy(StructureResolverSort $sortBy, bool $reverse = false): self
+    public function sortBy(Sort $sort, bool $reverse = false): self
     {
-        $this->config->sortBy = $sortBy;
+        $this->config->sort = $sort;
         $this->config->reverseSorting = $reverse;
 
         return $this;

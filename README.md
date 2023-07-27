@@ -179,24 +179,24 @@ By default, the discovered structures will be sorted according to the OS' defaul
 You can change the sorting like this:
 
 ```php
-use Spatie\StructureDiscoverer\Enums\StructureResolverSort;
+use Spatie\StructureDiscoverer\Enums\Sort;
 
-Discover::in(__DIR__)->sortBy(StructureResolverSort::NAME)->get();
+Discover::in(__DIR__)->sortBy(Sort::Name)->get();
 ```
 
-Here are all the available sorting options: 
+Here are all the available sorting options:
 
 ```php
-use Spatie\StructureDiscoverer\Enums\StructureResolverSort;
+use Spatie\StructureDiscoverer\Enums\Sort;
 
-Discover::in(__DIR__)->sortBy(StructureResolverSort::NAME);
-Discover::in(__DIR__)->sortBy(StructureResolverSort::SIZE);
-Discover::in(__DIR__)->sortBy(StructureResolverSort::TYPE);
-Discover::in(__DIR__)->sortBy(StructureResolverSort::EXTENSION);
-Discover::in(__DIR__)->sortBy(StructureResolverSort::CHANGED_TIME);
-Discover::in(__DIR__)->sortBy(StructureResolverSort::MODIFIED_TIME);
-Discover::in(__DIR__)->sortBy(StructureResolverSort::ACCESSED_TIME);
-Discover::in(__DIR__)->sortBy(StructureResolverSort::CASE_INSENSITIVE_NAME);
+Discover::in(__DIR__)->sortBy(Sort::Name);
+Discover::in(__DIR__)->sortBy(Sort::Size);
+Discover::in(__DIR__)->sortBy(Sort::Type);
+Discover::in(__DIR__)->sortBy(Sort::Extension);
+Discover::in(__DIR__)->sortBy(Sort::ChangedTime);
+Discover::in(__DIR__)->sortBy(Sort::ModifiedTime);
+Discover::in(__DIR__)->sortBy(Sort::AccessedTime);
+Discover::in(__DIR__)->sortBy(Sort::CaseInsensitiveName);
 ```
 
 ### Combining conditions

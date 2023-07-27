@@ -8,7 +8,6 @@ use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 use Spatie\StructureDiscoverer\Exceptions\InvalidReflection;
 
 /**
- * @property array<string> $extends
  * @property array<string> $implements
  * @property array<DiscoveredAttribute> $attributes
  * @property ?array<string> $extendsChain

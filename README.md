@@ -172,6 +172,33 @@ Discover::in(__DIR__)
     ->get()
 ```
 
+### Sorting
+
+By default, the discovered structures will be sorted according to the OS' default.
+
+You can change the sorting like this:
+
+```php
+use Spatie\StructureDiscoverer\Enums\StructureResolverSort;
+
+Discover::in(__DIR__)->sortBy(StructureResolverSort::NAME)->get();
+```
+
+Here are all the available sorting options: 
+
+```php
+use Spatie\StructureDiscoverer\Enums\StructureResolverSort;
+
+Discover::in(__DIR__)->sortBy(StructureResolverSort::NAME);
+Discover::in(__DIR__)->sortBy(StructureResolverSort::SIZE);
+Discover::in(__DIR__)->sortBy(StructureResolverSort::TYPE);
+Discover::in(__DIR__)->sortBy(StructureResolverSort::EXTENSION);
+Discover::in(__DIR__)->sortBy(StructureResolverSort::CHANGED_TIME);
+Discover::in(__DIR__)->sortBy(StructureResolverSort::MODIFIED_TIME);
+Discover::in(__DIR__)->sortBy(StructureResolverSort::ACCESSED_TIME);
+Discover::in(__DIR__)->sortBy(StructureResolverSort::CASE_INSENSITIVE_NAME);
+```
+
 ### Combining conditions
 
 By default, all conditions will work like an AND operation, so in this case:

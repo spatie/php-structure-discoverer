@@ -2,6 +2,18 @@
 
 All notable changes to `php-structure-discoverer` will be documented in this file.
 
+## 1.2.0 - 2023-07-27
+
+### What's Changed
+
+- Add ability to sort discovered files by @stevebauman in https://github.com/spatie/php-structure-discoverer/pull/6
+
+### New Contributors
+
+- @stevebauman made their first contribution in https://github.com/spatie/php-structure-discoverer/pull/6
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/1.1.1...1.2.0
+
 ## 1.1.1 - 2023-03-24
 
 - Add symphony finder as a requirement

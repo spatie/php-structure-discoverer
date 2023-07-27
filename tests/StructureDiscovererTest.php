@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\StructureDiscoverer\Enums\StructureResolverSort;
 use function Pest\Laravel\artisan;
 
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
@@ -276,6 +277,54 @@ it('can discover in multiple directories', function () {
         FakeOtherNestedClass::class,
     ]);
 });
+
+it('can sort discovered files', function (
+    StructureResolverSort $sortBy,
+    array $expected,
+) {
+    $found = Discover::in(__DIR__ . '/Fakes')->classes()->sortBy($sortBy)->get();
+
+    expect($found)->toEqual($expected);
+})->with(
+    [
+        'name' => [
+            StructureResolverSort::NAME,
+            [
+                FakeClassDepender::class,
+                FakeAttribute::class,
+                FakeChildClass::class,
+                FakeRootClass::class,
+                FakeSubChildClass::class,
+                FakeNestedClass::class,
+                FakeOtherNestedClass::class,
+            ]
+        ],
+    ],
+);
+
+it('can sort discovered files in reverse', function (
+    StructureResolverSort $sortBy,
+    array $expected,
+) {
+    $found = Discover::in(__DIR__ . '/Fakes')->classes()->sortBy($sortBy, true)->get();
+
+    expect($found)->toEqual($expected);
+})->with(
+    [
+        'name' => [
+            StructureResolverSort::NAME,
+            [
+                FakeOtherNestedClass::class,
+                FakeNestedClass::class,
+                FakeSubChildClass::class,
+                FakeRootClass::class,
+                FakeChildClass::class,
+                FakeAttribute::class,
+                FakeClassDepender::class,
+            ]
+        ],
+    ],
+);
 
 it('can ignore files when discovering', function () {
     $found = Discover::in(__DIR__ . '/Fakes/Nested')

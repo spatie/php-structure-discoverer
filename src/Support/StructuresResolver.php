@@ -50,10 +50,10 @@ class StructuresResolver
 
     /** @return array<DiscoveredStructure> */
     public function discover(
-        array                 $directories,
-        array                 $ignoredFiles,
+        array $directories,
+        array $ignoredFiles,
         ?StructureResolverSort $sort,
-        bool                  $reverseSorting
+        bool $reverseSorting
     ): array {
         if (empty($directories)) {
             return [];

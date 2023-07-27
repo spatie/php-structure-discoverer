@@ -35,16 +35,16 @@ class Discover
     }
 
     public function __construct(
-        array                  $directories = [],
-        array                  $ignoredFiles = [],
+        array $directories = [],
+        array $ignoredFiles = [],
         ExactDiscoverCondition $conditions = new ExactDiscoverCondition(),
-        bool                   $full = false,
-        DiscoverWorker         $worker = new SynchronousDiscoverWorker(),
-        ?DiscoverCacheDriver   $cacheDriver = null,
-        ?string                $cacheId = null,
-        bool                   $withChains = true,
-        StructureResolverSort  $sortBy = null,
-        bool                   $reverseSorting = false,
+        bool $full = false,
+        DiscoverWorker $worker = new SynchronousDiscoverWorker(),
+        ?DiscoverCacheDriver $cacheDriver = null,
+        ?string $cacheId = null,
+        bool $withChains = true,
+        StructureResolverSort $sortBy = null,
+        bool $reverseSorting = false,
     ) {
         $this->config = new DiscoverProfileConfig(
             directories: $directories,

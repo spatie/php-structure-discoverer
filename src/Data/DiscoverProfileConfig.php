@@ -10,16 +10,16 @@ use Spatie\StructureDiscoverer\Enums\StructureResolverSort;
 class DiscoverProfileConfig
 {
     public function __construct(
-        public array                  $directories,
-        public array                  $ignoredFiles,
-        public bool                   $full,
-        public DiscoverWorker         $worker,
-        public ?DiscoverCacheDriver   $cacheDriver,
-        public ?string                $cacheId,
-        public bool                   $withChains,
+        public array $directories,
+        public array $ignoredFiles,
+        public bool $full,
+        public DiscoverWorker $worker,
+        public ?DiscoverCacheDriver $cacheDriver,
+        public ?string $cacheId,
+        public bool $withChains,
         public ExactDiscoverCondition $conditions,
         public ?StructureResolverSort $sortBy,
-        public bool                   $reverseSorting
+        public bool $reverseSorting
     ) {
     }
 

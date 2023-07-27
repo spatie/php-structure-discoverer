@@ -9,6 +9,7 @@ use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\ParallelDiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
+use Spatie\StructureDiscoverer\Enums\StructureResolverSort;
 use Spatie\StructureDiscoverer\Exceptions\NoCacheConfigured;
 use Spatie\StructureDiscoverer\Support\Conditions\HasConditionsTrait;
 use Spatie\StructureDiscoverer\Support\LaravelDetector;
@@ -34,14 +35,16 @@ class Discover
     }
 
     public function __construct(
-        array $directories = [],
-        array $ignoredFiles = [],
+        array                  $directories = [],
+        array                  $ignoredFiles = [],
         ExactDiscoverCondition $conditions = new ExactDiscoverCondition(),
-        bool $full = false,
-        DiscoverWorker $worker = new SynchronousDiscoverWorker(),
-        ?DiscoverCacheDriver $cacheDriver = null,
-        ?string $cacheId = null,
-        bool $withChains = true,
+        bool                   $full = false,
+        DiscoverWorker         $worker = new SynchronousDiscoverWorker(),
+        ?DiscoverCacheDriver   $cacheDriver = null,
+        ?string                $cacheId = null,
+        bool                   $withChains = true,
+        StructureResolverSort  $sortBy = null,
+        bool                   $reverseSorting = false,
     ) {
         $this->config = new DiscoverProfileConfig(
             directories: $directories,
@@ -52,6 +55,8 @@ class Discover
             cacheId: $cacheId,
             withChains: $withChains,
             conditions: $conditions,
+            sortBy: $sortBy,
+            reverseSorting: $reverseSorting
         );
     }
 
@@ -65,6 +70,14 @@ class Discover
     public function ignoreFiles(string ...$ignoredFiles): self
     {
         array_push($this->config->ignoredFiles, ...$ignoredFiles);
+
+        return $this;
+    }
+
+    public function sortBy(StructureResolverSort $sortBy, bool $reverse = false): self
+    {
+        $this->config->sortBy = $sortBy;
+        $this->config->reverseSorting = $reverse;
 
         return $this;
     }

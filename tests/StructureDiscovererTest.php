@@ -1,9 +1,9 @@
 <?php
 
-use Spatie\StructureDiscoverer\Enums\Sort;
 use function Pest\Laravel\artisan;
 
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
+
 use Spatie\StructureDiscoverer\Cache\StaticDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
@@ -11,6 +11,7 @@ use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Discover;
 use Spatie\StructureDiscoverer\DiscoverConditions\DiscoverCondition;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
+use Spatie\StructureDiscoverer\Enums\Sort;
 use Spatie\StructureDiscoverer\Support\StructureScoutManager;
 use Spatie\StructureDiscoverer\Tests\Fakes\Dependers\FakeClassDepender;
 use Spatie\StructureDiscoverer\Tests\Fakes\Dependers\FakeInterfaceDepender;
@@ -297,7 +298,7 @@ it('can sort discovered files', function (
                 FakeSubChildClass::class,
                 FakeNestedClass::class,
                 FakeOtherNestedClass::class,
-            ]
+            ],
         ],
     ],
 );
@@ -321,7 +322,7 @@ it('can sort discovered files in reverse', function (
                 FakeChildClass::class,
                 FakeAttribute::class,
                 FakeClassDepender::class,
-            ]
+            ],
         ],
     ],
 );

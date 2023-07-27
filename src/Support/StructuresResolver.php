@@ -2,7 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\Support;
 
-use Illuminate\Support\Str;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Discover;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;

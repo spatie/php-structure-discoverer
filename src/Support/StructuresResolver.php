@@ -6,6 +6,7 @@ use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Discover;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
+use Spatie\StructureDiscoverer\Enums\Sort;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
@@ -22,7 +23,9 @@ class StructuresResolver
     {
         $structures = $this->discover(
             $profile->config->directories,
-            $profile->config->ignoredFiles
+            $profile->config->ignoredFiles,
+            $profile->config->sort,
+            $profile->config->reverseSorting,
         );
 
         if ($profile->config->withChains) {
@@ -47,13 +50,25 @@ class StructuresResolver
     /** @return array<DiscoveredStructure> */
     public function discover(
         array $directories,
-        array $ignoredFiles = [],
+        array $ignoredFiles,
+        ?Sort $sort,
+        bool $reverseSorting
     ): array {
         if (empty($directories)) {
             return [];
         }
 
-        $files = (new Finder())->files()->in($directories);
+        $finder = (new Finder())->files();
+
+        if ($sort) {
+            $sort->apply($finder);
+        }
+
+        if ($reverseSorting) {
+            $finder->reverseSorting();
+        }
+
+        $files = $finder->in($directories);
 
         $filenames = collect($files)
             ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles) || $file->getExtension() !== 'php')

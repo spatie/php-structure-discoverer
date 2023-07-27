@@ -5,6 +5,7 @@ namespace Spatie\StructureDiscoverer\Data;
 use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
 use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
+use Spatie\StructureDiscoverer\Enums\Sort;
 
 class DiscoverProfileConfig
 {
@@ -17,6 +18,8 @@ class DiscoverProfileConfig
         public ?string $cacheId,
         public bool $withChains,
         public ExactDiscoverCondition $conditions,
+        public ?Sort $sort,
+        public bool $reverseSorting
     ) {
     }
 

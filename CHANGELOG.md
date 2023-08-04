@@ -2,6 +2,10 @@
 
 All notable changes to `php-structure-discoverer` will be documented in this file.
 
+## 1.2.1 - 2023-08-04
+
+- Add better support for detecting Laravel
+
 ## 1.2.0 - 2023-07-27
 
 ### What's Changed

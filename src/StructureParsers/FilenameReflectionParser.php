@@ -51,6 +51,7 @@ class FilenameReflectionParser implements StructureParser
         return $discovered;
     }
 
+    /** @return class-string */
     protected function fullQualifiedClassNameFromFile(string $filename): string
     {
         $class = str_replace(
@@ -71,6 +72,9 @@ class FilenameReflectionParser implements StructureParser
             ? $this->config->reflectionRootNamespace
             : $this->config->reflectionRootNamespace.'\\';
 
-        return $rootNamespace.$class;
+        /** @var class-string $fqcn */
+        $fqcn = $rootNamespace.$class;
+
+        return $fqcn;
     }
 }

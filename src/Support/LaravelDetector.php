@@ -2,10 +2,14 @@
 
 namespace Spatie\StructureDiscoverer\Support;
 
+use Illuminate\Foundation\Application;
+
 class LaravelDetector
 {
+    protected static ?bool $isRunningLaravel = null;
+
     public static function isRunningLaravel(): bool
     {
-        return defined('LARAVEL_VERSION') && defined('LARAVEL_START');
+        return static::$isRunningLaravel ??= class_exists(Application::class);
     }
 }

@@ -2,10 +2,11 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverWorkers;
 
-use Illuminate\Support\Collection;
-use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
 use function Amp\ParallelFunctions\parallelMap;
 use function Amp\Promise\wait;
+
+use Illuminate\Support\Collection;
+use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
 
 class ParallelDiscoverWorker implements DiscoverWorker
 {

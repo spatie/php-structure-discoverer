@@ -6,7 +6,6 @@ use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
 use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\Enums\Sort;
-use Spatie\StructureDiscoverer\Enums\StructureParserType;
 use Spatie\StructureDiscoverer\StructureParsers\StructureParser;
 
 class DiscoverProfileConfig

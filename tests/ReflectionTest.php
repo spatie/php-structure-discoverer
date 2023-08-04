@@ -94,7 +94,7 @@ it('can reflect a trait', function () {
     );
 });
 
-it('can discover using reflection', function (){
+it('can discover using reflection', function () {
     $found = Discover::in(__DIR__ . '/Fakes')
         ->useReflection(__DIR__ . '/Fakes', 'Spatie\StructureDiscoverer\Tests\Fakes')
         ->full()

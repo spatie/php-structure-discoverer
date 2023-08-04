@@ -401,7 +401,7 @@ class FormRequest extends Request
 {
 }
 
-class UserFormRequest extends Request
+class UserFormRequest extends FormRequest
 {
 }
 ```

@@ -17,7 +17,6 @@ use Spatie\StructureDiscoverer\StructureParsers\StructureParser;
 use Spatie\StructureDiscoverer\Support\Conditions\HasConditionsTrait;
 use Spatie\StructureDiscoverer\Support\LaravelDetector;
 use Spatie\StructureDiscoverer\Support\StructuresResolver;
-use Spatie\StructureDiscoverer\TokenParsers\MultiFileTokenParser;
 
 class Discover
 {

@@ -11,7 +11,7 @@ use Spatie\StructureDiscoverer\Data\DiscoveredTrait;
 use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
 use Throwable;
 
-class FilenameReflectionParser implements StructureParser
+class ReflectionStructureParser implements StructureParser
 {
     public function __construct(
         protected DiscoverProfileConfig $config

@@ -172,33 +172,6 @@ Discover::in(__DIR__)
     ->get()
 ```
 
-### Sorting
-
-By default, the discovered structures will be sorted according to the OS' default.
-
-You can change the sorting like this:
-
-```php
-use Spatie\StructureDiscoverer\Enums\Sort;
-
-Discover::in(__DIR__)->sortBy(Sort::Name)->get();
-```
-
-Here are all the available sorting options:
-
-```php
-use Spatie\StructureDiscoverer\Enums\Sort;
-
-Discover::in(__DIR__)->sortBy(Sort::Name);
-Discover::in(__DIR__)->sortBy(Sort::Size);
-Discover::in(__DIR__)->sortBy(Sort::Type);
-Discover::in(__DIR__)->sortBy(Sort::Extension);
-Discover::in(__DIR__)->sortBy(Sort::ChangedTime);
-Discover::in(__DIR__)->sortBy(Sort::ModifiedTime);
-Discover::in(__DIR__)->sortBy(Sort::AccessedTime);
-Discover::in(__DIR__)->sortBy(Sort::CaseInsensitiveName);
-```
-
 ### Combining conditions
 
 By default, all conditions will work like an AND operation, so in this case:
@@ -252,6 +225,33 @@ Discover::in(__DIR__)
       )
    )
     ->get();
+```
+
+### Sorting
+
+By default, the discovered structures will be sorted according to the OS' default.
+
+You can change the sorting like this:
+
+```php
+use Spatie\StructureDiscoverer\Enums\Sort;
+
+Discover::in(__DIR__)->sortBy(Sort::Name)->get();
+```
+
+Here are all the available sorting options:
+
+```php
+use Spatie\StructureDiscoverer\Enums\Sort;
+
+Discover::in(__DIR__)->sortBy(Sort::Name);
+Discover::in(__DIR__)->sortBy(Sort::Size);
+Discover::in(__DIR__)->sortBy(Sort::Type);
+Discover::in(__DIR__)->sortBy(Sort::Extension);
+Discover::in(__DIR__)->sortBy(Sort::ChangedTime);
+Discover::in(__DIR__)->sortBy(Sort::ModifiedTime);
+Discover::in(__DIR__)->sortBy(Sort::AccessedTime);
+Discover::in(__DIR__)->sortBy(Sort::CaseInsensitiveName);
 ```
 
 ### Caching
@@ -518,6 +518,36 @@ class DiscoveredTrait extends DiscoveredStructure
     ) {
     }
 }
+```
+
+### Parsers
+
+The parser is responsible for parsing a file and returning a list of structures. The package comes with two parsers out of the box:
+
+- `PhpTokenStructureParser`: Reads a PHP file, tokenizes it, and parses the tokens into structures.
+- `ReflectionStructureParser`: Uses the PHP reflection API to read a file and parse it into structures.
+
+By default, the `PhpTokenStructureParser` is used due to it being more robust, the `ReflectionStructureParser` is quite a bit faster but can completely fail the PHP process.
+
+You can enable the `ReflectionStructureParser` as such:
+
+```php
+Discover::in(__DIR__)
+   ->useReflection(
+      basePath: '/path/to/project/root',
+      rootNamespace: null
+   )
+   ->get();
+```
+
+You'll likely need to set the basePath to the root of your project, and optionally the root namespace of your project which will be prepended.
+
+For default Laravel projects this would be:
+
+```php
+Discover::in(__DIR__)
+   ->useReflection(basePath: base_path())
+   ->get();
 ```
 
 ### Help? My structure cannot be found!

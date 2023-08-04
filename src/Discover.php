@@ -11,7 +11,8 @@ use Spatie\StructureDiscoverer\DiscoverWorkers\ParallelDiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
 use Spatie\StructureDiscoverer\Enums\Sort;
 use Spatie\StructureDiscoverer\Exceptions\NoCacheConfigured;
-use Spatie\StructureDiscoverer\StructureParsers\FilenameReflectionParser;
+use Spatie\StructureDiscoverer\StructureParsers\PhpTokenStructureParser;
+use Spatie\StructureDiscoverer\StructureParsers\ReflectionStructureParser;
 use Spatie\StructureDiscoverer\StructureParsers\StructureParser;
 use Spatie\StructureDiscoverer\Support\Conditions\HasConditionsTrait;
 use Spatie\StructureDiscoverer\Support\LaravelDetector;
@@ -48,7 +49,7 @@ class Discover
         bool $withChains = true,
         Sort $sort = null,
         bool $reverseSorting = false,
-        StructureParser $structureParser = new MultiFileTokenParser(),
+        StructureParser $structureParser = new PhpTokenStructureParser(),
         ?string $reflectionBasePath = null,
         ?string $reflectionRootNamespace = null,
     ) {
@@ -132,7 +133,7 @@ class Discover
 
     public function useReflection(?string $basePath = null, ?string $rootNamespace = null): self
     {
-        $this->config->structureParser = new FilenameReflectionParser($this->config);
+        $this->config->structureParser = new ReflectionStructureParser($this->config);
         $this->config->reflectionBasePath = $basePath;
         $this->config->reflectionRootNamespace = $rootNamespace;
 

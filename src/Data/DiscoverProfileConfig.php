@@ -6,6 +6,8 @@ use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
 use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\Enums\Sort;
+use Spatie\StructureDiscoverer\Enums\StructureParserType;
+use Spatie\StructureDiscoverer\StructureParsers\StructureParser;
 
 class DiscoverProfileConfig
 {
@@ -19,7 +21,10 @@ class DiscoverProfileConfig
         public bool $withChains,
         public ExactDiscoverCondition $conditions,
         public ?Sort $sort,
-        public bool $reverseSorting
+        public bool $reverseSorting,
+        public StructureParser $structureParser,
+        public ?string $reflectionBasePath,
+        public ?string $reflectionRootNamespace,
     ) {
     }
 

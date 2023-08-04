@@ -3,10 +3,10 @@
 namespace Spatie\StructureDiscoverer\Support;
 
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
+use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
 use Spatie\StructureDiscoverer\Discover;
 use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
-use Spatie\StructureDiscoverer\Enums\Sort;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
@@ -22,10 +22,7 @@ class StructuresResolver
     public function execute(Discover $profile): array
     {
         $structures = $this->discover(
-            $profile->config->directories,
-            $profile->config->ignoredFiles,
-            $profile->config->sort,
-            $profile->config->reverseSorting,
+            $profile->config
         );
 
         if ($profile->config->withChains) {
@@ -48,32 +45,28 @@ class StructuresResolver
     }
 
     /** @return array<DiscoveredStructure> */
-    public function discover(
-        array $directories,
-        array $ignoredFiles,
-        ?Sort $sort,
-        bool $reverseSorting
-    ): array {
-        if (empty($directories)) {
+    protected function discover(DiscoverProfileConfig $config): array
+    {
+        if (empty($config->directories)) {
             return [];
         }
 
         $finder = (new Finder())->files();
 
-        if ($sort) {
-            $sort->apply($finder);
+        if ($config->sort) {
+            $config->sort->apply($finder);
         }
 
-        if ($reverseSorting) {
+        if ($config->reverseSorting) {
             $finder->reverseSorting();
         }
 
-        $files = $finder->in($directories);
+        $files = $finder->in($config->directories);
 
         $filenames = collect($files)
-            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $ignoredFiles) || $file->getExtension() !== 'php')
+            ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $config->ignoredFiles) || $file->getExtension() !== 'php')
             ->map(fn (SplFileInfo $file) => $file->getPathname());
 
-        return $this->discoverWorker->run($filenames);
+        return $this->discoverWorker->run($filenames, $config);
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
-class MultiFileTokenParser
+use Spatie\StructureDiscoverer\StructureParsers\StructureParser;
+
+class MultiFileTokenParser implements StructureParser
 {
     public function __construct(
         protected FileTokenParser $fileTokenParser = new FileTokenParser()

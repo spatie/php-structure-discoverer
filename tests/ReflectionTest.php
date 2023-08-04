@@ -6,16 +6,22 @@ use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 use Spatie\StructureDiscoverer\Data\DiscoveredTrait;
+use Spatie\StructureDiscoverer\Discover;
 use Spatie\StructureDiscoverer\Enums\DiscoveredEnumType;
+use Spatie\StructureDiscoverer\Tests\Fakes\Dependers\FakeClassDepender;
+use Spatie\StructureDiscoverer\Tests\Fakes\Dependers\FakeInterfaceDepender;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeAttribute;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeChildClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeChildInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeEnum;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootInterface;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeTrait;
+use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
+use Spatie\StructureDiscoverer\Tests\Fakes\OtherNested\FakeOtherNestedClass;
 
 it('can reflect a class', function () {
     $reflected = DiscoveredClass::fromReflection(new ReflectionClass(FakeChildClass::class));
@@ -86,4 +92,28 @@ it('can reflect a trait', function () {
             namespace: 'Spatie\StructureDiscoverer\Tests\Fakes',
         )
     );
+});
+
+it('can discover using reflection', function (){
+    $found = Discover::in(__DIR__ . '/Fakes')
+        ->useReflection(__DIR__ . '/Fakes', 'Spatie\StructureDiscoverer\Tests\Fakes')
+        ->full()
+        ->get();
+
+    expect($found)->toEqualCanonicalizing([
+        FakeAttribute::class,
+        FakeChildClass::class,
+        FakeEnum::class,
+        FakeChildInterface::class,
+        FakeRootClass::class,
+        FakeRootInterface::class,
+        FakeTrait::class,
+        FakeNestedClass::class,
+        FakeNestedInterface::class,
+        FakeOtherNestedClass::class,
+        FakeSubChildInterface::class,
+        FakeSubChildClass::class,
+        FakeClassDepender::class,
+        FakeInterfaceDepender::class,
+    ]);
 });

@@ -31,6 +31,11 @@ parameters:
 			path: src/Enums/DiscoveredStructureType.php
 
 		-
+			message: "#^Parameter \\#1 \\$objectOrClass of class ReflectionEnum constructor expects class\\-string\\<T of UnitEnum\\>\\|T of UnitEnum, class\\-string\\<object\\> given\\.$#"
+			count: 1
+			path: src/StructureParsers/ReflectionStructureParser.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: src/StructureScout.php

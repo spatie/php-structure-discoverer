@@ -2,6 +2,10 @@
 
 All notable changes to `php-structure-discoverer` will be documented in this file.
 
+### 2.0.0 - 2023-08-??
+
+- Added support for using Reflection instead of PHP token parsing to discover structures
+
 ## 1.2.1 - 2023-08-04
 
 - Add better support for detecting Laravel

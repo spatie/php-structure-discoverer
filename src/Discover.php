@@ -11,6 +11,9 @@ use Spatie\StructureDiscoverer\DiscoverWorkers\ParallelDiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
 use Spatie\StructureDiscoverer\Enums\Sort;
 use Spatie\StructureDiscoverer\Exceptions\NoCacheConfigured;
+use Spatie\StructureDiscoverer\StructureParsers\PhpTokenStructureParser;
+use Spatie\StructureDiscoverer\StructureParsers\ReflectionStructureParser;
+use Spatie\StructureDiscoverer\StructureParsers\StructureParser;
 use Spatie\StructureDiscoverer\Support\Conditions\HasConditionsTrait;
 use Spatie\StructureDiscoverer\Support\LaravelDetector;
 use Spatie\StructureDiscoverer\Support\StructuresResolver;
@@ -45,6 +48,9 @@ class Discover
         bool $withChains = true,
         Sort $sort = null,
         bool $reverseSorting = false,
+        StructureParser $structureParser = new PhpTokenStructureParser(),
+        ?string $reflectionBasePath = null,
+        ?string $reflectionRootNamespace = null,
     ) {
         $this->config = new DiscoverProfileConfig(
             directories: $directories,
@@ -56,7 +62,10 @@ class Discover
             withChains: $withChains,
             conditions: $conditions,
             sort: $sort,
-            reverseSorting: $reverseSorting
+            reverseSorting: $reverseSorting,
+            structureParser: $structureParser,
+            reflectionBasePath: $reflectionBasePath,
+            reflectionRootNamespace: $reflectionRootNamespace,
         );
     }
 
@@ -117,6 +126,15 @@ class Discover
     public function withoutChains(bool $withoutChains = true): self
     {
         $this->config->withChains = ! $withoutChains;
+
+        return $this;
+    }
+
+    public function useReflection(?string $basePath = null, ?string $rootNamespace = null): self
+    {
+        $this->config->structureParser = new ReflectionStructureParser($this->config);
+        $this->config->reflectionBasePath = $basePath;
+        $this->config->reflectionRootNamespace = $rootNamespace;
 
         return $this;
     }

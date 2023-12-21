@@ -3,17 +3,16 @@
 namespace Spatie\StructureDiscoverer\DiscoverWorkers;
 
 use Illuminate\Support\Collection;
-use Spatie\StructureDiscoverer\TokenParsers\MultiFileTokenParser;
+use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
 
 class SynchronousDiscoverWorker implements DiscoverWorker
 {
-    public function __construct(
-        protected MultiFileTokenParser $multiFileResolver = new MultiFileTokenParser(),
-    ) {
+    public function __construct()
+    {
     }
 
-    public function run(Collection $filenames): array
+    public function run(Collection $filenames, DiscoverProfileConfig $config): array
     {
-        return $this->multiFileResolver->execute($filenames->toArray());
+        return $config->structureParser->execute($filenames->toArray());
     }
 }

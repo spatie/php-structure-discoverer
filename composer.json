@@ -20,7 +20,6 @@
         "php": "^8.1",
         "amphp/amp": "^v3.0",
         "amphp/parallel": "^2.2",
-        "amphp/parallel-functions": "^2.0",
         "illuminate/collections": "^9.30|^10.0",
         "spatie/laravel-package-tools": "^1.4.3",
         "symfony/finder" : "^6.0|^7.0"

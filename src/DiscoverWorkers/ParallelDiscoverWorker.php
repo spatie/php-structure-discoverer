@@ -2,11 +2,12 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverWorkers;
 
-use function Amp\ParallelFunctions\parallelMap;
-use function Amp\Promise\wait;
+use function Amp\async;
+use function Amp\Future\await;
 
 use Illuminate\Support\Collection;
 use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
+use function Amp\ParallelFunctions\parallelMap;
 
 class ParallelDiscoverWorker implements DiscoverWorker
 {
@@ -19,12 +20,9 @@ class ParallelDiscoverWorker implements DiscoverWorker
     {
         $sets = $filenames->chunk($this->filesPerJob)->toArray();
 
-        $promise = parallelMap(
-            $sets,
-            fn (array $set): array => $config->structureParser->execute($set)
-        );
-
-        $found = wait($promise);
+        $found = await(array_map(function ($set) use ($config) {
+            return async(fn () => $config->structureParser->execute($set));
+        }, $sets));
 
         return array_merge(...$found);
     }

@@ -41,7 +41,7 @@ composer require spatie/php-structure-discoverer
 If you're using Laravel, then you can also publish the config file with the following command:
 
 ```bash
-php artisan vendor:publish --tag="php-structure-discoverer-config"
+php artisan vendor:publish --tag="structure-discoverer-config"
 ```
 
 This is the contents of the published config file:

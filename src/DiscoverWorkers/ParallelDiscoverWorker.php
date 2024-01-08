@@ -7,7 +7,6 @@ use function Amp\Future\await;
 
 use Illuminate\Support\Collection;
 use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
-use function Amp\ParallelFunctions\parallelMap;
 
 class ParallelDiscoverWorker implements DiscoverWorker
 {

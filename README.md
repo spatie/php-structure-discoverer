@@ -186,10 +186,10 @@ You can create an OR combination of conditions like this:
 
 ```php
 Discover::in(__DIR__)
-   ->any(
-      ProfileCondition::classes(),
-      ProfileCondition::enums()
-   )
+    ->any(
+        ProfileCondition::classes(),
+        ProfileCondition::enums()
+    )
     ->get();
 ```
 
@@ -199,16 +199,16 @@ You can also create more complex operations like an or of and's:
 
 ```php
 Discover::in(__DIR__)
-   ->any(
-      ProfileCondition::exact(
-          ProfileCondition::classes(),
-          ProfileCondition::implementing(Arrayble::class),
-      ),
-      ProfileCondition::exact(
+    ->any(
+        ProfileCondition::exact(
+            ProfileCondition::classes(),
+            ProfileCondition::implementing(Arrayble::class),
+        ),
+        ProfileCondition::exact(
             ProfileCondition::enums(),
-          ProfileCondition::implementing(Stringable::class),
-      )
-   )
+            ProfileCondition::implementing(Stringable::class),
+        )
+    )
     ->get();
 ```
 
@@ -216,14 +216,14 @@ This example can be written shorter like this:
 
 ```php
 Discover::in(__DIR__)
-   ->any(
-      ProfileCondition::exact(
-          ProfileCondition::classes()->implementing(Arrayble::class),
-      ),
-      ProfileCondition::exact(
+    ->any(
+        ProfileCondition::exact(
+            ProfileCondition::classes()->implementing(Arrayble::class),
+        ),
+        ProfileCondition::exact(
             ProfileCondition::enums()->implementing(Stringable::class),
-      )
-   )
+        )
+    )
     ->get();
 ```
 

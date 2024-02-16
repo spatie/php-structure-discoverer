@@ -26,30 +26,30 @@ it('can cache something', function (
 })->with([
     'laravel' => [
         new LaravelDiscoverCacheDriver(),
-        fn () => fn () => cache()->has('discoverer-cache-test'),
+        fn() => cache()->has('discoverer-cache-test'),
     ],
     'laravel with prefix' => [
         new LaravelDiscoverCacheDriver(prefix: 'prefixed'),
-        fn () => fn () => cache()->has('prefixed-discoverer-cache-test'),
+        fn() => cache()->has('prefixed-discoverer-cache-test'),
     ],
     'laravel with store' => [
         new LaravelDiscoverCacheDriver(store: 'file'),
-        fn () => fn () => cache()->driver('file')->has('discoverer-cache-test'),
+        fn() => cache()->driver('file')->has('discoverer-cache-test'),
     ],
     'file serialized' => [
         new FileDiscoverCacheDriver(__DIR__.'/temp'),
-        fn () => fn () => file_exists(__DIR__.'/temp/discoverer-cache-test'),
+        fn() => file_exists(__DIR__.'/temp/discoverer-cache-test'),
     ],
     'file using php' => [
         new FileDiscoverCacheDriver(__DIR__.'/temp', serialize: false),
-        fn () => fn () => file_exists(__DIR__.'/temp/discoverer-cache-test'),
+        fn() => file_exists(__DIR__.'/temp/discoverer-cache-test'),
     ],
     'file with alternative filename' => [
         new FileDiscoverCacheDriver(__DIR__.'/temp', filename: 'discovered.php'),
-        fn () => fn () => file_exists(__DIR__.'/temp/discovered.php'),
+        fn() => file_exists(__DIR__.'/temp/discovered.php'),
     ],
     'static' => [
         new StaticDiscoverCacheDriver(),
-        fn () => fn () => array_key_exists('test', StaticDiscoverCacheDriver::$entries),
+        fn() => array_key_exists('test', StaticDiscoverCacheDriver::$entries),
     ],
 ]);

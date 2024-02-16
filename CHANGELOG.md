@@ -6,6 +6,16 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.1.0 - 2024-02-16
+
+### What's Changed
+
+* Fix doc example spacing by @stevebauman in https://github.com/spatie/php-structure-discoverer/pull/15
+* Laravel 11 by @rubenvanassche in https://github.com/spatie/php-structure-discoverer/pull/16
+* Dropped support for Laravel 9
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/2.0.1...2.1.0
+
 ## 2.0.1 - 2024-01-08
 
 ### What's Changed

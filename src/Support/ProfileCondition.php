@@ -1,10 +1,8 @@
 <?php
 
-namespace Spatie\StructureDiscoverer\Support\Conditions;
+namespace Spatie\StructureDiscoverer\Support;
 
-use Spatie\StructureDiscoverer\DiscoverConditions\ExactDiscoverCondition;
-
-class ConditionBuilder implements HasConditions
+class ProfileCondition implements HasConditions
 {
     use HasConditionsTrait;
 
@@ -13,13 +11,11 @@ class ConditionBuilder implements HasConditions
     ) {
     }
 
-    public static function create(): self
-    {
-        return new self();
-    }
-
     public function conditionsStore(): ExactDiscoverCondition
     {
         return $this->conditions;
     }
+}
+{
+
 }

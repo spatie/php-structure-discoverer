@@ -187,8 +187,8 @@ You can create an OR combination of conditions like this:
 ```php
 Discover::in(__DIR__)
     ->any(
-        ProfileCondition::classes(),
-        ProfileCondition::enums()
+        ConditionBuilder::create()->classes(),
+        ConditionBuilder::create()->enums()
     )
     ->get();
 ```
@@ -200,13 +200,13 @@ You can also create more complex operations like an or of and's:
 ```php
 Discover::in(__DIR__)
     ->any(
-        ProfileCondition::exact(
-            ProfileCondition::classes(),
-            ProfileCondition::implementing(Arrayble::class),
+        ConditionBuilder::create()->exact(
+            ConditionBuilder::create()->classes(),
+            ConditionBuilder::create()->implementing(Arrayble::class),
         ),
-        ProfileCondition::exact(
-            ProfileCondition::enums(),
-            ProfileCondition::implementing(Stringable::class),
+        ConditionBuilder::create()->exact(
+            ConditionBuilder::create()->enums(),
+            ConditionBuilder::create()->implementing(Stringable::class),
         )
     )
     ->get();
@@ -217,11 +217,11 @@ This example can be written shorter like this:
 ```php
 Discover::in(__DIR__)
     ->any(
-        ProfileCondition::exact(
-            ProfileCondition::classes()->implementing(Arrayble::class),
+        ConditionBuilder::create()->exact(
+            ConditionBuilder::create()->classes()->implementing(Arrayble::class),
         ),
-        ProfileCondition::exact(
-            ProfileCondition::enums()->implementing(Stringable::class),
+        ConditionBuilder::create()->exact(
+            ConditionBuilder::create()->enums()->implementing(Stringable::class),
         )
     )
     ->get();

@@ -54,10 +54,11 @@ class ReflectionStructureParser implements StructureParser
     /** @return class-string */
     protected function fullQualifiedClassNameFromFile(string $filename): string
     {
-        $class = str_replace(
-            $this->config->reflectionBasePath,
-            '',
-            $filename
+        $class = preg_replace(
+            pattern: "#".preg_quote($this->config->reflectionBasePath)."#",
+            replacement: '',
+            subject: $filename,
+            limit: 1
         );
 
         $class = trim($class, DIRECTORY_SEPARATOR);

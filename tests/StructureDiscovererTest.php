@@ -1,5 +1,7 @@
 <?php
 
+use function Pest\Laravel\artisan;
+
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Cache\StaticDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
@@ -26,7 +28,6 @@ use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\OtherNested\FakeOtherNestedClass;
 use Spatie\StructureDiscoverer\Tests\Stubs\StubStructureScout;
-use function Pest\Laravel\artisan;
 
 beforeEach(function () {
     StaticDiscoverCacheDriver::clear();

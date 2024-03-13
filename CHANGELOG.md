@@ -6,6 +6,14 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.1.1 - 2024-03-13
+
+### What's Changed
+
+* Create cache when requested (fixes #17) by @francoism90 in https://github.com/spatie/php-structure-discoverer/pull/18
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/2.1.0...2.1.1
+
 ## 2.1.0 - 2024-02-16
 
 ### What's Changed

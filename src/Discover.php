@@ -142,11 +142,13 @@ class Discover
     /** @return array<DiscoveredStructure>|array<string> */
     public function get(): array
     {
-        if ($this->config->shouldUseCache() && $this->config->cacheDriver->has($this->config->cacheId)) {
-            return $this->config->cacheDriver->get($this->config->cacheId);
+        if (! $this->config->shouldUseCache()) {
+            return $this->getWithoutCache();
         }
 
-        return $this->getWithoutCache();
+        return $this->config->cacheDriver->has($this->config->cacheId)
+            ? $this->config->cacheDriver->get($this->config->cacheId)
+            : $this->cache();
     }
 
     /** @return array<DiscoveredStructure>|array<string> */

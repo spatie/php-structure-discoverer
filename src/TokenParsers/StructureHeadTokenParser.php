@@ -46,14 +46,14 @@ class StructureHeadTokenParser
             }
 
             if (! $tokens->get($index)->is([
-                T_EXTENDS,
-                T_IMPLEMENTS,
-                T_STRING,
-                T_NAME_FULLY_QUALIFIED,
-                T_NAME_FULLY_QUALIFIED,
-                T_NAME_RELATIVE,
-                T_NAME_QUALIFIED,
-            ])) {
+                    T_EXTENDS,
+                    T_IMPLEMENTS,
+                    T_STRING,
+                    T_NAME_FULLY_QUALIFIED,
+                    T_NAME_FULLY_QUALIFIED,
+                    T_NAME_RELATIVE,
+                    T_NAME_QUALIFIED,
+                ]) && $tokens->get($index)->text !== ':') {
                 break;
             }
 

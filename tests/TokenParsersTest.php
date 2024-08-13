@@ -235,11 +235,25 @@ PHP;
         ->name->toEqual('IntEnum');
 });
 
-it('can resolve implemented interfaces for an enum', function () {
+it('can resolve implemented interfaces for a unit enum', function () {
     $definition = <<<'PHP'
     use Illuminate\Contracts\Support\Arrayable;
 
     enum UnitEnum implements EnumInterface, Arrayable {}
+PHP;
+
+    $discovered = getDiscoveredStructure($definition, structure: 'UnitEnum');
+
+    expect($discovered)
+        ->toBeInstanceOf(DiscoveredEnum::class)
+        ->implements->toContain('EnumInterface', Arrayable::class);
+});
+
+it('can resolve implemented interfaces for a string enum', function () {
+    $definition = <<<'PHP'
+    use Illuminate\Contracts\Support\Arrayable;
+
+    enum UnitEnum: string implements EnumInterface, Arrayable {}
 PHP;
 
     $discovered = getDiscoveredStructure($definition, structure: 'UnitEnum');

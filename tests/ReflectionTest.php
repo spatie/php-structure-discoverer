@@ -14,8 +14,10 @@ use Spatie\StructureDiscoverer\Tests\Fakes\FakeAttribute;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeChildClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeChildInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeEnum;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeIntEnum;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootInterface;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeStringEnum;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeTrait;
@@ -103,8 +105,10 @@ it('can discover using reflection', function () {
         FakeAttribute::class,
         FakeChildClass::class,
         FakeEnum::class,
+        FakeIntEnum::class,
         FakeChildInterface::class,
         FakeRootClass::class,
+        FakeStringEnum::class,
         FakeRootInterface::class,
         FakeTrait::class,
         FakeNestedClass::class,

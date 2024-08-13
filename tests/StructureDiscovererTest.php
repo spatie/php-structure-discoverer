@@ -1,5 +1,7 @@
 <?php
 
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeIntEnum;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeStringEnum;
 use function Pest\Laravel\artisan;
 
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
@@ -42,9 +44,11 @@ it('can discover everything within a directory', function () {
         FakeEnum::class,
         FakeChildInterface::class,
         FakeRootClass::class,
+        FakeIntEnum::class,
         FakeRootInterface::class,
         FakeTrait::class,
         FakeNestedClass::class,
+        FakeStringEnum::class,
         FakeNestedInterface::class,
         FakeOtherNestedClass::class,
         FakeSubChildInterface::class,
@@ -89,6 +93,8 @@ it('can only discover certain types', function (
             Discover::in()->enums(),
             [
                 FakeEnum::class,
+                FakeIntEnum::class,
+                FakeStringEnum::class,
             ],
         ],
         'traits' => [
@@ -104,6 +110,8 @@ it('can only discover certain types', function (
             ),
             [
                 FakeEnum::class,
+                FakeIntEnum::class,
+                FakeStringEnum::class,
                 FakeTrait::class,
             ],
         ],
@@ -126,6 +134,8 @@ it('can discover everything implementing an interface', function () {
         FakeSubChildClass::class,
         FakeChildClass::class,
         FakeEnum::class,
+        FakeIntEnum::class,
+        FakeStringEnum::class,
         FakeSubChildInterface::class,
     ]);
 });
@@ -136,6 +146,8 @@ it('can discover everything implementing an interface without chains', function 
     expect($found)->toEqualCanonicalizing([
         FakeChildClass::class,
         FakeEnum::class,
+        FakeIntEnum::class,
+        FakeStringEnum::class,
         FakeSubChildInterface::class,
     ]);
 });
@@ -211,6 +223,8 @@ it('can discover using complex conditions', function () {
     expect($found)->toEqualCanonicalizing([
         FakeChildClass::class,
         FakeEnum::class,
+        FakeIntEnum::class,
+        FakeStringEnum::class,
         FakeSubChildClass::class,
     ]);
 });
@@ -407,6 +421,8 @@ it('can disable chains completely', function () {
         ->toEqualCanonicalizing([
             FakeChildClass::class,
             FakeEnum::class,
+            FakeIntEnum::class,
+            FakeStringEnum::class,
             FakeSubChildInterface::class,
         ])
         ->toEqualCanonicalizing($foundInterfacesB);
@@ -415,7 +431,7 @@ it('can disable chains completely', function () {
 it('can use a discoverer with cache', function () {
     $found = StubStructureScout::create()->get();
 
-    expect($found)->toBe([FakeEnum::class]);
+    expect($found)->toBe([FakeEnum::class,FakeIntEnum::class, FakeStringEnum::class, ]);
 
     // Replace cache
     StaticDiscoverCacheDriver::$entries['stub'] = [FakeRootClass::class];
@@ -429,7 +445,7 @@ it('can warm and clear discoverers', function () {
     StructureScoutManager::cache([__DIR__.'/Stubs']);
 
     expect(StaticDiscoverCacheDriver::$entries)->toHaveKey('stub');
-    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class]);
+    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class, FakeIntEnum::class, FakeStringEnum::class, ]);
 
     StructureScoutManager::clear([__DIR__.'/Stubs']);
 
@@ -445,7 +461,7 @@ it('can add additional structure scouts not automatically found', function () {
     StructureScoutManager::cache([]);
 
     expect(StaticDiscoverCacheDriver::$entries)->toHaveKey('stub');
-    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class]);
+    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class, FakeIntEnum::class, FakeStringEnum::class, ]);
 
     StructureScoutManager::clear([__DIR__.'/Stubs']);
 
@@ -458,7 +474,7 @@ it('can run a commands to cache the structure scouts', function () {
     artisan('structure-scouts:cache');
 
     expect(StaticDiscoverCacheDriver::$entries)->toHaveKey('stub');
-    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class]);
+    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class, FakeIntEnum::class, FakeStringEnum::class, ]);
 
     artisan('structure-scouts:clear');
 
@@ -476,5 +492,18 @@ it('can use a profile condition', function () {
     expect($found)->toEqualCanonicalizing([
         FakeChildClass::class,
         FakeChildInterface::class,
+    ]);
+});
+
+it('can discover enums with interfaces', function () {
+    $found = Discover::in(__DIR__.'/Fakes')
+        ->implementing(FakeChildInterface::class)
+        ->enums()
+        ->get();
+
+    expect($found)->toEqualCanonicalizing([
+        FakeEnum::class,
+        FakeStringEnum::class,
+        FakeIntEnum::class,
     ]);
 });

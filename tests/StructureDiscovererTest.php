@@ -432,7 +432,7 @@ it('can disable chains completely', function () {
 it('can use a discoverer with cache', function () {
     $found = StubStructureScout::create()->get();
 
-    expect($found)->toBe([FakeEnum::class,FakeIntEnum::class, FakeStringEnum::class, ]);
+    expect($found)->toEqualCanonicalizing([FakeEnum::class,FakeIntEnum::class, FakeStringEnum::class, ]);
 
     // Replace cache
     StaticDiscoverCacheDriver::$entries['stub'] = [FakeRootClass::class];
@@ -446,7 +446,7 @@ it('can warm and clear discoverers', function () {
     StructureScoutManager::cache([__DIR__.'/Stubs']);
 
     expect(StaticDiscoverCacheDriver::$entries)->toHaveKey('stub');
-    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class, FakeIntEnum::class, FakeStringEnum::class, ]);
+    expect(StaticDiscoverCacheDriver::$entries['stub'])->toEqualCanonicalizing([FakeEnum::class, FakeIntEnum::class, FakeStringEnum::class, ]);
 
     StructureScoutManager::clear([__DIR__.'/Stubs']);
 
@@ -462,7 +462,7 @@ it('can add additional structure scouts not automatically found', function () {
     StructureScoutManager::cache([]);
 
     expect(StaticDiscoverCacheDriver::$entries)->toHaveKey('stub');
-    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class, FakeIntEnum::class, FakeStringEnum::class, ]);
+    expect(StaticDiscoverCacheDriver::$entries['stub'])->toEqualCanonicalizing([FakeEnum::class, FakeIntEnum::class, FakeStringEnum::class, ]);
 
     StructureScoutManager::clear([__DIR__.'/Stubs']);
 
@@ -475,7 +475,7 @@ it('can run a commands to cache the structure scouts', function () {
     artisan('structure-scouts:cache');
 
     expect(StaticDiscoverCacheDriver::$entries)->toHaveKey('stub');
-    expect(StaticDiscoverCacheDriver::$entries['stub'])->toBe([FakeEnum::class, FakeIntEnum::class, FakeStringEnum::class, ]);
+    expect(StaticDiscoverCacheDriver::$entries['stub'])->toEqualCanonicalizing([FakeEnum::class, FakeIntEnum::class, FakeStringEnum::class, ]);
 
     artisan('structure-scouts:clear');
 

@@ -2,6 +2,8 @@
 
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
+
 class MultiFileTokenParser
 {
     public function __construct(
@@ -9,6 +11,11 @@ class MultiFileTokenParser
     ) {
     }
 
+    /**
+     * @param array<string> $filenames
+     *
+     * @return array<string, DiscoveredStructure>
+     */
     public function execute(array $filenames): array
     {
         $found = [];

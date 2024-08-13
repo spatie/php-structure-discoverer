@@ -4,6 +4,7 @@ namespace Spatie\StructureDiscoverer\TokenParsers;
 
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
+use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 
 class DiscoveredClassTokenParser
@@ -13,6 +14,9 @@ class DiscoveredClassTokenParser
     ) {
     }
 
+    /**
+     * @param DiscoveredAttribute[] $attributes
+     */
     public function execute(
         int $index,
         TokenCollection $tokens,

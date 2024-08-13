@@ -7,13 +7,13 @@ use ReflectionClass;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 use Spatie\StructureDiscoverer\Exceptions\InvalidReflection;
 
-/**
- * @property array<string> $extends
- * @property array<DiscoveredAttribute> $attributes
- * @property ?array<string> $extendsChain
- */
 class DiscoveredInterface extends DiscoveredStructure
 {
+    /**
+     * @param array<string> $extends
+     * @param array<DiscoveredAttribute> $attributes
+     * @param ?array<string> $extendsChain
+     */
     public function __construct(
         string $name,
         string $file,
@@ -30,6 +30,9 @@ class DiscoveredInterface extends DiscoveredStructure
         return DiscoveredStructureType::Interface;
     }
 
+    /**
+     * @param ReflectionClass<object> $reflection
+     */
     public static function fromReflection(ReflectionClass $reflection): DiscoveredStructure
     {
         if (! $reflection->isInterface()) {

@@ -6,11 +6,6 @@ parameters:
 			path: src/Data/DiscoveredClass.php
 
 		-
-			message: "#^Casting class ReflectionType to string is deprecated\\.$#"
-			count: 2
-			path: src/Data/DiscoveredEnum.php
-
-		-
 			message: "#^Parameter \\$file of class Spatie\\\\StructureDiscoverer\\\\Data\\\\DiscoveredEnum constructor expects string, string\\|false given\\.$#"
 			count: 1
 			path: src/Data/DiscoveredEnum.php

@@ -8,8 +8,14 @@ use IteratorAggregate;
 use PhpToken;
 use Traversable;
 
+/**
+ * @implements IteratorAggregate<int, PhpToken>
+ */
 class TokenCollection implements IteratorAggregate, Countable
 {
+    /**
+     * @param array<PhpToken> $tokens
+     */
     public function __construct(
         protected array $tokens,
     ) {

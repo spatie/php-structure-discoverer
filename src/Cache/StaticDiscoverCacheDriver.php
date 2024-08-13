@@ -4,6 +4,9 @@ namespace Spatie\StructureDiscoverer\Cache;
 
 class StaticDiscoverCacheDriver implements DiscoverCacheDriver
 {
+    /**
+     * @var array<mixed>
+     */
     public static array $entries = [];
 
     public function has(string $id): bool
@@ -11,11 +14,17 @@ class StaticDiscoverCacheDriver implements DiscoverCacheDriver
         return array_key_exists($id, static::$entries);
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function get(string $id): array
     {
         return static::$entries[$id];
     }
 
+    /**
+     * @param array<mixed> $discovered
+     */
     public function put(string $id, array $discovered): void
     {
         static::$entries[$id] = $discovered;

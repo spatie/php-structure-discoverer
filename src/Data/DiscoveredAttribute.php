@@ -3,6 +3,7 @@
 namespace Spatie\StructureDiscoverer\Data;
 
 use ReflectionAttribute;
+use ReflectionClass;
 
 class DiscoveredAttribute
 {
@@ -11,6 +12,9 @@ class DiscoveredAttribute
     ) {
     }
 
+    /**
+     * @param ReflectionAttribute<object> $reflectionAttribute
+     */
     public static function fromReflection(
         ReflectionAttribute $reflectionAttribute,
     ): self {

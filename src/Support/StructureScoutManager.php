@@ -8,8 +8,14 @@ use Spatie\StructureDiscoverer\StructureScout;
 
 class StructureScoutManager
 {
+    /** @var string[] */
     protected static array $extra = [];
 
+    /**
+     * @param string[] $directories
+     *
+     * @return array<string>
+     */
     public static function cache(array $directories): array
     {
         return self::forEachScout($directories, function (StructureScout $discoverer) {
@@ -19,6 +25,11 @@ class StructureScoutManager
         });
     }
 
+    /**
+     * @param string[] $directories
+     *
+     * @return array<string>
+     */
     public static function clear(array $directories): array
     {
         return self::forEachScout($directories, function (StructureScout $discoverer) {
@@ -35,6 +46,12 @@ class StructureScoutManager
         static::$extra[] = $scout;
     }
 
+    /**
+     * @param array<string> $directories
+     * @param Closure(StructureScout): void $closure
+     *
+     * @return array<string>
+     */
     private static function forEachScout(
         array $directories,
         Closure $closure

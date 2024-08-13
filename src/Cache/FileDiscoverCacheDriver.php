@@ -23,6 +23,7 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
         return file_exists($this->resolvePath($id));
     }
 
+    /** @return array<mixed> */
     public function get(string $id): array
     {
         $path = $this->resolvePath($id);
@@ -40,6 +41,7 @@ class FileDiscoverCacheDriver implements DiscoverCacheDriver
         return unserialize($file);
     }
 
+    /** @param array<mixed> $discovered */
     public function put(string $id, array $discovered): void
     {
         $export = $this->serialize

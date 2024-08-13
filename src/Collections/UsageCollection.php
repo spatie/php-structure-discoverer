@@ -4,11 +4,11 @@ namespace Spatie\StructureDiscoverer\Collections;
 
 use Spatie\StructureDiscoverer\Data\Usage;
 
-/**
- * @property array<Usage> $usages
- */
 class UsageCollection
 {
+    /**
+     * @param  array<Usage> $usages
+     */
     public function __construct(
         public array $usages = [],
     ) {

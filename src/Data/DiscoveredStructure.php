@@ -16,6 +16,9 @@ abstract class DiscoveredStructure
 
     abstract public function getType(): DiscoveredStructureType;
 
+    /**
+     * @param ReflectionClass<object> $reflection
+     */
     abstract public static function fromReflection(ReflectionClass $reflection): DiscoveredStructure;
 
     public function getFcqn(): string

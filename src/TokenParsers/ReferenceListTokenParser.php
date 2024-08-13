@@ -12,6 +12,7 @@ class ReferenceListTokenParser
     ) {
     }
 
+    /** @return array<string> */
     public function execute(
         int $index,
         TokenCollection $tokens,

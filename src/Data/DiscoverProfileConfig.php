@@ -10,6 +10,10 @@ use Spatie\StructureDiscoverer\StructureParsers\StructureParser;
 
 class DiscoverProfileConfig
 {
+    /**
+     * @param array<string> $directories
+     * @param array<string> $ignoredFiles
+     */
     public function __construct(
         public array $directories,
         public array $ignoredFiles,

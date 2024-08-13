@@ -8,6 +8,9 @@ use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
 
 class StructureChainResolver
 {
+    /**
+     * @param array<DiscoveredClass|DiscoveredEnum|DiscoveredInterface> $discovered
+     */
     public function execute(array &$discovered): void
     {
         foreach ($discovered as $structure) {
@@ -29,6 +32,9 @@ class StructureChainResolver
         }
     }
 
+    /**
+     * @param array<DiscoveredClass> $discovered
+     */
     private function resolveExtendsChain(
         array &$discovered,
         DiscoveredClass $structure
@@ -55,6 +61,9 @@ class StructureChainResolver
         $structure->extendsChain = [$structure->extends, ...$extendedStructure->extendsChain];
     }
 
+    /**
+     * @param array<DiscoveredClass|DiscoveredEnum|DiscoveredInterface> $discovered
+     */
     private function resolveImplementsChain(
         array &$discovered,
         DiscoveredClass|DiscoveredEnum|DiscoveredInterface $structure

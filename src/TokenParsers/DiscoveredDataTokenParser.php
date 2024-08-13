@@ -4,6 +4,7 @@ namespace Spatie\StructureDiscoverer\TokenParsers;
 
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
+use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredEnum;
 use Spatie\StructureDiscoverer\Data\DiscoveredInterface;
@@ -21,6 +22,9 @@ class DiscoveredDataTokenParser
     ) {
     }
 
+    /**
+     * @param DiscoveredAttribute[] $attributes
+     */
     public function execute(
         int $index,
         TokenCollection $tokens,
@@ -66,6 +70,9 @@ class DiscoveredDataTokenParser
         };
     }
 
+    /**
+     * @param DiscoveredAttribute[] $attributes
+     */
     protected function resolveInterface(
         int $index,
         TokenCollection $tokens,
@@ -85,6 +92,9 @@ class DiscoveredDataTokenParser
         );
     }
 
+    /**
+     * @param DiscoveredAttribute[] $attributes
+     */
     protected function resolveTrait(
         int $index,
         TokenCollection $tokens,

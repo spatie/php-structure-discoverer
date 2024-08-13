@@ -11,11 +11,15 @@ class NullDiscoverCacheDriver implements DiscoverCacheDriver
         return false;
     }
 
+    /**
+     * @return array<string>
+     */
     public function get(string $id): array
     {
         throw new Exception('Null driver cannot get a cached item');
     }
 
+    /**  @param array<string> $discovered */
     public function put(string $id, array $discovered): void
     {
     }

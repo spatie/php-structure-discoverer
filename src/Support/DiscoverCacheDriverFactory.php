@@ -6,6 +6,9 @@ use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
 
 class DiscoverCacheDriverFactory
 {
+    /**
+     * @param array<string, mixed> $config
+     */
     public static function create(array $config): DiscoverCacheDriver
     {
         /** @var class-string<DiscoverCacheDriver> $driverClass */

@@ -37,6 +37,10 @@ class Discover
         );
     }
 
+    /**
+     * @param array<string> $directories
+     * @param array<string> $ignoredFiles
+     */
     public function __construct(
         array $directories = [],
         array $ignoredFiles = [],

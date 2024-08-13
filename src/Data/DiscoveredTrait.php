@@ -13,6 +13,9 @@ class DiscoveredTrait extends DiscoveredStructure
         return DiscoveredStructureType::Trait;
     }
 
+    /**
+     * @param ReflectionClass<object> $reflection
+     */
     public static function fromReflection(ReflectionClass $reflection): DiscoveredStructure
     {
         if (! $reflection->isTrait()) {

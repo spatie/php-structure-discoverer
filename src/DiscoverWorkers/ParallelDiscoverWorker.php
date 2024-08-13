@@ -2,6 +2,7 @@
 
 namespace Spatie\StructureDiscoverer\DiscoverWorkers;
 
+use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use function Amp\async;
 use function Amp\Future\await;
 
@@ -15,6 +16,12 @@ class ParallelDiscoverWorker implements DiscoverWorker
     ) {
     }
 
+    /**
+     * @param Collection<int, string> $filenames
+     * @param DiscoverProfileConfig $config
+     *
+     * @return array<DiscoveredStructure>
+     */
     public function run(Collection $filenames, DiscoverProfileConfig $config): array
     {
         $sets = $filenames->chunk($this->filesPerJob)->toArray();

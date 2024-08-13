@@ -3,7 +3,6 @@
 namespace Spatie\StructureDiscoverer\Data;
 
 use ReflectionAttribute;
-use ReflectionClass;
 
 class DiscoveredAttribute
 {

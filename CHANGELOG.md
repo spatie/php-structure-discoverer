@@ -6,6 +6,11 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.1.2 - 2024-08-13
+
+- Fix issue where string or int backed enums with interfaces were not discovered
+- Added extra types
+
 ## 2.1.1 - 2024-03-13
 
 ### What's Changed

@@ -1,11 +1,10 @@
 <?php
 
-use Spatie\StructureDiscoverer\Tests\Fakes\FakeIntEnum;
-use Spatie\StructureDiscoverer\Tests\Fakes\FakeStringEnum;
 use function Pest\Laravel\artisan;
 
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Cache\StaticDiscoverCacheDriver;
+
 use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;
 use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
@@ -21,8 +20,10 @@ use Spatie\StructureDiscoverer\Tests\Fakes\FakeAttribute;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeChildClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeChildInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeEnum;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeIntEnum;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeRootInterface;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeStringEnum;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeTrait;

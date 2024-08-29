@@ -7,6 +7,9 @@ use IteratorAggregate;
 use Spatie\StructureDiscoverer\Data\Usage;
 use Traversable;
 
+/**
+ * @implements IteratorAggregate<Usage>
+ */
 class UsageCollection implements IteratorAggregate
 {
     /**

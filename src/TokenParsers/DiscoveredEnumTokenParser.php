@@ -2,7 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
-use Exception;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
 use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;

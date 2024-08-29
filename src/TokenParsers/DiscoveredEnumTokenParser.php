@@ -59,7 +59,5 @@ class DiscoveredEnumTokenParser
         if ($typeToken->text === 'string') {
             return DiscoveredEnumType::String;
         }
-
-        throw new Exception('Unknown enum type');
     }
 }

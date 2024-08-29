@@ -2,9 +2,12 @@
 
 namespace Spatie\StructureDiscoverer\Collections;
 
+use ArrayIterator;
+use IteratorAggregate;
 use Spatie\StructureDiscoverer\Data\Usage;
+use Traversable;
 
-class UsageCollection
+class UsageCollection implements IteratorAggregate
 {
     /**
      * @param  array<Usage> $usages
@@ -46,5 +49,10 @@ class UsageCollection
         }
 
         return "{$namespace}\\{$identifier}";
+    }
+
+    public function getIterator(): Traversable
+    {
+        return new ArrayIterator($this->usages);
     }
 }

@@ -2,9 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\TokenParsers;
 
-use Illuminate\Support\Collection;
-use ParseError;
-use PhpToken;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
@@ -30,13 +27,9 @@ class FileTokenParser
     ): array {
         $found = [];
 
-        try {
-            /** @var TokenCollection $tokens */
-            $tokens = collect(PhpToken::tokenize($contents, TOKEN_PARSE))
-                ->reject(fn (PhpToken $token) => $token->is([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE]))
-                ->values()
-                ->pipe(fn (Collection $collection): TokenCollection => new TokenCollection($collection->all()));
-        } catch (ParseError) {
+        $tokens = TokenCollection::fromCode($contents);
+
+        if ($tokens->count() === 0) {
             return [];
         }
 
@@ -46,6 +39,7 @@ class FileTokenParser
         $structureDefined = false;
 
         $index = 0;
+
 
         try {
             do {

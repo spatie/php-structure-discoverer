@@ -2,7 +2,6 @@
 
 namespace Spatie\StructureDiscoverer\Support;
 
-use PhpToken;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
 use Spatie\StructureDiscoverer\TokenParsers\UseTokenParser;

@@ -4,7 +4,7 @@ use Spatie\StructureDiscoverer\Data\Usage;
 use Spatie\StructureDiscoverer\Support\UseDefinitionsResolver;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
 
-it('can parse uses', function (){
+it('can parse uses', function () {
     $resolver = new UseDefinitionsResolver();
 
     $usages = $resolver->execute(__DIR__.'/../Fakes/FakeChildInterface.php');

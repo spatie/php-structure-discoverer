@@ -365,7 +365,7 @@ You can also use caching inline without the use of scouts, be aware warming up t
 
 ```php
 Discover::in(__DIR__)
-   ->cache(
+   ->withCache(
       'Some identifier',
       new FileDiscoverCacheDriver('/path/to/temp/directory);
    )

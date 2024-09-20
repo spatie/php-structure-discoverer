@@ -6,7 +6,6 @@ use function Amp\async;
 use function Amp\Future\await;
 
 use Illuminate\Support\Collection;
-
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 use Spatie\StructureDiscoverer\Data\DiscoverProfileConfig;
 

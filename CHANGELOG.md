@@ -6,6 +6,20 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.2.1 - 2024-12-16
+
+### What's Changed
+
+* Fix typo in `README.md` by @PerryvanderMeer in https://github.com/spatie/php-structure-discoverer/pull/24
+* Fix PHP 8.4 deprecation by @LordSimal in https://github.com/spatie/php-structure-discoverer/pull/26
+
+### New Contributors
+
+* @PerryvanderMeer made their first contribution in https://github.com/spatie/php-structure-discoverer/pull/24
+* @LordSimal made their first contribution in https://github.com/spatie/php-structure-discoverer/pull/26
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/2.2.0...2.2.1
+
 ## 2.2.0 - 2024-08-29
 
 - Add a new uses resolver which can be used by external packages

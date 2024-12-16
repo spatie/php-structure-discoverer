@@ -50,7 +50,7 @@ class Discover
         ?DiscoverCacheDriver $cacheDriver = null,
         ?string $cacheId = null,
         bool $withChains = true,
-        Sort $sort = null,
+        ?Sort $sort = null,
         bool $reverseSorting = false,
         StructureParser $structureParser = new PhpTokenStructureParser(),
         ?string $reflectionBasePath = null,

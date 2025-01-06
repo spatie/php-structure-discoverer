@@ -21,6 +21,8 @@ use Spatie\StructureDiscoverer\Tests\Fakes\FakeStringEnum;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeTrait;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithAnonymousClass;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClasses;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\OtherNested\FakeOtherNestedClass;
@@ -116,7 +118,9 @@ it('can discover using reflection', function () {
         FakeOtherNestedClass::class,
         FakeSubChildInterface::class,
         FakeSubChildClass::class,
+        FakeWithMultipleClasses::class,
         FakeClassDepender::class,
         FakeInterfaceDepender::class,
+        FakeWithAnonymousClass::class,
     ]);
 });

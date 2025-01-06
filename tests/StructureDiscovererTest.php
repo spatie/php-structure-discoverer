@@ -83,6 +83,9 @@ it('can only discover certain types', function (
                 FakeOtherNestedClass::class,
                 FakeSubChildClass::class,
                 FakeClassDepender::class,
+                FakeWithAnonymousClass::class,
+                FakeWithMultipleClasses::class,
+                FakeWithMultipleClassesSub::class,
             ],
         ],
         'interfaces' => [
@@ -508,7 +511,7 @@ it('can use a profile condition', function () {
 });
 
 it('can discover enums with interfaces', function () {
-    $found = Discover::in(__DIR__.'/Fakes')
+    $found = Discover::in(__DIR__ . '/Fakes')
         ->implementing(FakeChildInterface::class)
         ->enums()
         ->get();
@@ -518,6 +521,7 @@ it('can discover enums with interfaces', function () {
         FakeStringEnum::class,
         FakeIntEnum::class,
     ]);
+});
 
 it('can parse anonymous classes', function () {
     $found = Discover::in(__DIR__ . '/Fakes')->get();

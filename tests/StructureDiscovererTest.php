@@ -511,7 +511,7 @@ it('can use a profile condition', function () {
 });
 
 it('can discover enums with interfaces', function () {
-    $found = Discover::in(__DIR__ . '/Fakes')
+    $found = Discover::in(__DIR__.'/Fakes')
         ->implementing(FakeChildInterface::class)
         ->enums()
         ->get();
@@ -524,13 +524,13 @@ it('can discover enums with interfaces', function () {
 });
 
 it('can parse anonymous classes', function () {
-    $found = Discover::in(__DIR__ . '/Fakes')->get();
+    $found = Discover::in(__DIR__.'/Fakes')->get();
 
     expect($found)->not->toContain("Spatie\StructureDiscoverer\Tests\Fakes\(");
 });
 
 it('can parse multiple nested classes', function () {
-    $found = Discover::in(__DIR__ . '/Fakes')->get();
+    $found = Discover::in(__DIR__.'/Fakes')->get();
 
     expect($found)->toContain("Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClassesSub");
 });

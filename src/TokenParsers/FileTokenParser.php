@@ -19,6 +19,7 @@ class FileTokenParser
     ) {
     }
 
+    /** @return array<DiscoveredStructure> */
     public function execute(
         string $filename,
         string $contents,
@@ -37,7 +38,7 @@ class FileTokenParser
         $structureDefined = false;
 
         $index = 0;
-        
+
         try {
             do {
                 if ($tokens->get($index)->is(T_NAMESPACE)) {

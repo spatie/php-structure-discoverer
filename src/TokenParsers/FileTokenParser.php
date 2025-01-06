@@ -5,7 +5,6 @@ namespace Spatie\StructureDiscoverer\TokenParsers;
 use Spatie\StructureDiscoverer\Collections\TokenCollection;
 use Spatie\StructureDiscoverer\Collections\UsageCollection;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
-use Spatie\StructureDiscoverer\Data\Token;
 use Spatie\StructureDiscoverer\Enums\DiscoveredStructureType;
 use Spatie\StructureDiscoverer\Exceptions\CouldNotParseFile;
 use Throwable;
@@ -20,7 +19,6 @@ class FileTokenParser
     ) {
     }
 
-    /** @return array<DiscoveredStructure> */
     public function execute(
         string $filename,
         string $contents,
@@ -39,8 +37,7 @@ class FileTokenParser
         $structureDefined = false;
 
         $index = 0;
-
-
+        
         try {
             do {
                 if ($tokens->get($index)->is(T_NAMESPACE)) {
@@ -74,6 +71,15 @@ class FileTokenParser
                     continue;
                 }
 
+                if (
+                    $type === DiscoveredStructureType::ClassDefinition
+                    && $this->isAnonymousClass($tokens, $index)
+                ) {
+                    $index++;
+
+                    continue;
+                }
+
                 $discoveredStructure = $this->discoveredDataResolver->execute(
                     $index + 1,
                     $tokens,
@@ -96,5 +102,22 @@ class FileTokenParser
         }
 
         return $found;
+    }
+
+    private function isAnonymousClass(TokenCollection $tokens, int $index): bool
+    {
+        $prevIndex = $index - 1;
+
+        // find the previous non-whitespace token
+        while ($prevIndex >= 0 && $tokens->get($prevIndex)->is(T_WHITESPACE)) {
+            $prevIndex--;
+        }
+
+        // if the token before T_CLASS is T_NEW, it's an anonymous class
+        if ($prevIndex >= 0 && $tokens->get($prevIndex)->is(T_NEW)) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -30,6 +30,9 @@ use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\OtherNested\FakeOtherNestedClass;
 use Spatie\StructureDiscoverer\Tests\Stubs\StubStructureScout;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithAnonymousClass;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClasses;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClassesSub;
 
 beforeEach(function () {
     StaticDiscoverCacheDriver::clear();
@@ -55,6 +58,9 @@ it('can discover everything within a directory', function () {
         FakeSubChildClass::class,
         FakeClassDepender::class,
         FakeInterfaceDepender::class,
+        FakeWithAnonymousClass::class,
+        FakeWithMultipleClasses::class,
+        FakeWithMultipleClassesSub::class,
     ]);
 });
 
@@ -310,6 +316,9 @@ it('can sort discovered files', function (
                 FakeChildClass::class,
                 FakeRootClass::class,
                 FakeSubChildClass::class,
+                FakeWithAnonymousClass::class,
+                FakeWithMultipleClasses::class,
+                FakeWithMultipleClassesSub::class,
                 FakeNestedClass::class,
                 FakeOtherNestedClass::class,
             ],
@@ -331,6 +340,9 @@ it('can sort discovered files in reverse', function (
             [
                 FakeOtherNestedClass::class,
                 FakeNestedClass::class,
+                FakeWithMultipleClasses::class,
+                FakeWithMultipleClassesSub::class,
+                FakeWithAnonymousClass::class,
                 FakeSubChildClass::class,
                 FakeRootClass::class,
                 FakeChildClass::class,
@@ -506,4 +518,15 @@ it('can discover enums with interfaces', function () {
         FakeStringEnum::class,
         FakeIntEnum::class,
     ]);
+
+it('can parse anonymous classes', function () {
+    $found = Discover::in(__DIR__ . '/Fakes')->get();
+
+    expect($found)->not->toContain("Spatie\StructureDiscoverer\Tests\Fakes\(");
+});
+
+it('can parse multiple nested classes', function () {
+    $found = Discover::in(__DIR__ . '/Fakes')->get();
+
+    expect($found)->toContain("Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClassesSub");
 });

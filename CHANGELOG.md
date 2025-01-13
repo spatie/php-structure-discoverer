@@ -6,6 +6,14 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.3.0 - 2025-01-13
+
+### What's Changed
+
+* Fix parsing classes containing anonymous classes by @stevebauman in https://github.com/spatie/php-structure-discoverer/pull/27
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/2.2.1...2.3.0
+
 ## 2.2.1 - 2024-12-16
 
 ### What's Changed

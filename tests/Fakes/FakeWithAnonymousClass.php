@@ -6,8 +6,9 @@ class FakeWithAnonymousClass
 {
     public function foo(): object
     {
-        return new class() {
-            public function bar(): string {
+        return new class () {
+            public function bar(): string
+            {
                 return 'baz';
             }
         };

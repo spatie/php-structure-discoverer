@@ -26,13 +26,13 @@ use Spatie\StructureDiscoverer\Tests\Fakes\FakeStringEnum;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeSubChildInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\FakeTrait;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithAnonymousClass;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClasses;
+use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClassesSub;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\OtherNested\FakeOtherNestedClass;
 use Spatie\StructureDiscoverer\Tests\Stubs\StubStructureScout;
-use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithAnonymousClass;
-use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClasses;
-use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClassesSub;
 
 beforeEach(function () {
     StaticDiscoverCacheDriver::clear();

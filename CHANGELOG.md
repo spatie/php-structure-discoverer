@@ -6,6 +6,18 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.3.1 - 2025-02-14
+
+### What's Changed
+
+* Laravel 12.x Compatibility by @laravel-shift in https://github.com/spatie/php-structure-discoverer/pull/28
+
+### New Contributors
+
+* @laravel-shift made their first contribution in https://github.com/spatie/php-structure-discoverer/pull/28
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/2.3.0...2.3.1
+
 ## 2.3.0 - 2025-01-13
 
 ### What's Changed

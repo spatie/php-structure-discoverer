@@ -65,7 +65,8 @@ class StructuresResolver
 
         $filenames = collect($files)
             ->reject(fn (SplFileInfo $file) => in_array($file->getPathname(), $config->ignoredFiles) || $file->getExtension() !== 'php')
-            ->map(fn (SplFileInfo $file) => $file->getPathname());
+            ->map(fn (SplFileInfo $file) => $file->getPathname())
+            ->values();
 
         return $this->discoverWorker->run($filenames, $config);
     }

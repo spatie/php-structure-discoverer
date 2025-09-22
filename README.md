@@ -374,7 +374,15 @@ Discover::in(__DIR__)
 
 ### Parallel
 
-Getting all structures in a bigger application can be slow due to many files being scanned. This process can be sped up by parallelized scanning. You can enable this as such:
+Getting all structures in a bigger application can be slow due to many files being scanned.
+
+Before running in parallel, make sure to install `amphp/parallel`
+
+```shell
+composer require amphp/parallel
+```
+
+The process can be sped up by parallelized scanning. You can enable this as such:
 
 ```php
 Discover::in(__DIR__)->parallel()->get();

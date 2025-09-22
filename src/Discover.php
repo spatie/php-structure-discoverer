@@ -10,6 +10,7 @@ use Spatie\StructureDiscoverer\DiscoverWorkers\DiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\ParallelDiscoverWorker;
 use Spatie\StructureDiscoverer\DiscoverWorkers\SynchronousDiscoverWorker;
 use Spatie\StructureDiscoverer\Enums\Sort;
+use Spatie\StructureDiscoverer\Exceptions\AmpNotInstalled;
 use Spatie\StructureDiscoverer\Exceptions\NoCacheConfigured;
 use Spatie\StructureDiscoverer\StructureParsers\PhpTokenStructureParser;
 use Spatie\StructureDiscoverer\StructureParsers\ReflectionStructureParser;
@@ -111,6 +112,10 @@ class Discover
 
     public function parallel(int $filesPerJob = 50): self
     {
+        if (! function_exists('\Amp\Future\await')) {
+            throw AmpNotInstalled::create();
+        }
+
         return $this->usingWorker(new ParallelDiscoverWorker($filesPerJob));
     }
 

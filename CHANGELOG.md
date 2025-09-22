@@ -6,6 +6,22 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.3.2 - 2025-09-22
+
+### What's Changed
+
+* Fix missing single quote in file cache driver path by @SebKay in https://github.com/spatie/php-structure-discoverer/pull/29
+* Update issue template by @AlexVanderbist in https://github.com/spatie/php-structure-discoverer/pull/30
+* Move amphp dependencies to suggest by @riasvdv in https://github.com/spatie/php-structure-discoverer/pull/32
+
+### New Contributors
+
+* @SebKay made their first contribution in https://github.com/spatie/php-structure-discoverer/pull/29
+* @AlexVanderbist made their first contribution in https://github.com/spatie/php-structure-discoverer/pull/30
+* @riasvdv made their first contribution in https://github.com/spatie/php-structure-discoverer/pull/32
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/2.3.1...2.3.2
+
 ## 2.3.1 - 2025-02-14
 
 ### What's Changed

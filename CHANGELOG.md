@@ -6,6 +6,14 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.3.3 - 2025-11-24
+
+### What's Changed
+
+* Added Symfony 8 support to all symfony/* packages. by @thecaliskan in https://github.com/spatie/php-structure-discoverer/pull/36
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/2.3.2...2.3.3
+
 ## 2.3.2 - 2025-09-22
 
 ### What's Changed

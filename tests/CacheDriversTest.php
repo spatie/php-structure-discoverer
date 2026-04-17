@@ -4,6 +4,7 @@ use Spatie\StructureDiscoverer\Cache\DiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Cache\LaravelDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Cache\StaticDiscoverCacheDriver;
+use Spatie\StructureDiscoverer\Data\DiscoveredClass;
 
 it('can cache something', function (
     DiscoverCacheDriver $driver,
@@ -53,3 +54,38 @@ it('can cache something', function (
         fn () => array_key_exists('test', StaticDiscoverCacheDriver::$entries),
     ],
 ]);
+
+it('round-trips discovered structures through the Laravel cache driver', function () {
+    // Laravel 13's `cache.serializable_classes` blocks unserialization of arbitrary
+    // classes. Pre-serializing inside the driver stores a plain string in the cache,
+    // so retrieval yields the original objects instead of __PHP_Incomplete_Class.
+    config()->set('cache.serializable_classes', []);
+
+    $driver = new LaravelDiscoverCacheDriver(store: 'file');
+    $driver->forget('test');
+
+    $discovered = [
+        new DiscoveredClass(
+            name: 'TestClass',
+            file: '/test.php',
+            namespace: 'Test',
+            isFinal: false,
+            isAbstract: false,
+            isReadonly: false,
+            extends: null,
+            implements: [],
+            attributes: [],
+        ),
+    ];
+
+    $driver->put('test', $discovered);
+
+    expect(cache()->driver('file')->get('discoverer-cache-test'))->toBeString();
+
+    $retrieved = $driver->get('test');
+
+    expect($retrieved[0])->toBeInstanceOf(DiscoveredClass::class);
+    expect($retrieved[0]->name)->toBe('TestClass');
+
+    $driver->forget('test');
+});

@@ -20,13 +20,13 @@ class LaravelDiscoverCacheDriver implements DiscoverCacheDriver
     /** @return array<mixed> */
     public function get(string $id): array
     {
-        return $this->resolveCacheRepository()->get($this->resolveCacheKey($id));
+        return unserialize($this->resolveCacheRepository()->get($this->resolveCacheKey($id)));
     }
 
     /** @param  array<mixed> $discovered */
     public function put(string $id, array $discovered): void
     {
-        $this->resolveCacheRepository()->put($this->resolveCacheKey($id), $discovered);
+        $this->resolveCacheRepository()->put($this->resolveCacheKey($id), serialize($discovered));
     }
 
     public function forget(string $id): void

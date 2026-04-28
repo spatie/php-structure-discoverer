@@ -44,26 +44,50 @@ class DiscoveredClassTokenParser
         int $index,
         TokenCollection $tokens,
     ): bool {
-        $token = $tokens->get($index - 2);
-
-        return $token && $token->is(T_FINAL);
+        return in_array(T_FINAL, $this->classModifiers($index, $tokens), true);
     }
 
     protected function isClassReadonly(
         int $index,
         TokenCollection $tokens,
     ): bool {
-        $token = $tokens->get($index - 2);
-
-        return defined('T_READONLY') && $token && $token->is(T_READONLY);
+        return defined('T_READONLY')
+            && in_array(T_READONLY, $this->classModifiers($index, $tokens), true);
     }
 
     protected function isClassAbstract(
         int $index,
         TokenCollection $tokens,
     ): bool {
-        $token = $tokens->get($index - 2);
+        return in_array(T_ABSTRACT, $this->classModifiers($index, $tokens), true);
+    }
 
-        return $token && $token->is(T_ABSTRACT);
+    /**
+     * Collects modifier token ids preceding the class keyword.
+     *
+     * $index points at the class name. $index - 1 is T_CLASS, so we walk
+     * backwards from $index - 2 collecting consecutive modifier tokens.
+     *
+     * @return array<int>
+     */
+    private function classModifiers(int $index, TokenCollection $tokens): array
+    {
+        $allowed = defined('T_READONLY')
+            ? [T_ABSTRACT, T_FINAL, T_READONLY]
+            : [T_ABSTRACT, T_FINAL];
+
+        $modifiers = [];
+
+        for ($i = $index - 2; $i >= 0; $i--) {
+            $token = $tokens->get($i);
+
+            if ($token === null || ! $token->is($allowed)) {
+                break;
+            }
+
+            $modifiers[] = $token->id;
+        }
+
+        return $modifiers;
     }
 }

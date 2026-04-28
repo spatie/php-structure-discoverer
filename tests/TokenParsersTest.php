@@ -363,6 +363,80 @@ PHP;
         ->isAbstract->toBeTrue();
 });
 
+it('can resolve a readonly class', function () {
+    $definition = <<<'PHP'
+    readonly class BaseClass{}
+PHP;
+
+    expect(getDiscoveredStructure($definition))
+        ->toBeInstanceOf(DiscoveredClass::class)
+        ->isReadonly->toBeTrue()
+        ->isFinal->toBeFalse()
+        ->isAbstract->toBeFalse();
+});
+
+it('can resolve an abstract readonly class', function () {
+    $definition = <<<'PHP'
+    abstract readonly class BaseClass{}
+PHP;
+
+    expect(getDiscoveredStructure($definition))
+        ->toBeInstanceOf(DiscoveredClass::class)
+        ->isAbstract->toBeTrue()
+        ->isReadonly->toBeTrue()
+        ->isFinal->toBeFalse();
+});
+
+it('can resolve a readonly abstract class', function () {
+    $definition = <<<'PHP'
+    readonly abstract class BaseClass{}
+PHP;
+
+    expect(getDiscoveredStructure($definition))
+        ->toBeInstanceOf(DiscoveredClass::class)
+        ->isAbstract->toBeTrue()
+        ->isReadonly->toBeTrue()
+        ->isFinal->toBeFalse();
+});
+
+it('can resolve a final readonly class', function () {
+    $definition = <<<'PHP'
+    final readonly class BaseClass{}
+PHP;
+
+    expect(getDiscoveredStructure($definition))
+        ->toBeInstanceOf(DiscoveredClass::class)
+        ->isFinal->toBeTrue()
+        ->isReadonly->toBeTrue()
+        ->isAbstract->toBeFalse();
+});
+
+it('can resolve a readonly final class', function () {
+    $definition = <<<'PHP'
+    readonly final class BaseClass{}
+PHP;
+
+    expect(getDiscoveredStructure($definition))
+        ->toBeInstanceOf(DiscoveredClass::class)
+        ->isFinal->toBeTrue()
+        ->isReadonly->toBeTrue()
+        ->isAbstract->toBeFalse();
+});
+
+it('does not detect modifiers from a preceding class', function () {
+    $definition = <<<'PHP'
+    final class FirstClass{}
+
+    class SecondClass{}
+PHP;
+
+    expect(getDiscoveredStructure($definition, structure: 'SecondClass'))
+        ->toBeInstanceOf(DiscoveredClass::class)
+        ->isFinal->toBeFalse()
+        ->isAbstract->toBeFalse()
+        ->isReadonly->toBeFalse();
+});
+
 /**
  * Attributes
  */

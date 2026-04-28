@@ -44,42 +44,50 @@ class DiscoveredClassTokenParser
         int $index,
         TokenCollection $tokens,
     ): bool {
-        return $this->hasModifier($index, $tokens, T_FINAL);
+        return in_array(T_FINAL, $this->classModifiers($index, $tokens), true);
     }
 
     protected function isClassReadonly(
         int $index,
         TokenCollection $tokens,
     ): bool {
-        return defined('T_READONLY') && $this->hasModifier($index, $tokens, T_READONLY);
+        return defined('T_READONLY')
+            && in_array(T_READONLY, $this->classModifiers($index, $tokens), true);
     }
 
     protected function isClassAbstract(
         int $index,
         TokenCollection $tokens,
     ): bool {
-        return $this->hasModifier($index, $tokens, T_ABSTRACT);
+        return in_array(T_ABSTRACT, $this->classModifiers($index, $tokens), true);
     }
 
-    private function hasModifier(int $index, TokenCollection $tokens, int $tokenType): bool
+    /**
+     * Collects modifier token ids preceding the class keyword.
+     *
+     * $index points at the class name. $index - 1 is T_CLASS, so we walk
+     * backwards from $index - 2 collecting consecutive modifier tokens.
+     *
+     * @return array<int>
+     */
+    private function classModifiers(int $index, TokenCollection $tokens): array
     {
-        $modifiers = [T_ABSTRACT, T_FINAL];
-        if (defined('T_READONLY')) {
-            $modifiers[] = T_READONLY;
-        }
+        $allowed = defined('T_READONLY')
+            ? [T_ABSTRACT, T_FINAL, T_READONLY]
+            : [T_ABSTRACT, T_FINAL];
 
-        // $index points to the class name (T_STRING), $index - 1 is T_CLASS.
-        // Walk backwards from $index - 2 through any modifier tokens.
+        $modifiers = [];
+
         for ($i = $index - 2; $i >= 0; $i--) {
             $token = $tokens->get($i);
-            if ($token === null || ! $token->is($modifiers)) {
+
+            if ($token === null || ! $token->is($allowed)) {
                 break;
             }
-            if ($token->is($tokenType)) {
-                return true;
-            }
+
+            $modifiers[] = $token->id;
         }
 
-        return false;
+        return $modifiers;
     }
 }

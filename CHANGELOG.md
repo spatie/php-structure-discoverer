@@ -6,6 +6,18 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.4.2 - 2026-04-28
+
+### What's Changed
+
+* Fix modifier detection for classes with multiple modifiers by @adrian3d in https://github.com/spatie/php-structure-discoverer/pull/41
+
+### New Contributors
+
+* @adrian3d made their first contribution in https://github.com/spatie/php-structure-discoverer/pull/41
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/2.4.1...2.4.2
+
 ## 2.4.1 - 2026-04-17
 
 ### What's Changed

@@ -6,6 +6,14 @@ All notable changes to `php-structure-discoverer` will be documented in this fil
 
 - Added support for using Reflection instead of PHP token parsing to discover structures
 
+## 2.4.3 - 2026-06-15
+
+### What's Changed
+
+* Fix #42: discover models extending package models by @freekmurze in https://github.com/spatie/php-structure-discoverer/pull/43
+
+**Full Changelog**: https://github.com/spatie/php-structure-discoverer/compare/2.4.2...2.4.3
+
 ## 2.4.2 - 2026-04-28
 
 ### What's Changed

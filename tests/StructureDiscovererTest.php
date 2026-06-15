@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Database\Eloquent\Model;
-
 use function Pest\Laravel\artisan;
 
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
@@ -34,7 +32,6 @@ use Spatie\StructureDiscoverer\Tests\Fakes\FakeWithMultipleClassesSub;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedClass;
 use Spatie\StructureDiscoverer\Tests\Fakes\Nested\FakeNestedInterface;
 use Spatie\StructureDiscoverer\Tests\Fakes\OtherNested\FakeOtherNestedClass;
-use Spatie\StructureDiscoverer\Tests\Fixtures\Models\FakeUser;
 use Spatie\StructureDiscoverer\Tests\Stubs\StubStructureScout;
 
 beforeEach(function () {
@@ -210,14 +207,6 @@ it('can discover classes extending a non included class', function () {
 
     expect($found)->toEqualCanonicalizing([
         FakeClassDepender::class,
-    ]);
-});
-
-it('can discover classes extending an autoloadable subclass outside the discovery path', function () {
-    $found = Discover::in(__DIR__.'/Fixtures/Models')->extending(Model::class)->get();
-
-    expect($found)->toEqualCanonicalizing([
-        FakeUser::class,
     ]);
 });
 

@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
+
 use function Pest\Laravel\artisan;
 
-use Illuminate\Database\Eloquent\Model;
 use Spatie\StructureDiscoverer\Cache\FileDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Cache\StaticDiscoverCacheDriver;
 use Spatie\StructureDiscoverer\Data\DiscoveredAttribute;

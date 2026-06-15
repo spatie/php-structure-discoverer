@@ -46,7 +46,14 @@ class StructureChainResolver
         }
 
         if (! array_key_exists($structure->extends, $discovered)) {
-            $structure->extendsChain = [$structure->extends];
+            $parents = class_exists($structure->extends)
+                ? array_values(class_parents($structure->extends))
+                : [];
+
+            $structure->extendsChain = [
+                $structure->extends,
+                ...$parents,
+            ];
 
             return;
         }

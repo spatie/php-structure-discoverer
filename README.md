@@ -157,7 +157,7 @@ More complex custom conditions can be embedded in a class:
 ```php
 class AppDiscoverCondition extends DiscoverCondition 
 {
-    public function satisfies(DiscoveredStructure $discoveredData): bool
+    public function satisfies(DiscoveredStructure $structure): bool
     {
         return $structure->namespace === 'App';
     }

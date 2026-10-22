@@ -21,7 +21,7 @@ The package is not only limited to classes but can also find enums, interfaces, 
 
 ## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/php-structure-discoverer.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/php-structure-discoverer)
+[<img src="https://spatie.be/github-ad-image/php-structure-discoverer.jpg" width="419px" />](https://spatie.be/github-ad-click/php-structure-discoverer)
 
 We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can
 support us by [buying one of our paid products](https://spatie.be/open-source/support-us).

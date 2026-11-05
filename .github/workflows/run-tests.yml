@@ -16,12 +16,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        php: [8.3, 8.4, 8.5]
-        laravel: ['11.*', '12.*', '13.*']
+        php: ['8.4', '8.5', '8.6']
+        laravel: ['13.*']
         stability: [prefer-lowest, prefer-stable]
-        exclude:
-          - laravel: '13.*'
-            php: 8.3
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
@@ -35,6 +32,11 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick, fileinfo
           coverage: none
+
+      - name: Verify PHP version
+        run: |
+          php --version
+          php -r 'exit(PHP_MAJOR_VERSION . "." . PHP_MINOR_VERSION === "${{ matrix.php }}" ? 0 : 1);'
 
       - name: Setup problem matchers
         run: |

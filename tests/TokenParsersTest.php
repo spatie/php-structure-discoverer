@@ -143,6 +143,147 @@ PHP;
     ]);
 });
 
+it('can group import statements', function () {
+    $definition = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use Illuminate\Contracts\Support\{Arrayable, Jsonable};
+
+    class BaseClass implements Arrayable, Jsonable {}
+PHP;
+
+    expect(getDiscoveredStructure($definition))->implements->toBe([
+        Arrayable::class,
+        Jsonable::class,
+    ]);
+});
+
+it('can group import statements with a single segment prefix', function () {
+    $definition = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use Illuminate\{Contracts\Support\Arrayable};
+
+    class BaseClass implements Arrayable {}
+PHP;
+
+    expect(getDiscoveredStructure($definition))->implements->toBe([
+        Arrayable::class,
+    ]);
+});
+
+it('can group import statements with aliases', function () {
+    $definition = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use Illuminate\Contracts\Support\{Arrayable as OtherArrayable, Responsable, Jsonable as OtherJsonable};
+
+    class BaseClass implements OtherArrayable, Responsable, OtherJsonable {}
+PHP;
+
+    expect(getDiscoveredStructure($definition))->implements->toBe([
+        Arrayable::class,
+        Responsable::class,
+        Jsonable::class,
+    ]);
+});
+
+it('can group import statements with qualified names', function () {
+    $definition = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use Illuminate\Contracts\{Support\Arrayable, Support\Jsonable as OtherJsonable};
+
+    class BaseClass implements Arrayable, OtherJsonable {}
+PHP;
+
+    expect(getDiscoveredStructure($definition))->implements->toBe([
+        Arrayable::class,
+        Jsonable::class,
+    ]);
+});
+
+it('can group import statements with a trailing comma', function () {
+    $definition = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use Illuminate\Contracts\Support\{
+        Arrayable,
+        Jsonable,
+    };
+
+    class BaseClass implements Arrayable, Jsonable {}
+PHP;
+
+    expect(getDiscoveredStructure($definition))->implements->toBe([
+        Arrayable::class,
+        Jsonable::class,
+    ]);
+});
+
+it('can mix group and single import statements', function () {
+    $definition = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use Illuminate\Contracts\Support\Arrayable;
+    use Illuminate\Contracts\Support\{Jsonable, Responsable};
+    use Illuminate\Support\Arr;
+
+    class BaseClass extends Arr implements Arrayable, Jsonable, Responsable {}
+PHP;
+
+    $structure = getDiscoveredStructure($definition);
+
+    expect($structure->extends)->toBe(Arr::class);
+    expect($structure->implements)->toBe([
+        Arrayable::class,
+        Jsonable::class,
+        Responsable::class,
+    ]);
+});
+
+it('keeps a leading backslash in group import statements like in single import statements', function () {
+    $group = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use \Illuminate\Contracts\Support\{Arrayable};
+
+    class BaseClass implements Arrayable {}
+PHP;
+
+    $single = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use \Illuminate\Contracts\Support\Arrayable;
+
+    class BaseClass implements Arrayable {}
+PHP;
+
+    expect(getDiscoveredStructure($group)->implements)
+        ->toBe(getDiscoveredStructure($single)->implements)
+        ->toBe(['\\'.Arrayable::class]);
+});
+
+it('does not import functions or constants from group import statements as classes', function () {
+    $definition = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use function Illuminate\Contracts\Support\{Arrayable};
+    use const Illuminate\Contracts\Support\{Jsonable};
+    use Illuminate\Contracts\Support\{function Htmlable, const Renderable, Responsable};
+
+    class BaseClass implements Arrayable, Jsonable, Htmlable, Renderable, Responsable {}
+PHP;
+
+    expect(getDiscoveredStructure($definition))->implements->toBe([
+        'Spatie\PhpAutoDiscoverer\Arrayable',
+        'Spatie\PhpAutoDiscoverer\Jsonable',
+        'Spatie\PhpAutoDiscoverer\Htmlable',
+        'Spatie\PhpAutoDiscoverer\Renderable',
+        Responsable::class,
+    ]);
+});
+
 /**
  * References
  */

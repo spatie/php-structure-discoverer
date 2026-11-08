@@ -143,6 +143,39 @@ PHP;
     ]);
 });
 
+it('can combine import statements with a leading backslash', function () {
+    $definition = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use Illuminate\Contracts\Support\Arrayable, \Illuminate\Contracts\Support\Jsonable;
+
+    class BaseClass implements Arrayable, Jsonable {}
+PHP;
+
+    expect(getDiscoveredStructure($definition))->implements->toBe([
+        Arrayable::class,
+        '\\'.Jsonable::class,
+    ]);
+});
+
+it('does not import functions or constants as classes', function () {
+    $definition = <<<'PHP'
+    namespace Spatie\PhpAutoDiscoverer;
+
+    use function Illuminate\Contracts\Support\Arrayable;
+    use const Illuminate\Contracts\Support\Jsonable;
+    use Illuminate\Contracts\Support\Responsable;
+
+    class BaseClass implements Arrayable, Jsonable, Responsable {}
+PHP;
+
+    expect(getDiscoveredStructure($definition))->implements->toBe([
+        'Spatie\PhpAutoDiscoverer\Arrayable',
+        'Spatie\PhpAutoDiscoverer\Jsonable',
+        Responsable::class,
+    ]);
+});
+
 it('can group import statements', function () {
     $definition = <<<'PHP'
     namespace Spatie\PhpAutoDiscoverer;

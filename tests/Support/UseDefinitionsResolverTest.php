@@ -43,3 +43,32 @@ it('can parse group uses', function () {
     expect($usages->findForAlias('AssignmentData')->fcqn)->toBe('Modules\Shared\Data\RegistrationNumberAssignmentData');
     expect($usages->findForAlias('Data'))->toBeNull();
 });
+
+it('keeps parsing uses after function and const imports', function () {
+    $file = tempnam(sys_get_temp_dir(), 'use-definitions-resolver');
+
+    file_put_contents($file, <<<'PHP'
+    <?php
+
+    namespace App\Data;
+
+    use function App\Support\{format, parse};
+    use const App\Support\VERSION;
+    use App\Enums\Status;
+    use Modules\Shared\Data\{function helper, const LIMIT, LocationData};
+    use App\Enums\Type;
+
+    class ShipmentData
+    {
+    }
+    PHP);
+
+    $usages = (new UseDefinitionsResolver())->execute($file);
+
+    unlink($file);
+
+    expect($usages)->toHaveCount(3);
+    expect($usages->findForAlias('Status')->fcqn)->toBe('App\Enums\Status');
+    expect($usages->findForAlias('LocationData')->fcqn)->toBe('Modules\Shared\Data\LocationData');
+    expect($usages->findForAlias('Type')->fcqn)->toBe('App\Enums\Type');
+});

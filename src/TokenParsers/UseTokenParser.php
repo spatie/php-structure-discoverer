@@ -12,6 +12,11 @@ class UseTokenParser
      */
     public function execute(int $index, TokenCollection $tokens): array
     {
+        // `use function` and `use const` don't import classes
+        if ($tokens->get($index)->is([T_FUNCTION, T_CONST])) {
+            return [];
+        }
+
         if ($this->isGroupUse($index, $tokens)) {
             return $this->executeGroupUse($index, $tokens);
         }
@@ -39,17 +44,13 @@ class UseTokenParser
             }
 
             break;
-        } while ($tokens->get($index)->is([T_NAME_QUALIFIED, T_STRING]));
+        } while ($tokens->get($index)->is([T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_STRING]));
 
         return $usages;
     }
 
     private function isGroupUse(int $index, TokenCollection $tokens): bool
     {
-        if ($tokens->get($index)?->is([T_FUNCTION, T_CONST])) {
-            $index += 1;
-        }
-
         // PHP tokenizes `A\B\{` as the prefix name, a separate `\` and `{`
         return $tokens->get($index + 1)?->is(T_NS_SEPARATOR) === true
             && $tokens->get($index + 2)?->is(ord('{')) === true;
@@ -60,11 +61,6 @@ class UseTokenParser
      */
     private function executeGroupUse(int $index, TokenCollection $tokens): array
     {
-        // `use function A\{b}` and `use const A\{B}` don't import classes
-        if ($tokens->get($index)->is([T_FUNCTION, T_CONST])) {
-            return [];
-        }
-
         $prefix = $tokens->get($index)->text;
         $index += 3;
 

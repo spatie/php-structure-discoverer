@@ -27,20 +27,36 @@ class UseDefinitionsResolver
 
         $tokens = TokenCollection::fromCode($code);
 
-        foreach ($tokens as $i => $token) {
-            if ($token->is([T_COMMENT, T_DOC_COMMENT, T_WHITESPACE])) {
-                continue;
-            }
+        $index = 0;
+
+        while ($tokens->has($index)) {
+            $token = $tokens->get($index);
 
             if ($token->is(T_USE)) {
-                $usages->add(...$this->useResolver->execute($i + 1, $tokens));
+                $usages->add(...$this->useResolver->execute($index + 1, $tokens));
+
+                // skip the rest of the statement, so the `function` in `use function` doesn't end the loop
+                $index = $this->findStatementEnd($index, $tokens) + 1;
+
+                continue;
             }
 
             if ($token->is([T_CLASS, T_INTERFACE, T_TRAIT, T_FUNCTION])) {
                 break;
             }
+
+            $index++;
         }
 
         return $usages;
+    }
+
+    private function findStatementEnd(int $index, TokenCollection $tokens): int
+    {
+        while ($tokens->has($index) && ! $tokens->get($index)->is(ord(';'))) {
+            $index++;
+        }
+
+        return $index;
     }
 }

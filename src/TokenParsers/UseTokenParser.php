@@ -12,6 +12,15 @@ class UseTokenParser
      */
     public function execute(int $index, TokenCollection $tokens): array
     {
+        // `use function` and `use const` don't import classes
+        if ($tokens->get($index)->is([T_FUNCTION, T_CONST])) {
+            return [];
+        }
+
+        if ($this->isGroupUse($index, $tokens)) {
+            return $this->executeGroupUse($index, $tokens);
+        }
+
         $usages = [];
 
         do {
@@ -35,7 +44,53 @@ class UseTokenParser
             }
 
             break;
-        } while ($tokens->get($index)->is([T_NAME_QUALIFIED, T_STRING]));
+        } while ($tokens->get($index)->is([T_NAME_FULLY_QUALIFIED, T_NAME_QUALIFIED, T_STRING]));
+
+        return $usages;
+    }
+
+    private function isGroupUse(int $index, TokenCollection $tokens): bool
+    {
+        // PHP tokenizes `A\B\{` as the prefix name, a separate `\` and `{`
+        return $tokens->get($index + 1)?->is(T_NS_SEPARATOR) === true
+            && $tokens->get($index + 2)?->is(ord('{')) === true;
+    }
+
+    /**
+     * @return Usage[]
+     */
+    private function executeGroupUse(int $index, TokenCollection $tokens): array
+    {
+        $prefix = $tokens->get($index)->text;
+        $index += 3;
+
+        $usages = [];
+
+        while (! $tokens->get($index)->is(ord('}'))) {
+            $importsClass = ! $tokens->get($index)->is([T_FUNCTION, T_CONST]);
+
+            if (! $importsClass) {
+                $index += 1;
+            }
+
+            $name = $tokens->get($index)->text;
+            $alias = null;
+
+            if ($tokens->get($index + 1)->is(T_AS)) {
+                $alias = $tokens->get($index + 2)->text;
+                $index += 2;
+            }
+
+            if ($importsClass) {
+                $usages[] = new Usage("{$prefix}\\{$name}", $alias);
+            }
+
+            $index += 1;
+
+            if ($tokens->get($index)->is(ord(','))) {
+                $index += 1;
+            }
+        }
 
         return $usages;
     }
